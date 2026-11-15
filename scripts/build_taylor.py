@@ -26,25 +26,36 @@ def die(msg):
 
 
 def clean_lyrics(raw: str) -> list[list[str]]:
-    """Return lyrics as a list of sections, each a list of lines."""
-    # Genius prepends "N Contributors ... Lyrics" and sometimes a description; drop everything before the first [Section] or the 'Lyrics' header
+    """Return Taylor's own lyrics as a list of sections, each a list of lines.
+
+    Drops: Genius header junk, parenthetical ad-libs, and sections sung by featured
+    artists (e.g. "[Verse 1: Future]" in End Game).
+    """
     if "Lyrics" in raw[:400]:
         raw = raw.split("Lyrics", 1)[1]
     raw = re.sub(r"\d*Embed$", "", raw.strip())
     raw = raw.replace("You might also like", "\n")
-    sections, cur = [], []
+    raw = re.sub(r"\([^)\[\]]*\)", "", raw)  # ad-libs, even when they span lines
+    for a, b in {"\u2019": "'", "\u2018": "'", "\u201c": '"', "\u201d": '"', "\u2005": " ", "\u205f": " "}.items():
+        raw = raw.replace(a, b)
+    sections, cur, skip = [], [], False
     for line in raw.splitlines():
         s = line.strip()
-        if not s or (s.startswith("[") and s.endswith("]")):
-            if cur:
+        if s.startswith("[") and s.endswith("]"):
+            if cur and not skip:
+                sections.append(cur)
+            cur = []
+            # "[Verse 1: Future]" -> skip unless Taylor is credited on that section
+            skip = ":" in s and "taylor" not in s.lower()
+            continue
+        if not s:
+            if cur and not skip:
                 sections.append(cur)
             cur = []
             continue
-        s = re.sub(r"\s*\(.*?\)\s*$", "", s) if s.endswith(")") and not s.startswith("(") else s  # drop trailing ad-libs
-        s = s.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
-        if s:
+        if not skip:
             cur.append(s)
-    if cur:
+    if cur and not skip:
         sections.append(cur)
     return sections
 
@@ -77,9 +88,11 @@ def main():
     if album is None:
         die("Genius could not find the album 'reputation'. Token invalid or API down?")
     for t in album.tracks:
-        s = t.song
+        s = t[1] if isinstance(t, tuple) else t.song  # lyricsgenius versions differ
         if not s.lyrics:
             s = g.search_song(s.title, "Taylor Swift")
+        if "prologue" in s.title.lower():  # a prose essay, not a song
+            continue
         songs.append((s.title, s.url, s.lyrics))
     for title in EXTRA_SONGS:
         s = g.search_song(title, "Taylor Swift")
@@ -98,7 +111,7 @@ def main():
         n = 0
         for c in chunk(clean_lyrics(lyr or "")):
             key = re.sub(r"\W+", " ", c.lower()).strip()
-            if len(key.split()) < 3 or key in seen:  # drop dupes (choruses repeat) and tiny ad-libs
+            if not 3 <= len(key.split()) <= 40 or key in seen:  # drop dupes (choruses repeat) and tiny ad-libs
                 continue
             seen.add(key)
             rows.append({"text": c, "source_url": url, "kind": "lyric"})
