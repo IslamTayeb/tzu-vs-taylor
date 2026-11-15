@@ -43,8 +43,7 @@ export async function update() {
     const p = await chanceOfTaylor(text);
     if (ticket !== latest) return;
     bar($("#live-bar"), p);
-    const hedge = confidence(p) < 0.56 ? " Basically a coin flip." : "";
-    $("#live-model").innerHTML = `The model says ${named(guessOf(p))}, ${percent(confidence(p))} sure.${hedge}`;
+    $("#live-model").innerHTML = `The model says ${named(guessOf(p))}, ${percent(confidence(p))} sure.`;
   } catch {
     $("#live-model").textContent = FAILED;
   }

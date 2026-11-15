@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split
 
 DATA = Path(__file__).resolve().parent / "data"
 TAYLOR, TZU = "Taylor", "Sun Tzu"
-COLORS = {TAYLOR: "#9e1b32", TZU: "#1d3b5c"}
+COLORS = {TAYLOR: "#BE616A", TZU: "#5E9594"}
 EMBEDDER = "sentence-transformers/all-MiniLM-L6-v2"
 
 plt.rcParams.update({"font.size": 16, "axes.titlesize": 20, "axes.spines.top": False,
