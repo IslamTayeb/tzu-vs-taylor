@@ -1,8 +1,11 @@
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
 
+from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+from pptx.dml.color import RGBColor
 from pptx.util import Inches, Pt
 
 HERE = Path(__file__).resolve().parent
@@ -16,6 +19,14 @@ CREDIT = "Photos: Glenn Francis (CC BY-SA 4.0); 663highland (CC BY 2.5); Wikimed
 
 deck, layouts = open_deck(HERE / "template.pptx")
 W, H = deck.slide_width, deck.slide_height
+FONT = "Excalifont"
+
+
+def hand_font():
+    theme = deck.slide_masters[0].part.part_related_by(RT.THEME)
+    xml = theme.blob.decode()
+    xml = re.sub(r'<a:latin typeface="[^"]*"( panose="[^"]*")?/>', f'<a:latin typeface="{FONT}"/>', xml)
+    theme._blob = xml.encode()
 
 
 def figure(title, name, note=None, png_only=False, notes=None):
@@ -46,7 +57,7 @@ def statement(title, subtitle=None):
         slide.placeholders[1].text = subtitle
 
 
-def textbox(slide, left, top, width, height, lines, center=False):
+def textbox(slide, left, top, width, height, lines, center=False, color=None):
     frame = slide.shapes.add_textbox(left, top, width, height).text_frame
     frame.word_wrap = True
     for k, (text, size, bold) in enumerate(lines):
@@ -55,6 +66,8 @@ def textbox(slide, left, top, width, height, lines, center=False):
             paragraph.alignment = 2
         run = paragraph.add_run()
         run.text, run.font.size, run.font.bold = text, Pt(size), bold or None
+        if color:
+            run.font.color.rgb = RGBColor.from_string(color)
 
 
 def classes():
@@ -62,9 +75,10 @@ def classes():
     slide.shapes.title.text = "Today's Classification Problem"
     pic_h = H - Inches(2.85)
     pic_w = int(pic_h * 0.8)
-    for k, (label, photo) in enumerate([("Class A: Taylor Swift", "photo_taylor"), ("Class B: Sun Tzu", "photo_suntzu")]):
+    for k, (label, photo, color) in enumerate([("Class A: Taylor Swift", "photo_taylor", "A24A53"),
+                                               ("Class B: Sun Tzu", "photo_suntzu", "4F8584")]):
         left = W * (1 + 2 * k) // 4 - pic_w // 2
-        textbox(slide, left - Inches(0.5), Inches(1.55), pic_w + Inches(1.0), Inches(0.6), [(label, 26, True)], center=True)
+        textbox(slide, left - Inches(0.5), Inches(1.55), pic_w + Inches(1.0), Inches(0.6), [(label, 26, True)], center=True, color=color)
         picture = slide.shapes.add_picture(str(FIGURES / f"{photo}.jpg"), left, Inches(2.2), pic_w, pic_h)
         picture.name = f"fixed_{photo}"
     textbox(slide, Inches(0.5), H - Inches(0.55), W - Inches(1.0), Inches(0.35), [(CREDIT, 10, False)], center=True)
@@ -85,17 +99,18 @@ def main():
     missed = [i + 1 for i, ok in enumerate(facts["quiz_right"]) if not ok]
     flip = [i + 1 for i, (s, ok) in enumerate(zip(facts["quiz_sure"], facts["quiz_right"])) if ok and s < 55]
 
+    hand_font()
     statement("How Machines Read", "Embeddings and classification")
     figure("What's A Vector?", "vector_point", [("A vector is just a list of numbers. Each number adds a direction", False)])
-    figure("Embedding: Anything Becomes A Vector", "diagram_1")
+    figure("Anything Becomes A Vector", "diagram_1")
     for stage in (2, 3, 4, 5):
         figure("Then We Use The Vectors", f"diagram_{stage}")
     figure("Today: Classification", "diagram_6")
     figure("Close Numbers, Close Meaning", "sentence_map",
-           [("Each sentence becomes a vector. Similar meanings land close together", False)])
+           [("Each sentence becomes a vector. Similar meanings land close", False)])
 
     figure("The Model Is A Function", "weights",
-           [("Pretend high n₁ and n₂ mean spam, and high n₃ and n₄ mean not spam", False)])
+           [("Say high n₁, n₂ mean spam and high n₃, n₄ mean not spam", False)])
     figure("Training: Guess, Check, Nudge", "training_loop")
     figure("One Nudge, Up Close", "nudge")
     figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
@@ -108,7 +123,7 @@ def main():
 
     classes()
     figure("What It Learned From", "data_rows",
-           [(f"{facts['n_each']} lines each: ", True), ("The Art of War (1910) vs. Taylor's lyrics and interviews", False)])
+           [(f"{facts['n_each']} lines each: ", True), ("The Art of War vs. Taylor's lyrics and interviews", False)])
     bullets("Where The Taylor Lines Come From", [
         (0, [("Every song on ", False), ("reputation", True), (" (2017), her revenge album, plus Bad Blood, Mean and Vigilante Shit", False)]),
         (0, [("Why those: they talk about enemies too, so it isn't easy", False)]),
@@ -119,7 +134,7 @@ def main():
     n_test = facts["n_test"]
     figure("Hide Some For The Test", "split",
            [(f"Same as the emails: {2 * facts['n_each'] - n_test} to learn from, {n_test} hidden", False)])
-    figure("Every Line As A Dot", "map", [("Each line's embedding is 384 numbers, squashed to 2 so we can draw it", False)])
+    figure("Every Line As A Dot", "map", [("Each line's embedding: 384 numbers, squashed to 2 to draw it", False)])
     figure("Training Draws The Line", "map_line", [("Same function as the emails, now with 384 weights", False)])
     figure(f"{facts['right']} Out Of {n_test} Right", "map_test",
            [("Faded: lines it learned from. Bold: hidden test lines. Circled: misses", False)])
@@ -135,7 +150,7 @@ def main():
 
     a, b = facts["flip_p"]
     figure("Two Words Flip It", "flip",
-           [("Swap \"the enemy\" for \"my ex\" in a real Sun Tzu verse: ", False), (f"{a}% to {b}% Taylor", True)])
+           [("Swap \"the enemy\" for \"my ex\": ", False), (f"{a}% to {b}% Taylor", True)])
     figure("Fooling It", "traps", [("Small edits fool it; Taylor on enemies reads as Sun Tzu", False)])
     bullets("Anything Modern Looks Like Taylor", [
         (0, [("\"The library closes at midnight.\" scores ", False), (f"{facts['library_p']}% Taylor", True)]),
@@ -148,6 +163,12 @@ def main():
         (0, [("Generate: ", True), ("draft, summarize, translate", False)]),
     ])
 
+    for slide in deck.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                for paragraph in shape.text_frame.paragraphs:
+                    for run in paragraph.runs:
+                        run.font.name = FONT
     deck.save(DECK)
     subprocess.run([sys.executable, str(TOOLS / "center_figures.py"), str(DECK), "7.1"], check=True)
     print(len(deck.slides), "slides")

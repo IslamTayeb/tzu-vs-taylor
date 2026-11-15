@@ -11,7 +11,7 @@ from matplotlib.patches import Rectangle
 
 for font_path in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts", "*.ttf")):
     font_manager.fontManager.addfont(font_path)
-plt.rcParams.update({"font.family": "Carlito", "svg.fonttype": "path"})
+plt.rcParams.update({"font.family": os.environ.get("TABLE_FONT", "Carlito"), "svg.fonttype": "path"})
 
 INK = "#2e3440"
 RULE = "#2e3440"

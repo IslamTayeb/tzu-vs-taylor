@@ -1,4 +1,5 @@
 import math
+import re
 import subprocess
 from pathlib import Path
 
@@ -6,11 +7,24 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "out"
 
 INK, SLATE, SNOW, FROST = "#2e3440", "#4c566a", "#e5e9f0", "#eceff4"
-RED, CYAN, YELLOW, ORANGE = "#BE616A", "#8FBBBA", "#EBCB8B", "#CF8770"
+RED, CYAN, TEAL = "#BE616A", "#8FBBBA", "#4f8584"
+PINK, MINT = "#f1d6d9", "#d6e8e7"
+YELLOW, ORANGE = PINK, RED
 W, H = 1600, 610
 ROWS = [140, 265, 390, 515]
 CARD = dict(x=545, y=177, w=420, h=300)
-FONT = "font-family='Lato, Carlito, Calibri, sans-serif'"
+FONT = "font-family='Excalifont, Virgil, sans-serif'"
+ROUGH = ("<filter id='rough' x='-2%' y='-2%' width='104%' height='104%'>"
+         "<feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='2' seed='7'/>"
+         "<feDisplacementMap in='SourceGraphic' scale='5' xChannelSelector='R' yChannelSelector='G'/></filter>")
+
+
+def sketchy(markup):
+    head, body = markup.split(">", 1)
+    body, tail = body.rsplit("</svg>", 1)
+    texts = re.findall(r"<text\b.*?</text>", body, flags=re.S)
+    shapes = re.sub(r"<text\b.*?</text>", "", body, flags=re.S)
+    return f"{head}><defs>{ROUGH}</defs><g filter='url(#rough)'>{shapes}</g>{''.join(texts)}</svg>"
 
 
 def text(x, y, s, size=30, weight=700, fill=INK, anchor="start"):
@@ -22,7 +36,7 @@ def label(x, y, title, sub):
 
 
 def protein(cx, cy, new=False):
-    colors = [CYAN, RED, YELLOW, ORANGE] if not new else [ORANGE, YELLOW, CYAN, RED]
+    colors = [CYAN, RED, PINK, TEAL] if not new else [RED, MINT, CYAN, PINK]
     pts = [(cx - 52 + 13 * i, cy + 30 * math.sin(i * 0.95 + (1.4 if new else 0))) for i in range(9)]
     path = "M" + " L".join(f"{x:.0f},{y:.0f}" for x, y in pts)
     beads = "".join(f"<circle cx='{x:.0f}' cy='{y:.0f}' r='12' fill='{colors[i % 4]}' stroke='{INK}' stroke-width='3'/>"
@@ -43,7 +57,7 @@ def page(cx, cy, new=False):
 
 def picture(cx, cy, new=False):
     x, y = cx - 56, cy - 44
-    sky, hill = (FROST, CYAN) if not new else ("#f6e7c8", ORANGE)
+    sky, hill = (FROST, CYAN) if not new else (PINK, RED)
     return (f"<rect x='{x}' y='{y}' width='112' height='88' rx='8' fill='{sky}' stroke='{INK}' stroke-width='4'/>"
             f"<circle cx='{x + 84}' cy='{y + 26}' r='12' fill='{YELLOW}' stroke='{INK}' stroke-width='3'/>"
             f"<path d='M{x + 12},{y + 74} l30,-38 l24,28 l12,-14 l24,24 z' fill='{hill}' stroke='{INK}' stroke-width='3' stroke-linejoin='round'/>")
@@ -96,7 +110,7 @@ def head(x, y, direction="right", color=SLATE):
 
 
 def step(x, y, n, name):
-    return (f"<circle cx='{x}' cy='{y}' r='24' fill='{INK}'/>" + text(x, y + 10, n, 28, 700, "white", "middle")
+    return (f"<circle cx='{x}' cy='{y}' r='24' fill='{FROST}' stroke='{INK}' stroke-width='3'/>" + text(x, y + 10, n, 28, 700, INK, "middle")
             + text(x + 38, y + 11, name, 34))
 
 
@@ -117,7 +131,7 @@ def magnifier(cx, cy):
 
 def clusters(cx, cy):
     out = ""
-    for (gx, gy), color in zip([(-36, -16), (32, -18), (0, 28)], [ORANGE, YELLOW, CYAN]):
+    for (gx, gy), color in zip([(-36, -16), (32, -18), (0, 28)], [RED, CYAN, SLATE]):
         out += (f"<circle cx='{cx + gx}' cy='{cy + gy}' r='27' fill='none' stroke='{INK}' stroke-width='3' "
                 f"stroke-dasharray='6 5'/>")
         out += "".join(f"<circle cx='{cx + gx + ox}' cy='{cy + gy + oy}' r='6.5' fill='{color}' stroke='{INK}' stroke-width='2.5'/>"
@@ -159,7 +173,7 @@ def diagram(stage):
     if focus:
         y = ROWS[1]
         parts.append(f"<rect x='{icon_x - 75}' y='{y - 50}' width='{1570 - icon_x + 75}' height='100' rx='14' "
-                     f"fill='#f6e7c8' stroke='{YELLOW}' stroke-width='4'/>")
+                     f"fill='{PINK}' stroke='{RED}' stroke-width='4'/>")
     for k, ((icon, title, sub), y) in enumerate(list(zip(uses, ROWS))[:shown]):
         row = [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y), scaled(icon(icon_x, y), icon_x, y, 0.8),
                label(label_x, y, title, sub)]
@@ -172,7 +186,7 @@ if __name__ == "__main__":
     for stage in range(1, 7):
         svg = OUT / f"diagram_{stage}.svg"
         source = OUT / f"diagram_{stage}_source.svg"
-        source.write_text(diagram(stage))
+        source.write_text(sketchy(diagram(stage)))
         subprocess.run(["rsvg-convert", "-w", "3200", str(source), "-o", str(svg.with_suffix(".png"))], check=True)
         subprocess.run(["rsvg-convert", "-f", "svg", str(source), "-o", str(svg)], check=True)
         source.unlink()

@@ -7,10 +7,9 @@ soffice="$(bash "$here/tool_path.sh" soffice)"
 profile="$(mktemp -d)"
 trap 'rm -rf "$profile"' EXIT
 mkdir -p "$output"
-if [ "$(uname)" = Linux ]; then
-  sed "s|</fontconfig>|<dir>$here/fonts</dir></fontconfig>|" "$here/fonts.conf" >"$profile/fonts.conf"
-  export FONTCONFIG_FILE="$profile/fonts.conf"
-fi
+dirs="<dir>$here/fonts</dir><dir>/System/Library/Fonts</dir><dir>/Library/Fonts</dir><dir>$HOME/Library/Fonts</dir>"
+sed "s|</fontconfig>|$dirs</fontconfig>|" "$here/fonts.conf" >"$profile/fonts.conf"
+export FONTCONFIG_FILE="$profile/fonts.conf"
 pdf="$output/$(basename "${deck%.pptx}").pdf"
 rm -f "$pdf"
 "$soffice" -env:UserInstallation="file://$profile" --headless --convert-to pdf --outdir "$output" "$deck" >/dev/null || true

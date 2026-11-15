@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -6,6 +7,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 from matplotlib.path import Path as MplPath
 import numpy as np
 import qrcode
@@ -20,15 +22,19 @@ sys.path[:0] = [str(ROOT), str(TOOLS)]
 import plot_style
 from tvt import SUN_TZU, TAYLOR, chance_of_taylor, embed, load, quiz, split, train, traps, word_scores
 
-RED, CYAN, ORANGE, YELLOW, INK, SLATE, SNOW = "#BE616A", "#8FBBBA", "#CF8770", "#EBCB8B", "#2e3440", "#4c566a", "#d8dee9"
+RED, CYAN, TEAL, INK, SLATE, SNOW = "#BE616A", "#8FBBBA", "#4f8584", "#2e3440", "#4c566a", "#d8dee9"
+PINK = "#f1d6d9"
+TOY = {1: RED, 0: CYAN}
+TOY_LABEL = {1: RED, 0: TEAL}
 COLOR = {TAYLOR: RED, SUN_TZU: CYAN}
 LABEL_COLOR = {TAYLOR: RED, SUN_TZU: "#5E9594"}
 URL = "https://islamtayeb.github.io/tzu-vs-taylor/"
 
 
-def math_font():
-    family = plt.rcParams["font.family"][0]
-    plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.it": f"{family}:italic", "mathtext.rm": family})
+def hand_drawn():
+    font_manager.fontManager.addfont(str(TOOLS / "fonts" / "Excalifont-Regular.ttf"))
+    plt.rcParams.update({"font.family": "Excalifont", "path.sketch": (1.2, 80, 2),
+                         "mathtext.fontset": "custom", "mathtext.it": "Excalifont", "mathtext.rm": "Excalifont"})
 
 
 def save(fig, name):
@@ -47,7 +53,7 @@ def percent_axis(ax, axis="x"):
 def split_bar(n_train, n_test, name="split"):
     fig, ax = plt.subplots(figsize=(12, 2.6))
     ax.barh(0, n_train, color=SNOW, height=0.7, zorder=3)
-    ax.barh(0, n_test, left=n_train, color=YELLOW, height=0.7, zorder=3)
+    ax.barh(0, n_test, left=n_train, color=PINK, height=0.7, zorder=3)
     total = n_train + n_test
     ax.text(n_train / 2, 0, str(n_train), ha="center", va="center", fontsize=28, fontweight="bold")
     ax.text(n_train + n_test / 2, 0, str(n_test), ha="center", va="center", fontsize=28, fontweight="bold")
@@ -62,7 +68,7 @@ def split_bar(n_train, n_test, name="split"):
 def confidence(rounds, p_taylor):
     sure = np.maximum(p_taylor, 1 - p_taylor) * 100
     right = (p_taylor >= 0.5) == (rounds.label == TAYLOR).values
-    colors = [ORANGE if not ok else YELLOW if s < 55 else SNOW for s, ok in zip(sure, right)]
+    colors = [RED if not ok else PINK if s < 55 else SNOW for s, ok in zip(sure, right)]
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.bar(rounds["round"], sure, color=colors, width=0.7, zorder=3)
     for x, s, ok in zip(rounds["round"], sure, right):
@@ -153,7 +159,8 @@ def chance_chart(name, labels, percents, truths, height):
 def table(name, spec):
     path = OUT / f"{name}.json"
     path.write_text(json.dumps(spec, indent=1))
-    subprocess.run([sys.executable, str(TOOLS / "render_table.py"), str(path), str(OUT / f"{name}.png")], check=True)
+    subprocess.run([sys.executable, str(TOOLS / "render_table.py"), str(path), str(OUT / f"{name}.png")], check=True,
+                   env={**os.environ, "TABLE_FONT": "Excalifont"})
     path.unlink()
 
 
@@ -163,7 +170,7 @@ def vector_point():
 
     ax = fig.add_subplot(grid[0])
     ax.plot([0, 5], [0, 0], color=INK, lw=2.5, zorder=2)
-    ax.scatter([3], [0], s=420, color=ORANGE, zorder=4)
+    ax.scatter([3], [0], s=420, color=RED, zorder=4)
     ax.text(3, 0.55, "[3]", ha="center", fontsize=32, fontweight="bold")
     for t in range(6):
         ax.plot([t, t], [-0.12, 0.12], color=INK, lw=2)
@@ -174,7 +181,7 @@ def vector_point():
     ax = fig.add_subplot(grid[1])
     ax.plot([3, 3], [0, 2], "--", color=SLATE, lw=2, zorder=2)
     ax.plot([0, 3], [2, 2], "--", color=SLATE, lw=2, zorder=2)
-    ax.scatter([3], [2], s=420, color=ORANGE, zorder=4)
+    ax.scatter([3], [2], s=420, color=RED, zorder=4)
     ax.text(3, 2.45, "[3, 2]", ha="center", fontsize=32, fontweight="bold", zorder=5)
     ax.set_xlim(0, 5); ax.set_ylim(0, 3.5)
     ax.set_xticks(range(6)); ax.set_yticks(range(4))
@@ -184,7 +191,7 @@ def vector_point():
     x, y, z = 3, 2, 4
     for xs, ys, zs in [([x, x], [y, y], [0, z]), ([0, x], [y, y], [0, 0]), ([x, x], [0, y], [0, 0])]:
         ax.plot(xs, ys, zs, "--", color=SLATE, lw=2)
-    ax.scatter([x], [y], [z], s=420, color=ORANGE, depthshade=False)
+    ax.scatter([x], [y], [z], s=420, color=RED, depthshade=False)
     ax.text(x, y, z + 1.1, "[3, 2, 4]", ha="center", fontsize=32, fontweight="bold", zorder=10,
             bbox=dict(facecolor="white", edgecolor="none", pad=2))
     ax.set_xlim(0, 5); ax.set_ylim(0, 5); ax.set_zlim(0, 5)
@@ -212,14 +219,14 @@ def sentence_map():
                  "My dog loves the park", "The puppy chased a ball", "I baked bread this morning", "The cake is in the oven"]
     offsets = [(-16, -16, "right"), (-16, 14, "right"), (16, -34, "left"), (16, 14, "left"), (16, -14, "left"),
                (16, 0, "left"), (16, 0, "left")]
-    groups = [SLATE, SLATE, SLATE, ORANGE, ORANGE, YELLOW, YELLOW]
+    groups = [SLATE, SLATE, SLATE, RED, RED, CYAN, CYAN]
     xy = PCA(2, random_state=0).fit_transform(embed(sentences))
     fig, ax = plt.subplots(figsize=(11, 6.2))
     ax.scatter(xy[:, 0], xy[:, 1], s=260, color=groups, zorder=4)
     for (x, y), text, (dx, dy, ha) in zip(xy, sentences, offsets):
         ax.annotate(f"\"{text}\"", (x, y), xytext=(dx, dy), textcoords="offset points", ha=ha, va="center",
-                    fontsize=18, zorder=5)
-    ax.set_xlim(xy[:, 0].min() - 2.0, xy[:, 0].max() + 1.7)
+                    fontsize=16, zorder=5)
+    ax.set_xlim(xy[:, 0].min() - 3.0, xy[:, 0].max() + 2.9)
     ax.set_ylim(xy[:, 1].min() - 0.3, xy[:, 1].max() + 0.35)
     ax.set_xticks([]); ax.set_yticks([])
     ax.grid(False)
@@ -264,7 +271,7 @@ def toy_line(ax, model):
 
 def toy_training(seen, name):
     xy, labels = toy_data()
-    colors = {1: ORANGE, 0: SLATE}
+    colors = TOY
     model = fit_toy(xy[:seen], labels[:seen])
     fig, ax = plt.subplots(figsize=(10, 6.4))
     ax.scatter(xy[seen:, 0], xy[seen:, 1], s=90, color=SNOW, zorder=2)
@@ -273,8 +280,8 @@ def toy_training(seen, name):
     ax.text(0, 3.25, equation(model), ha="center", va="center", fontsize=22, fontweight="bold", zorder=6,
             bbox=dict(fc="white", ec=INK, lw=2, boxstyle="round,pad=0.4"))
     style = dict(fontsize=20, fontweight="bold", va="bottom", zorder=6, bbox=dict(fc="white", ec="none", pad=1))
-    ax.text(-2.85, -2.3, "above 0: spam", ha="left", color=ORANGE, **style)
-    ax.text(2.85, -2.3, "below 0: not spam", ha="right", color=SLATE, **style)
+    ax.text(-2.85, -2.3, "above 0: spam", ha="left", color=RED, **style)
+    ax.text(2.85, -2.3, "below 0: not spam", ha="right", color=TEAL, **style)
     toy_axes(ax)
     ax.set_ylim(-2.4, 3.75)
     save(fig, name)
@@ -283,7 +290,7 @@ def toy_training(seen, name):
 def toy(stage):
     xy, labels = toy_data()
     flat = fit_toy(xy, labels)
-    colors = {1: ORANGE, 0: SLATE}
+    colors = TOY
 
     fig, ax = plt.subplots(figsize=(10, 6))
     fade = 0.25 if stage == 4 else 0.9
@@ -292,7 +299,7 @@ def toy(stage):
         ax.scatter(pts[:, 0], pts[:, 1], s=90, color=colors[k], alpha=fade, zorder=3)
         cx = pts[:, 0].mean()
         if stage == 1:
-            ax.text(cx, pts[:, 1].max() + 0.35, name, ha="center", fontsize=26, fontweight="bold", color=colors[k])
+            ax.text(cx, pts[:, 1].max() + 0.35, name, ha="center", fontsize=26, fontweight="bold", color=TOY_LABEL[k])
     if stage >= 2:
         toy_line(ax, flat)
     if stage == 3:
@@ -339,7 +346,7 @@ def photos():
 def main():
     OUT.mkdir(exist_ok=True)
     plot_style.apply()
-    math_font()
+    hand_drawn()
     lines = load()
     model, accuracy, vectors = train(lines)
     n_test = int(np.ceil(len(lines) * 0.2))

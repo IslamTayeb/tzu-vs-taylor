@@ -1,9 +1,9 @@
 import math
 import subprocess
 
-from diagram import FROST, INK, OUT, SLATE, flow, head, text
+from diagram import FROST, INK, OUT, SLATE, flow, head, sketchy, text
 
-SPAM, REAL = "#CF8770", "#4c566a"
+SPAM, REAL = "#BE616A", "#4f8584"
 
 
 def n(k):
@@ -32,6 +32,7 @@ def pill(cx, cy, s, color, small=False, anchor="middle"):
 COLS = [280, 370, 460, 550]
 SCORE_X, GUESS_X = 905, 1265
 LIGHT = "#d8dee9"
+NEG = "#4f8584"
 
 
 def fmt(v, sign=False):
@@ -39,8 +40,8 @@ def fmt(v, sign=False):
 
 
 def chip(cx, cy, w):
-    return (f"<rect x='{cx - 40}' y='{cy - 28}' width='80' height='56' rx='10' fill='{INK}'/>"
-            + text(cx, cy + 11, fmt(w, True), 28, 700, SPAM if w > 0 else LIGHT, "middle"))
+    return (f"<rect x='{cx - 40}' y='{cy - 28}' width='80' height='56' rx='10' fill='{FROST}' stroke='{INK}' stroke-width='3'/>"
+            + text(cx, cy + 11, fmt(w, True), 28, 700, SPAM if w > 0 else NEG, "middle"))
 
 
 def header(y, score=True):
@@ -144,8 +145,8 @@ def weight_row(cx, y, weights, caption):
     out = text(cx, y - 44, caption, 24, 400, SLATE, "middle")
     for k, w in enumerate(weights):
         x = cx + (k - 1.5) * 80
-        out += f"<rect x='{x - 37}' y='{y - 26}' width='74' height='52' rx='10' fill='{INK}'/>"
-        out += text(x, y + 9, fmt(w, True), 24, 700, SPAM if w > 0 else LIGHT, "middle")
+        out += f"<rect x='{x - 37}' y='{y - 26}' width='74' height='52' rx='10' fill='{FROST}' stroke='{INK}' stroke-width='3'/>"
+        out += text(x, y + 9, fmt(w, True), 24, 700, SPAM if w > 0 else NEG, "middle")
     return out
 
 
@@ -158,7 +159,7 @@ def training_loop():
               arrow(760, 195, 860, 395), arrow(680, 470, 605, 470), arrow(420, 395, 520, 195),
               node(*guess, "1  Guess", "score it with the weights"),
               node(*check, "2  Check", "was the guess right?"),
-              node(*nudge_at, "3  Nudge", "if wrong, tweak each weight"),
+              node(*nudge_at, "3  Nudge", "if wrong, tweak weights"),
               text(640, 600, "repeat for every email, many times", 26, 400, SLATE, "middle")]
     parts += [text(1215, 120, "Weights", 28, 700, INK, "middle"),
               weight_row(1215, 230, [0.2, -0.3, 0.1, 0.4], "at the start: random"),
@@ -182,7 +183,7 @@ def svg(w, h, parts, top=0):
 
 def export(name, markup):
     source = OUT / f"{name}_source.svg"
-    source.write_text(markup)
+    source.write_text(sketchy(markup))
     subprocess.run(["rsvg-convert", "-w", "2600", str(source), "-o", str(OUT / f"{name}.png")], check=True)
     subprocess.run(["rsvg-convert", "-f", "svg", str(source), "-o", str(OUT / f"{name}.svg")], check=True)
     source.unlink()
