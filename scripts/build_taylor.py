@@ -60,12 +60,18 @@ def clean_lyrics(raw: str) -> list[list[str]]:
     return sections
 
 
-def chunk(sections):
-    """Pair consecutive lines within a section; odd line out stays alone."""
+def chunk(sections, seen_lines):
+    """Drop lines already used anywhere (choruses), then pair consecutive lines within a section."""
     out = []
     for sec in sections:
-        for i in range(0, len(sec), 2):
-            out.append(" / ".join(sec[i:i + 2]))
+        fresh = []
+        for line in sec:
+            k = re.sub(r"\W+", " ", line.lower()).strip()
+            if k and k not in seen_lines:
+                seen_lines.add(k)
+                fresh.append(line)
+        for i in range(0, len(fresh), 2):
+            out.append(" / ".join(fresh[i:i + 2]))
     return out
 
 
@@ -101,7 +107,7 @@ def main():
         songs.append((s.title, s.url, s.lyrics))
         time.sleep(0.5)
 
-    rows, seen = [], set()
+    rows, seen, seen_lines = [], set(), set()
     with QUOTES.open() as f:
         for r in csv.DictReader(f):
             rows.append({"text": r["text"], "source_url": r["source_url"], "kind": "interview"})
@@ -109,9 +115,9 @@ def main():
 
     for title, url, lyr in songs:
         n = 0
-        for c in chunk(clean_lyrics(lyr or "")):
+        for c in chunk(clean_lyrics(lyr or ""), seen_lines):
             key = re.sub(r"\W+", " ", c.lower()).strip()
-            if not 3 <= len(key.split()) <= 40 or key in seen:  # drop dupes (choruses repeat) and tiny ad-libs
+            if not 3 <= len(key.split()) <= 40 or key in seen:
                 continue
             seen.add(key)
             rows.append({"text": c, "source_url": url, "kind": "lyric"})
