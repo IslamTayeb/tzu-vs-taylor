@@ -157,7 +157,7 @@ def vector_map():
         m = (df.label == who).values
         ax.scatter(xy[m, 0], xy[m, 1], s=18, alpha=.45, color=COLORS[who], label=who)
     pts = pca.transform(embed(state["traps"].text))
-    for (x, y), tag, dy in zip(pts, state["traps"].tag, [14, -22, 14, 14]):
+    for (x, y), tag, dy in zip(pts, state["traps"].tag, [14, -22, 14, -22]):
         ax.scatter(x, y, s=220, marker="*", color="#f2a900", edgecolor="black", zorder=3)
         ax.annotate(tag, (x, y), fontsize=13, xytext=(0, dy), textcoords="offset points", ha="center",
                     bbox=dict(boxstyle="round,pad=.2", fc="white", ec="none", alpha=.85), zorder=4)
