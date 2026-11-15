@@ -14,6 +14,12 @@ if "google.colab" in sys.modules and not os.path.exists("tvt.py"):
     !git clone -q https://github.com/IslamTayeb/tzu-vs-taylor
     %cd tzu-vs-taylor
     !pip -q install sentence-transformers
+if not os.path.exists("data/taylor.csv"):
+    !pip -q install lyricsgenius==3.7.5
+    if "google.colab" in sys.modules:
+        from google.colab import userdata
+        os.environ["GENIUS_TOKEN"] = userdata.get("GENIUS_TOKEN")
+    !python scripts/build_taylor.py
 import tvt
 tvt.load()''')
 md("## 1. Text → numbers\nA pre-trained AI reads each line and squeezes its **meaning** into 384 numbers, called an **embedding**.")
