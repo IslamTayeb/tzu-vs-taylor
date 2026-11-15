@@ -62,8 +62,8 @@ export function doodle(el) {
   const hatched = (fill) => ({ ...line, fill, fillStyle: "hachure", hachureGap: 2.5, fillWeight: 1 });
   const parts = el.dataset.doodle === "guitar"
     ? [
-        rc.rectangle(20.5, 3, 3, 12, line),
-        rc.path("M15.8 25.2 A7.5 7.5 0 1 1 28.2 25.2 A10 10 0 1 1 15.8 25.2 Z", hatched(RED)),
+        rc.rectangle(20.5, 3, 3, 10.5, line),
+        rc.path("M22 13.5 C27 13.5 29.5 17 29.5 21 C29.5 23.5 27 24.5 27 26 C27 27.5 32 29 32 32 C32 37.5 27.5 41 22 41 C16.5 41 12 37.5 12 32 C12 29 17 27.5 17 26 C17 24.5 14.5 23.5 14.5 21 C14.5 17 17 13.5 22 13.5 Z", hatched(RED)),
         rc.circle(22, 28, 5, { ...line, fill: "#fff", fillStyle: "solid" }),
         rc.rectangle(18.5, 0, 7, 4, line),
       ]
