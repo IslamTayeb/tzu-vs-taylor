@@ -82,7 +82,7 @@ def main():
     missed = [i + 1 for i, ok in enumerate(facts["quiz_right"]) if not ok]
     flip = [i + 1 for i, (s, ok) in enumerate(zip(facts["quiz_sure"], facts["quiz_right"])) if ok and s < 55]
 
-    statement("How Machines Read", "Embeddings, and a game")
+    statement("How Machines Read", "Embeddings and classification")
     figure("Everything Becomes Numbers", "diagram_1")
     figure("Numbers Become New Things", "diagram_2")
     figure("Three More Uses", "diagram_3")
