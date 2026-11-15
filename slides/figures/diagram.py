@@ -7,9 +7,9 @@ OUT = HERE / "out"
 
 INK, SLATE, SNOW, FROST = "#2e3440", "#4c566a", "#e5e9f0", "#eceff4"
 RED, CYAN, YELLOW, ORANGE = "#BE616A", "#8FBBBA", "#EBCB8B", "#CF8770"
-W, H = 1600, 790
-ROWS = [210, 335, 460, 585]
-CARD = dict(x=545, y=247, w=420, h=300)
+W, H = 1600, 610
+ROWS = [140, 265, 390, 515]
+CARD = dict(x=545, y=177, w=420, h=300)
 FONT = "font-family='Lato, Carlito, Calibri, sans-serif'"
 
 
@@ -140,23 +140,21 @@ def diagram(stage):
         parts += [scaled(icon(90, y), 90, y, 0.8), label(170, y, title, sub), flow(470, y, left_x - 34, cy)]
     parts += [head(left_x - 36, cy), vectors()]
 
-    icon_x, label_x, arrow_x = 1255, 1335, 1150
-    if stage >= 2:
-        parts.append(step(1180, 40, "2", "Generation"))
-        new = [("New proteins", "drug design"), ("New text", "chatbots"), ("New images", "image generators"), ("New audio", "voices, music")]
-        for icon, (title, sub), y in zip(icons, new, GEN_ROWS):
-            parts += [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y),
-                      scaled(icon(icon_x, y, new=True) + sparkle(icon_x + 66, y - 40), icon_x, y, 0.6),
-                      small_label(label_x, y, title, sub)]
-
+    icon_x, label_x, arrow_x = 1150, 1230, 1050
+    uses = [(lambda x, y: picture(x, y, new=True) + sparkle(x + 62, y - 46), "Generation", "new text, images, audio"),
+            (bins, "Classification", "is this email spam?"),
+            (magnifier, "Search", "find stories like this one"),
+            (clusters, "Clustering", "sort a leak into piles")]
+    shown = 1 if stage == 2 else 4 if stage >= 3 else 0
+    if shown:
+        parts.append(step(1080, 40, "2", "Using them"))
     if stage >= 3:
-        parts.append(text(1180, USE_ROWS[0] - 62, "...and more", 30, 700, INK))
-        parts.append(f"<rect x='{icon_x - 62}' y='{USE_ROWS[0] - 40}' width='{1585 - icon_x + 62}' height='80' rx='12' "
+        y = ROWS[1]
+        parts.append(f"<rect x='{icon_x - 75}' y='{y - 50}' width='{1570 - icon_x + 75}' height='100' rx='14' "
                      f"fill='#f6e7c8' stroke='{YELLOW}' stroke-width='4'/>")
-        uses = [(bins, "Classification", "which group?"), (magnifier, "Search", "find similar"), (clusters, "Clustering", "sort a pile")]
-        for (icon, title, sub), y in zip(uses, USE_ROWS):
-            parts += [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y), scaled(icon(icon_x, y), icon_x, y, 0.66),
-                      small_label(label_x, y, title, sub)]
+    for (icon, title, sub), y in list(zip(uses, ROWS))[:shown]:
+        parts += [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y), scaled(icon(icon_x, y), icon_x, y, 0.8),
+                  label(label_x, y, title, sub)]
     return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' width='{W}' height='{H}'>{''.join(parts)}</svg>"
 
 
