@@ -25,7 +25,7 @@ def figure(title, name, note=None, png_only=False):
         top = Inches(2.5)
     else:
         slide = deck.slides.add_slide(layouts["Title Only"])
-        top = Inches(1.35)
+        top = Inches(1.6)
     slide.shapes.title.text = title
     fit_picture(slide, str(FIGURES / f"{name}.png"), (Inches(0.45), top, W - Inches(0.9), H - top - Inches(0.2)),
                 f"fixed_{name}", png_only=png_only)
@@ -89,18 +89,26 @@ def main():
     figure("Close Numbers, Close Meaning", "neighbors",
            [("Similar meaning gets similar numbers, even with no shared words", False)])
 
+    figure("What Is Classification?", "examples", [("Sorting each thing into one of a few groups", False)])
+    figure("How A Model Learns", "learn_1")
+    figure("Then It Guesses", "learn_2")
+    figure("Every Email Becomes A Dot", "toy_1", [("Each email's numbers, squashed down to 2 so we can draw them", False)])
+    figure("Training Draws A Line", "toy_2", [("Learning means finding the line between the two groups", False)])
+    figure("New Emails Land On A Side", "toy_3", [("Far from the line: sure. Near the line: a coin flip", False)])
+    figure("Then We Grade It", "toy_4", [("Test it on emails it never saw, like an exam", False)])
+
     classes()
     play_along()
 
     figure("What It Learned From", "data_rows",
            [(f"{facts['n_each']} lines each: ", True), ("The Art of War (1910) vs. Taylor's lyrics and interviews", False)])
-    figure("Hide Some For The Test", "split", [("Like an exam with questions it has never seen", False)])
+    figure("Hide Some For The Test", "split", [("Same recipe as the emails", False)])
     statement(f"{facts['right']} Out Of {facts['n_test']}", "right on lines it had never seen")
     figure("How Sure It Was", "confidence",
            [(f"Round {flip[0]} was a coin flip; it missed rounds {missed[0]} and {missed[1]}", False)])
 
-    figure("Every Line As A Dot", "map", [("384 numbers per line, squashed to 2 so we can look", False)])
-    figure("Training Draws The Line", "map_line", [("Learning means finding where Taylor ends and Sun Tzu begins", False)])
+    figure("Every Line As A Dot", "map", [("The same picture as the emails, with our real lines", False)])
+    figure("Training Draws The Line", "map_line", [("Where Taylor ends and Sun Tzu begins", False)])
     figure("Words It Is Most Sure About", "top_words", [("It learned topics, not authors", False)])
 
     a, b = facts["flip_p"]

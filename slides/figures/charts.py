@@ -134,12 +134,69 @@ def table(name, spec):
     path.unlink()
 
 
-def neighbors(lines, vectors, query="My ex is spreading rumors about me"):
-    sims = vectors @ embed([query])[0]
-    rows = [{"label": lines.text[j].split(" / ")[0], "swatch": COLOR[lines.label[j]], "values": [f"{sims[j]:.2f}"]}
-            for j in np.argsort(-sims)[:3]]
-    table("neighbors", {"columns": ["Closeness"], "sections": [{"title": f"Closest lines to \"{query}\"", "rows": rows}],
+def neighbors(query="My flight got cancelled"):
+    candidates = ["The airline called off our trip", "Our plane never left the ground",
+                  "I baked bread this morning", "My dog loves the park"]
+    vectors = embed([query] + candidates)
+    closeness = vectors[1:] @ vectors[0]
+    rows = [{"label": c, "values": [f"{x:.2f}"]} for c, x in sorted(zip(candidates, closeness), key=lambda t: -t[1])]
+    table("neighbors", {"columns": ["Closeness"], "sections": [{"title": f"Closest to \"{query}\"", "rows": rows}],
                         "highlight": [{"row": rows[0]["label"], "color": "yellow"}]})
+
+
+def toy(stage, seed=4):
+    rng = np.random.default_rng(seed)
+    spam = rng.normal([-1.1, 0.6], 0.55, (40, 2))
+    real = rng.normal([1.1, -0.4], 0.55, (40, 2))
+    xy, labels = np.vstack([spam, real]), np.array([1] * 40 + [0] * 40)
+    flat = LogisticRegression().fit(xy, labels)
+    (wx, wy), b = flat.coef_[0], flat.intercept_[0]
+    colors = {1: ORANGE, 0: SLATE}
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    fade = 0.25 if stage == 4 else 0.9
+    for k, name in [(1, "Spam"), (0, "Not spam")]:
+        pts = xy[labels == k]
+        ax.scatter(pts[:, 0], pts[:, 1], s=90, color=colors[k], alpha=fade, zorder=3)
+        cx, cy = pts.mean(0)
+        ax.text(cx, pts[:, 1].max() + 0.35, name, ha="center", fontsize=26, fontweight="bold", color=colors[k], alpha=max(fade, 0.6))
+    if stage >= 2:
+        ys = np.array([-3, 3])
+        ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
+    if stage == 3:
+        on_line = -(wy * 1.85 + b) / wx
+        for (x, y), dy in [((-2.2, -1.3), -50), ((on_line + 0.04, 1.85), 40)]:
+            p = flat.predict_proba([[x, y]])[0, 1]
+            sure = max(p, 1 - p)
+            ax.scatter([x], [y], s=520, color="white", edgecolor=INK, linewidth=3, zorder=6)
+            ax.text(x, y, "?", ha="center", va="center", fontsize=24, fontweight="bold", zorder=7)
+            note = f"Spam, {sure:.0%} sure" if sure > 0.6 else f"{sure:.0%} sure: a coin flip"
+            ax.annotate(note, (x, y), xytext=(0, dy), textcoords="offset points", ha="center", va="center",
+                        fontsize=21, fontweight="bold", zorder=7, bbox=dict(fc="white", ec="none", pad=2))
+    if stage == 4:
+        test = np.array([[-2.2, 1.3], [-1.5, -0.6], [-0.6, 1.6], [-1.8, 0.3], [0.45, 0.2],
+                         [2.2, 0.8], [1.6, -1.4], [0.9, 0.6], [2.4, -0.6], [1.0, -1.9]])
+        truth = np.array([1] * 5 + [0] * 5)
+        guess = flat.predict(test)
+        for (x, y), t, g in zip(test, truth, guess):
+            ax.scatter([x], [y], s=260, color=colors[t], edgecolor=INK, linewidth=2.5, zorder=6)
+            mx, my = x + 0.24, y + 0.2
+            if t == g:
+                ax.plot([mx - 0.08, mx, mx + 0.16], [my, my - 0.1, my + 0.14], color="#3b7d4a", lw=3.5, zorder=7,
+                        solid_capstyle="round")
+            else:
+                for sign in (1, -1):
+                    ax.plot([mx - 0.09, mx + 0.09], [my - 0.09 * sign, my + 0.09 * sign], color="#b4412f", lw=3.5,
+                            zorder=7, solid_capstyle="round")
+        right = int((guess == truth).sum())
+        ax.text(0.02, 0.03, f"{right} of {len(test)} hidden emails right", transform=ax.transAxes, fontsize=22,
+                fontweight="bold", zorder=7, bbox=dict(fc="white", ec="none", pad=3))
+    ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.grid(False)
+    ax.set_xlabel("Number 1", fontsize=19)
+    ax.set_ylabel("Number 2", fontsize=19)
+    save(fig, f"toy_{stage}")
 
 
 def data_rows():
@@ -168,7 +225,9 @@ def main():
     split_bar(len(lines) - n_test, n_test)
     dot_maps(lines, vectors)
     top_words(model, lines)
-    neighbors(lines, vectors)
+    neighbors()
+    for stage in (1, 2, 3, 4):
+        toy(stage)
     data_rows()
     photos()
 
