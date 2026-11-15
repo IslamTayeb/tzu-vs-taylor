@@ -26,6 +26,11 @@ LABEL_COLOR = {TAYLOR: RED, SUN_TZU: "#5E9594"}
 URL = "https://islamtayeb.github.io/tzu-vs-taylor/"
 
 
+def math_font():
+    family = plt.rcParams["font.family"][0]
+    plt.rcParams.update({"mathtext.fontset": "custom", "mathtext.it": f"{family}:italic", "mathtext.rm": family})
+
+
 def save(fig, name):
     for ext in ("png", "svg"):
         fig.savefig(OUT / f"{name}.{ext}", transparent=True)
@@ -239,15 +244,15 @@ def equation(model):
     wx, wy = model.coef_[0]
     sign = "+" if wy >= 0 else "\u2212"
     first = f"{wx:.1f}".replace("-", "\u2212")
-    return f"score = {first} \u00d7 number 1 {sign} {abs(wy):.1f} \u00d7 number 2"
+    return f"score = {first} \u00d7 $n_1$ {sign} {abs(wy):.1f} \u00d7 $n_2$"
 
 
 def toy_axes(ax):
     ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
     ax.set_xticks([]); ax.set_yticks([])
     ax.grid(False)
-    ax.set_xlabel("Number 1", fontsize=19)
-    ax.set_ylabel("Number 2", fontsize=19)
+    ax.set_xlabel("$n_1$", fontsize=24)
+    ax.set_ylabel("$n_2$", fontsize=24)
 
 
 def toy_line(ax, model):
@@ -334,6 +339,7 @@ def photos():
 def main():
     OUT.mkdir(exist_ok=True)
     plot_style.apply()
+    math_font()
     lines = load()
     model, accuracy, vectors = train(lines)
     n_test = int(np.ceil(len(lines) * 0.2))

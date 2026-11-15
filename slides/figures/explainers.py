@@ -6,6 +6,10 @@ from diagram import FROST, INK, OUT, SLATE, flow, head, text
 SPAM, REAL = "#CF8770", "#4c566a"
 
 
+def n(k):
+    return f"<tspan font-style='italic'>n</tspan><tspan baseline-shift='sub' font-size='70%'>{k}</tspan>"
+
+
 def envelope(cx, cy, tag=None, color=SLATE):
     x, y = cx - 52, cy - 36
     out = (f"<rect x='{x}' y='{y}' width='104' height='72' rx='8' fill='white' stroke='{INK}' stroke-width='4'/>"
@@ -40,7 +44,7 @@ def chip(cx, cy, w):
 
 
 def header(y, score=True):
-    out = "".join(text(x, y, f"number {k + 1}", 24, 700, SLATE, "middle") for k, x in enumerate(COLS))
+    out = "".join(text(x, y, n(k + 1), 30, 700, SLATE, "middle") for k, x in enumerate(COLS))
     if score:
         out += text(SCORE_X, y, "score", 24, 700, SLATE, "middle") + text(GUESS_X, y, "guess", 24, 700, SLATE, "middle")
     return out + f"<line x1='20' y1='{y + 18}' x2='1340' y2='{y + 18}' stroke='{LIGHT}' stroke-width='3'/>"
@@ -86,7 +90,7 @@ PERFECT = [1, 1, -1, -1]
 
 
 def weights_slide():
-    terms = " ".join(f"{'&#8722;' if w < 0 else '+'} {abs(w):g} &#215; number {k + 1}" for k, w in enumerate(PERFECT))
+    terms = " ".join(f"{'&#8722;' if w < 0 else '+'} {abs(w):g} &#215; {n(k + 1)}" for k, w in enumerate(PERFECT))
     parts = [text(680, 40, f"score = {terms[2:]}", 34, 700, INK, "middle"), header(130),
              row_label(215, "Weights", "the model"), weight_cells(215, PERFECT)]
     for y, name, values in [(320, "Email A", [1, 1, 0, 0]), (420, "Email B", [0, 0, 1, 1])]:

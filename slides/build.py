@@ -95,7 +95,7 @@ def main():
            [("Each sentence becomes a vector. Similar meanings land close together", False)])
 
     figure("The Model Is A Function", "weights",
-           [("Pretend high numbers 1 and 2 mean spam, and high 3 and 4 mean not spam", False)])
+           [("Pretend high n₁ and n₂ mean spam, and high n₃ and n₄ mean not spam", False)])
     figure("Training: Guess, Check, Nudge", "training_loop")
     figure("One Nudge, Up Close", "nudge")
     figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
