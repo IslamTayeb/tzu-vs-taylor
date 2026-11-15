@@ -2,7 +2,7 @@
 
 A 30-minute class demo for journalism students: a sentence-embedding model (MiniLM) plus logistic regression that tries to tell *reputation*-era Taylor Swift from Sun Tzu's *The Art of War*.
 
-- **Game:** https://islamtayeb.github.io/tzu-vs-taylor/ (runs in the browser, phones included)
+- **Game:** https://islamtayeb.github.io/tzu-vs-taylor/ (short link: tinyurl.com/tzuvt; runs in the browser, phones included)
 - **Slides:** `slides/tzu_vs_taylor_lecture.pptx` (PowerPoint or Google Slides, uses Lato)
 - **Notebook:** `tzu_vs_taylor.ipynb`, a short walkthrough of the code
 
@@ -10,7 +10,7 @@ A 30-minute class demo for journalism students: a sentence-embedding model (Mini
 
 1. Open it in Colab: https://colab.research.google.com/github/IslamTayeb/tzu-vs-taylor/blob/main/tzu_vs_taylor.ipynb
 2. Runtime → Run all (about a minute on CPU).
-3. Play `show.quiz(model, 1)` to `show.quiz(model, 7)` with the class.
+3. Play `show.quiz(model, 1)` to `show.quiz(model, 10)` with the class.
 4. Show `show.top_words`, `show.vector_map`, then `show.traps`.
 5. End with `show.predict(model, "...")` on lines the class makes up.
 

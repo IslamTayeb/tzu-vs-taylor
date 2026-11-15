@@ -11,6 +11,7 @@ FIGURES = HERE / "figures" / "out"
 FONT = "Lato"
 INK = RGBColor(0x2E, 0x34, 0x40)
 URL = "islamtayeb.github.io/tzu-vs-taylor"
+SHORT_URL = "tinyurl.com/tzuvt"
 
 
 class Deck:
@@ -94,7 +95,7 @@ def main():
     deck.figure("Training draws the line", "map_line.png", "The model learns where Taylor ends and Sun Tzu begins")
     deck.statement(f"{facts['right']} out of {facts['n_test']}", "right on lines it had never seen")
 
-    deck.qr("Play along", [(URL, 30), ("Guess first, then see what the model thinks", 22)])
+    deck.qr("Play along", [(SHORT_URL, 40), (URL, 18), ("Guess first, then see what the model thinks", 22)])
     deck.statement("You vs. the model", f"{facts['rounds']} rounds")
     deck.figure("How sure it was", "confidence.png", "Round 5 was a coin flip, and it missed rounds 7 and 10")
     deck.figure("What it learned", "top_words.png", "We fed it single words, one at a time")
