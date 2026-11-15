@@ -58,6 +58,7 @@ export function guess(pick) {
 
   bar($("#bar"), 0.5);
   animateBar($("#bar"), 0.5, round.p);
+  $("#next").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 export function next() {

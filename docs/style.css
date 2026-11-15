@@ -126,7 +126,8 @@ textarea {
   padding: 1rem 1.1rem;
   border: 0;
   background: transparent;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
 }
 textarea:focus { outline: none; }
 
@@ -144,7 +145,10 @@ textarea:focus { outline: none; }
 
 
 @media (max-width: 30rem) {
-  .picks { grid-template-columns: 1fr; }
+  .pick { padding: .8rem .5rem; font-size: 1.25rem; }
+  .pick > span { flex-direction: column; gap: .3rem; }
+  .doodle { width: 56px; height: 56px; }
+  blockquote { min-height: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

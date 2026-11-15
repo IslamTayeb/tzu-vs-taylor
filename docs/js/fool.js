@@ -24,7 +24,14 @@ export async function openFool() {
   }
 }
 
+function fitToText(input) {
+  input.style.height = "auto";
+  input.style.height = `${input.scrollHeight}px`;
+  document.dispatchEvent(new Event("redraw"));
+}
+
 export async function update() {
+  fitToText($("#input"));
   const text = $("#input").value.trim();
   const ticket = ++latest;
   if (!text) {
