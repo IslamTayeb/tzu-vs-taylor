@@ -63,7 +63,7 @@ blockquote {
   min-height: 3.75em;
 }
 
-.sketch { position: relative; }
+.sketch { position: relative; overflow: visible; }
 .sketch > span, .sketch > textarea { position: relative; z-index: 1; }
 .sketch > svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .sketch > svg.fillsvg { opacity: 0; transition: opacity .12s; }
@@ -91,6 +91,15 @@ blockquote {
 .s-ink { color: var(--tzu-ink); }
 
 .bar { height: 28px; }
+.barlabel { display: flex; justify-content: space-between; font-family: var(--hand); font-size: 1rem; margin: .3rem 0 0; }
+
+.verdicts { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.25rem; margin: 0 0 1.5rem; font-size: 1.2rem; align-items: baseline; }
+.verdicts dt { font-family: var(--hand); color: var(--muted); }
+.verdicts dd { margin: 0; }
+.verdicts b { font-weight: 900; }
+.ok, .no { font-family: var(--hand); margin-left: .5rem; padding: 0 .4rem; }
+.ok { color: #3b6e46; background: #dcefdc; }
+.no { color: #9a3a2a; background: #f6dcd5; }
 
 .model { margin: .75rem 0 0; }
 .model b { font-weight: 900; }

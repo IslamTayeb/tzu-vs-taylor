@@ -27,10 +27,10 @@ function sketchBox(el, fill, seed, stroke = INK) {
   if (!w) return;
   if (fill) {
     const f = layer(el, "fillsvg");
-    f.appendChild(rough.svg(f).rectangle(3, 3, w - 6, h - 6, { seed, stroke: "none", fill, fillStyle: "solid", roughness: 1.3 }));
+    f.appendChild(rough.svg(f).rectangle(5, 5, w - 10, h - 10, { seed, stroke: "none", fill, fillStyle: "solid", roughness: 1.2 }));
   }
   const o = layer(el);
-  o.appendChild(rough.svg(o).rectangle(2, 2, w - 4, h - 4, { seed, stroke, strokeWidth: stroke === INK ? 1.6 : 2.2, roughness: 1.3, bowing: 1.5 }));
+  o.appendChild(rough.svg(o).rectangle(4, 4, w - 8, h - 8, { seed, stroke, strokeWidth: stroke === INK ? 1.6 : 2.2, roughness: 1.2, bowing: 1 }));
 }
 
 function drawBar(el, p) {
@@ -152,8 +152,11 @@ function guess(pick) {
     b.disabled = true;
     b.classList.toggle("chosen", b.dataset.pick === pick);
   });
-  $("#answer").innerHTML = `${pick === truth ? "Yes" : "Nope"}, it's <span class="${ink(truth)}">${fullName(truth)}</span>.`;
-  $("#model").innerHTML = modelLine(r.p) + (modelRight ? "" : " Wrong.");
+  const modelPick = r.p >= 0.5 ? T : S;
+  const mark = (ok) => `<span class="${ok ? "ok" : "no"}">${ok ? "right" : "wrong"}</span>`;
+  $("#answer").innerHTML = `It's <span class="${ink(truth)}">${fullName(truth)}</span>.`;
+  $("#you-said").innerHTML = `<b class="${ink(pick)}">${pick}</b> ${mark(pick === truth)}`;
+  $("#model-said").innerHTML = `<b class="${ink(modelPick)}">${modelPick}</b>, ${pct(Math.max(r.p, 1 - r.p))} sure ${mark(modelRight)}`;
   $("#note").textContent = r.label.includes("(") ? r.note : "";
   showScore();
   $("#next").querySelector("span").textContent = i === rounds.length - 1 ? "See the score" : "Next";
