@@ -2,7 +2,7 @@ import rough from "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.esm.
 
 const $ = (s) => document.querySelector(s);
 const T = "Taylor", S = "Sun Tzu";
-const INK = "#2e3440", RED = "#be616a", CYAN = "#8fbbba";
+const INK = "#2e3440", RED = "#be616a", CYAN = "#8fbbba", TEAL = "#4f8584";
 const TRANSFORMERS = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
 const FAILED = "The model didn't load. Check your connection and reload the page.";
 const SVG = "http://www.w3.org/2000/svg";
@@ -21,7 +21,7 @@ function layer(el, cls) {
   return svg;
 }
 
-function sketchBox(el, fill, seed) {
+function sketchBox(el, fill, seed, stroke = INK) {
   el.querySelectorAll(":scope > svg").forEach((s) => s.remove());
   const { width: w, height: h } = el.getBoundingClientRect();
   if (!w) return;
@@ -30,7 +30,7 @@ function sketchBox(el, fill, seed) {
     f.appendChild(rough.svg(f).rectangle(3, 3, w - 6, h - 6, { seed, stroke: "none", fill, fillStyle: "solid", roughness: 1.3 }));
   }
   const o = layer(el);
-  o.appendChild(rough.svg(o).rectangle(2, 2, w - 4, h - 4, { seed, stroke: INK, strokeWidth: 1.6, roughness: 1.3, bowing: 1.5 }));
+  o.appendChild(rough.svg(o).rectangle(2, 2, w - 4, h - 4, { seed, stroke, strokeWidth: stroke === INK ? 1.6 : 2.2, roughness: 1.3, bowing: 1.5 }));
 }
 
 function drawBar(el, p) {
@@ -93,11 +93,11 @@ function doodle(el) {
 
 function sketchAll() {
   document.querySelectorAll(".doodle").forEach(doodle);
-  sketchBox($(".pick.t"), "#f1d6d9", 11);
-  sketchBox($(".pick.s"), "#d6e8e7", 12);
+  sketchBox($(".pick.t"), "#f1d6d9", 11, RED);
+  sketchBox($(".pick.s"), "#d6e8e7", 12, TEAL);
   document.querySelectorAll(".go").forEach((b, k) => sketchBox(b, "#e5e9f0", 20 + k));
   sketchBox($("#field"), null, 30);
-  document.querySelectorAll(".tries button").forEach((b, k) => sketchBox(b, b.dataset.side === T ? "#f1d6d9" : "#d6e8e7", 40 + k));
+  document.querySelectorAll(".tries button").forEach((b, k) => sketchBox(b, b.dataset.side === T ? "#f1d6d9" : "#d6e8e7", 40 + k, b.dataset.side === T ? RED : TEAL));
   for (const el of [$("#bar"), $("#live-bar")]) if (el.offsetParent) drawBar(el, barValue.get(el) ?? 0.5);
 }
 
@@ -225,11 +225,9 @@ async function init() {
   $("#again").addEventListener("click", () => { i = 0; score = { you: 0, model: 0 }; go("play"); showRound(); });
   $("#input").addEventListener("input", live);
   document.addEventListener("keydown", (e) => {
-    if ($("#play").hidden || e.metaKey || e.ctrlKey || e.target === $("#input")) return;
-    const k = e.key.toLowerCase();
-    if (!locked && k === "t") guess(T);
-    else if (!locked && k === "s") guess(S);
-    else if (locked && k === "enter" && document.activeElement !== $("#next")) next();
+    if ($("#play").hidden || locked || e.target === $("#input")) return;
+    if (e.key === "ArrowLeft") guess(T);
+    else if (e.key === "ArrowRight") guess(S);
   });
   let resizeTimer;
   addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(sketchAll, 120); });
