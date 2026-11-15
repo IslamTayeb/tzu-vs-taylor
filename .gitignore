@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 .claude/
 slides/*_render/
+node_modules/

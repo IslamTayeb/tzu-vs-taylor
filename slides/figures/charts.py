@@ -8,6 +8,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
+from matplotlib.patches import Rectangle
 from matplotlib.path import Path as MplPath
 import numpy as np
 import qrcode
@@ -33,11 +34,24 @@ URL = "https://islamtayeb.github.io/tzu-vs-taylor/"
 
 def hand_drawn():
     font_manager.fontManager.addfont(str(TOOLS / "fonts" / "Excalifont-Regular.ttf"))
-    plt.rcParams.update({"font.family": "Excalifont", "path.sketch": (1.2, 80, 2),
+    plt.rcParams.update({"font.family": "Excalifont", "path.sketch": (1.2, 80, 2), "hatch.linewidth": 2.2,
                          "mathtext.fontset": "custom", "mathtext.it": "Excalifont", "mathtext.rm": "Excalifont"})
 
 
+def hachure(fig):
+    for ax in fig.axes:
+        for bar in list(ax.patches):
+            if not isinstance(bar, Rectangle) or bar.get_width() == 0 or bar.get_height() == 0:
+                continue
+            color = matplotlib.colors.to_hex(bar.get_facecolor())
+            ink = "#aab3c2" if color.lower() == SNOW.lower() else color
+            bar.set(facecolor="none", edgecolor=ink, hatch="///", linewidth=0)
+            ax.add_patch(Rectangle(bar.get_xy(), bar.get_width(), bar.get_height(), fill=False,
+                                   edgecolor=INK, linewidth=1.8, zorder=bar.get_zorder() + 0.1))
+
+
 def save(fig, name):
+    hachure(fig)
     for ext in ("png", "svg"):
         fig.savefig(OUT / f"{name}.{ext}", transparent=True)
     plt.close(fig)

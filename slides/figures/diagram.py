@@ -1,5 +1,4 @@
 import math
-import re
 import subprocess
 from pathlib import Path
 
@@ -14,17 +13,11 @@ W, H = 1600, 610
 ROWS = [140, 265, 390, 515]
 CARD = dict(x=545, y=177, w=420, h=300)
 FONT = "font-family='Excalifont, Virgil, sans-serif'"
-ROUGH = ("<filter id='rough' x='-2%' y='-2%' width='104%' height='104%'>"
-         "<feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='2' seed='7'/>"
-         "<feDisplacementMap in='SourceGraphic' scale='5' xChannelSelector='R' yChannelSelector='G'/></filter>")
+ROUGHEN = HERE.parent / "tools" / "rough" / "roughen.mjs"
 
 
 def sketchy(markup):
-    head, body = markup.split(">", 1)
-    body, tail = body.rsplit("</svg>", 1)
-    texts = re.findall(r"<text\b.*?</text>", body, flags=re.S)
-    shapes = re.sub(r"<text\b.*?</text>", "", body, flags=re.S)
-    return f"{head}><defs>{ROUGH}</defs><g filter='url(#rough)'>{shapes}</g>{''.join(texts)}</svg>"
+    return subprocess.run(["node", str(ROUGHEN)], input=markup, capture_output=True, text=True, check=True).stdout
 
 
 def text(x, y, s, size=30, weight=700, fill=INK, anchor="start"):

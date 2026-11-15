@@ -1,9 +1,13 @@
 import math
 import subprocess
+from pathlib import Path
+
+import pandas as pd
 
 from diagram import FROST, INK, OUT, SLATE, flow, head, sketchy, text
 
 SPAM, REAL = "#BE616A", "#4f8584"
+DATA = Path(__file__).resolve().parents[2] / "data"
 
 
 def n(k):
@@ -25,7 +29,7 @@ def pill(cx, cy, s, color, small=False, anchor="middle"):
     h = 42 if small else 58
     if anchor == "left":
         cx += w / 2
-    return (f"<rect x='{cx - w / 2}' y='{cy - h / 2}' width='{w}' height='{h}' rx='{h / 2}' fill='{color}'/>"
+    return (f"<rect x='{cx - w / 2}' y='{cy - h / 2}' width='{w}' height='{h}' rx='{h / 2}' fill='{color}' data-fill='solid'/>"
             + text(cx, cy + size * 0.36, s, size, 700, "white", "middle"))
 
 
@@ -177,6 +181,51 @@ def inference():
     return svg(1360, 420, parts, top=90)
 
 
+PINK, MINT = "#f1d6d9", "#d6e8e7"
+
+
+def card(x, y, icon, title, sub):
+    return (f"<rect x='{x}' y='{y - 60}' width='590' height='120' rx='16' fill='{PINK}' stroke='{INK}' stroke-width='3'/>"
+            + icon(x + 70, y) + text(x + 135, y - 6, title, 32, 700, INK) + text(x + 135, y + 32, sub, 24, 400, SLATE))
+
+
+def album(cx, cy):
+    return (f"<circle cx='{cx}' cy='{cy}' r='38' fill='{INK}' data-fill='solid' stroke='{INK}' stroke-width='3'/>"
+            f"<circle cx='{cx}' cy='{cy}' r='13' fill='{SPAM}' data-fill='solid' stroke='{INK}' stroke-width='2'/>")
+
+
+def notes(cx, cy):
+    out = ""
+    for dx, dy in [(-16, 14), (16, 6)]:
+        out += f"<circle cx='{cx + dx}' cy='{cy + dy}' r='10' fill='{INK}' data-fill='solid'/>"
+        out += f"<line x1='{cx + dx + 9}' y1='{cy + dy}' x2='{cx + dx + 9}' y2='{cy + dy - 44}' stroke='{INK}' stroke-width='4'/>"
+    return out + f"<line x1='{cx - 7}' y1='{cy - 30}' x2='{cx + 25}' y2='{cy - 38}' stroke='{INK}' stroke-width='6'/>"
+
+
+def bubble(cx, cy):
+    return (f"<path d='M{cx - 40},{cy - 30} h80 v48 h-44 l-20,18 v-18 h-16 z' fill='white' stroke='{INK}' stroke-width='3'/>"
+            + "".join(f"<line x1='{cx - 28}' y1='{cy - 16 + 14 * i}' x2='{cx + [28, 18][i]}' y2='{cy - 16 + 14 * i}' stroke='{SLATE}' stroke-width='4'/>" for i in range(2)))
+
+
+def sources(total, picked):
+    rows = [(110, album, "reputation (2017)", "every song on her revenge album"),
+            (280, notes, "3 feud songs", "Bad Blood, Mean, Vigilante Shit"),
+            (450, bubble, "19 interview quotes", "each checked against the article")]
+    parts = []
+    for y, icon, title, sub in rows:
+        parts += [card(20, y, icon, title, sub), flow(615, y, 760, 280)]
+    parts += [head(760, 280),
+              f"<rect x='795' y='190' width='300' height='180' rx='18' fill='{MINT}' stroke='{INK}' stroke-width='3'/>",
+              text(945, 270, f"{total} lines", 40, 700, INK, "middle"),
+              text(945, 310, "two lyric lines each,", 22, 400, SLATE, "middle"),
+              text(945, 338, "repeats removed", 22, 400, SLATE, "middle"),
+              flow(1100, 280, 1165, 280), head(1165, 280),
+              f"<rect x='1200' y='190' width='240' height='180' rx='18' fill='{PINK}' stroke='{SPAM}' stroke-width='4'/>",
+              text(1320, 285, str(picked), 64, 700, SPAM, "middle"),
+              text(1320, 330, "picked at random", 22, 400, SLATE, "middle")]
+    return svg(1460, 540, parts, top=30)
+
+
 def svg(w, h, parts, top=0):
     return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 {top} {w} {h - top}' width='{w}' height='{h - top}'>{''.join(parts)}</svg>"
 
@@ -195,3 +244,4 @@ if __name__ == "__main__":
     export("training_loop", training_loop())
     export("inference", inference())
     export("nudge", nudge())
+    export("sources", sources(len(pd.read_csv(DATA / "taylor.csv")), 300))

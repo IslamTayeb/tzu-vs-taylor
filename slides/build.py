@@ -124,13 +124,7 @@ def main():
     classes()
     figure("What It Learned From", "data_rows",
            [(f"{facts['n_each']} lines each: ", True), ("The Art of War vs. Taylor's lyrics and interviews", False)])
-    bullets("Where The Taylor Lines Come From", [
-        (0, [("Every song on ", False), ("reputation", True), (" (2017), her revenge album, plus Bad Blood, Mean and Vigilante Shit", False)]),
-        (0, [("Why those: they talk about enemies too, so it isn't easy", False)]),
-        (0, [("Lyrics from Genius, two lines at a time, repeats removed", False)]),
-        (0, [("19 interview quotes, each checked against the article", False)]),
-        (0, [(f"{facts['n_each']} picked at random from all of that", False)]),
-    ])
+    figure("Where The Taylor Lines Come From", "sources", [("Songs about enemies, so it isn't too easy", False)])
     n_test = facts["n_test"]
     figure("Hide Some For The Test", "split",
            [(f"Same as the emails: {2 * facts['n_each'] - n_test} to learn from, {n_test} hidden", False)])
@@ -154,7 +148,7 @@ def main():
     figure("Fooling It", "traps", [("Small edits fool it; Taylor on enemies reads as Sun Tzu", False)])
     bullets("Anything Modern Looks Like Taylor", [
         (0, [("\"The library closes at midnight.\" scores ", False), (f"{facts['library_p']}% Taylor", True)]),
-        (0, [("It only knows two worlds: a 1910 translation and a 2017 pop star", False)]),
+        (0, [("It only knows a 1910 book and a 2017 pop star", False)]),
     ])
     bullets("Where This Shows Up In Reporting", [
         (0, [("Classify: ", True), ("tag thousands of documents or comments", False)]),
