@@ -1,7 +1,7 @@
 .env
+.venv/
 __pycache__/
 .ipynb_checkpoints/
-.vercel
 .DS_Store
-.venv/
-slides/*_render/*.jpg
+.claude/
+slides/*_render/

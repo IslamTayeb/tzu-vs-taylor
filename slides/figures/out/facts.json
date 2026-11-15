@@ -1,0 +1,25 @@
+{
+ "n_each": 323,
+ "n_test": 130,
+ "right": 129,
+ "rounds": 7,
+ "traps": 4,
+ "quiz_sure": [
+  90,
+  94,
+  94,
+  53,
+  76,
+  83,
+  76
+ ],
+ "quiz_right": [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true
+ ]
+}

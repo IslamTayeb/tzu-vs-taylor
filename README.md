@@ -2,27 +2,41 @@
 
 A 30-minute class demo for journalism students: a sentence-embedding model (MiniLM) plus logistic regression that tries to tell *reputation*-era Taylor Swift from Sun Tzu's *The Art of War*.
 
-- **Game for the class:** https://islamtayeb.github.io/tzu-vs-taylor/ (runs fully in the browser, phones included)
-- **Slides:** `slides/tzu_vs_taylor_lecture.pptx` (opens in PowerPoint or imports into Google Slides; uses Lato)
-- **Notebook:** `tzu_vs_taylor.ipynb`
+- **Game:** https://islamtayeb.github.io/tzu-vs-taylor/ (runs in the browser, phones included)
+- **Slides:** `slides/tzu_vs_taylor_lecture.pptx` (PowerPoint or Google Slides, uses Lato)
+- **Notebook:** `tzu_vs_taylor.ipynb`, a short walkthrough of the code
 
 ## Run the notebook
 
-1. Open in Colab: https://colab.research.google.com/github/IslamTayeb/tzu-vs-taylor/blob/main/tzu_vs_taylor.ipynb
-2. Runtime → Run all (about 1 minute, CPU is fine).
-3. Run `tvt.quiz(1)` … `tvt.quiz(10)` one at a time with the class.
-4. Show `tvt.top_words()` and `tvt.vector_map()`, then `tvt.traps()`.
-5. End with `tvt.predict("...")` on lines the class makes up.
+1. Open it in Colab: https://colab.research.google.com/github/IslamTayeb/tzu-vs-taylor/blob/main/tzu_vs_taylor.ipynb
+2. Runtime → Run all (about a minute on CPU).
+3. Play `show.quiz(model, 1)` to `show.quiz(model, 7)` with the class.
+4. Show `show.top_words`, `show.vector_map`, then `show.traps`.
+5. End with `show.predict(model, "...")` on lines the class makes up.
 
-## Data
+## Layout
 
-| File | What |
-|---|---|
-| `data/suntzu.csv` | 327 verses (5–40 words), Project Gutenberg #17405, Lionel Giles 1910 translation |
-| `data/taylor_quotes.csv` | 19 interview quotes, each checked word for word against TIME (2023) or Vogue (2019) |
-| `data/taylor.csv` | Quotes plus 1–2 line lyric chunks from *reputation*, "Bad Blood", "Mean", "Vigilante Shit" (Genius API) |
-| `data/quiz.csv` | 10 quiz lines, held out of training |
-| `data/traps.csv` | 4 trap lines, held out of training |
+```
+tvt/               Python package used everywhere
+  data.py          load lines, hold out quiz and trap lines
+  model.py         embed, train, score
+  show.py          notebook visuals
+scripts/
+  build_suntzu.py  Gutenberg #17405 -> data/suntzu.csv
+  build_taylor.py  verified quotes + Genius lyrics -> data/taylor.csv
+  export_site.py   trained weights -> docs/model.json
+  build_notebook.py
+docs/              GitHub Pages site, no build step
+  js/main.js       routing and events
+  js/play.js       the quiz
+  js/fool.js       live "Fool it" box
+  js/model.js      MiniLM in the browser
+  js/sketch.js     hand-drawn boxes, bars, doodles (rough.js)
+slides/
+  build.py         builds the deck from figures/out
+  figures/         charts.py, diagrams.py, style.py, assets/
+data/              CSVs: suntzu, taylor, taylor_quotes, quiz, traps
+```
 
 ## Rebuild
 
@@ -30,22 +44,11 @@ A 30-minute class demo for journalism students: a sentence-embedding model (Mini
 pip install -r requirements.txt
 python scripts/build_suntzu.py
 GENIUS_TOKEN=... python scripts/build_taylor.py
-python scripts/export_web.py          # site model -> docs/model.json
-python slides/figures/make_figures.py # slide figures
+python scripts/export_site.py
+python scripts/build_notebook.py
+python slides/figures/diagrams.py && python slides/figures/charts.py && python slides/build.py
 ```
 
-## Layout
+## Sources
 
-```
-docs/            GitHub Pages site (no build step)
-  index.html     markup
-  style.css      styles
-  js/main.js     wiring and routing
-  js/play.js     the quiz
-  js/fool.js     "Fool it" live input
-  js/model.js    loads MiniLM in the browser and scores text
-  js/sketch.js   hand-drawn boxes, bars, doodles (rough.js)
-tvt.py           notebook helpers
-scripts/         data builders and exports
-slides/          deck, build script, figure scripts
-```
+Sun Tzu: Lionel Giles translation (1910), Project Gutenberg #17405. Taylor Swift: interview quotes checked word for word against TIME (2023) and Vogue (2019); lyrics via the Genius API. Diagram images: myoglobin render and Sun Tzu portrait, both public domain (Wikimedia Commons). Fonts: Virgil and Lato (SIL Open Font License).

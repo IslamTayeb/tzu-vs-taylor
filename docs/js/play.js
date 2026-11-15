@@ -11,7 +11,7 @@ const redraw = () => document.dispatchEvent(new Event("redraw"));
 const mark = (ok) => `<i class="mark" data-ok="${ok}" role="img" aria-label="${ok ? "right" : "wrong"}"></i>`;
 
 export function startGame(weights) {
-  rounds = [...weights.rounds, ...weights.traps];
+  rounds = weights.rounds;
   stats = { tested: weights.n_test, accuracy: weights.accuracy };
   index = 0;
   score = { you: 0, model: 0 };
@@ -19,6 +19,7 @@ export function startGame(weights) {
 }
 
 export const isWaitingForGuess = () => !answered && !$("#play").hidden;
+export const canGoNext = () => answered && !$("#play").hidden && !$("#reveal").hidden;
 
 function showScore() {
   $("#score").textContent = `you ${score.you}, model ${score.model}`;
@@ -49,7 +50,6 @@ export function guess(pick) {
   $("#answer").innerHTML = `It's <span class="${COLORS[truth].text}">${truth === TAYLOR ? "Taylor Swift" : SUN_TZU}</span>.`;
   $("#you-said").innerHTML = `${named(pick)} ${mark(pick === truth)}`;
   $("#model-said").innerHTML = `${named(modelPick)}, ${percent(confidence(round.p))} sure ${mark(modelPick === truth)}`;
-  $("#note").textContent = round.label.includes("(") ? round.note : "";
   $("#next span").textContent = index === rounds.length - 1 ? "See the score" : "Next";
   $("#reveal").hidden = false;
   marks($("#reveal"));
@@ -70,7 +70,7 @@ export function next() {
   $("#round").textContent = "";
   const verdict = score.you > score.model ? "You beat the model." : score.you === score.model ? "Tie." : "The model wins.";
   $("#final").textContent = `You ${score.you}, model ${score.model}. ${verdict}`;
-  $("#end-note").textContent = `We picked tricky lines on purpose. On ${stats.tested} random lines it had never seen, it got ${percent(stats.accuracy)} right.`;
+  $("#end-note").textContent = `On ${stats.tested} random lines it had never seen, the model got ${percent(stats.accuracy)} right. Now try to fool it.`;
   $("#end").hidden = false;
   redraw();
 }

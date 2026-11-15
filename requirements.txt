@@ -4,3 +4,6 @@ pandas
 matplotlib
 ipython
 lyricsgenius==3.7.5
+nbformat
+python-pptx
+qrcode[pil]

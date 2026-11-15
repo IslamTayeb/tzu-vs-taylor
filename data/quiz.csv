@@ -1,11 +1,8 @@
 round,text,label,why_its_here
-1,Hence to fight and conquer in all your battles is not supreme excellence; supreme excellence consists in breaking the enemy's resistance without fighting.,Sun Tzu,Warm-up: obvious
-2,"So take a look what you've done / 'Cause, baby, now we got bad blood, hey",Taylor,Warm-up: obvious
-3,"Attack him where he is unprepared, appear where you are not expected.",Sun Tzu,Sounds like a breakup song - the model still gets it
-4,"We were jet-set, Bonnie and Clyde / Until I switched to the other side, to the other side",Taylor,Outlaws and switching sides - the model still gets it
-5,While he was doin' lines and crossin' all of mine / Someone told his white-collar crimes to the FBI,Taylor,A revenge plot - the model still gets it
-6,"There are not more than five musical notes, yet the combinations of these five give rise to more melodies than can ever be heard.",Sun Tzu,Sun Tzu talking about music
-7,I had all the hyenas climb on and take their shots,Taylor,Battle imagery from a TIME interview
-8,Be subtle! be subtle! and use your spies for every kind of business.,Sun Tzu,Sounds like gossip advice
-9,"Heaven signifies night and day, cold and heat, times and seasons.",Sun Tzu,Could be a lyric
-10,"No, they never get far, oh-oh-ah",Taylor,Too short to carry much meaning
+1,Hence to fight and conquer in all your battles is not supreme excellence; supreme excellence consists in breaking the enemy's resistance without fighting.,Sun Tzu,Warm-up
+2,"So take a look what you've done / 'Cause, baby, now we got bad blood, hey",Taylor,Warm-up
+3,All warfare is based on deception.,Sun Tzu,Warm-up
+4,"There are not more than five musical notes, yet the combinations of these five give rise to more melodies than can ever be heard.",Sun Tzu,"Sun Tzu, talking about music"
+5,"I thought instead, I'd replace myself first with a new me. It's harder to hit a moving target.",Taylor,"Taylor, TIME interview, 2023"
+6,Trash takes itself out every single time.,Taylor,"Taylor, TIME interview, 2023"
+7,"Attack him where he is unprepared, appear where you are not expected.",Sun Tzu,"Sun Tzu, Art of War, I.24"

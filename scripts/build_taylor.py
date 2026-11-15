@@ -1,11 +1,3 @@
-"""Build data/taylor.csv (text, source_url, kind) from
-  (a) data/taylor_quotes.csv - interview quotes, each hand-verified against its source URL
-  (b) song lyrics fetched live from the Genius API (reputation + Bad Blood, Mean, Vigilante Shit),
-      split into 1-2 line chunks.
-
-Needs env var GENIUS_TOKEN (https://genius.com/api-clients -> "Generate Access Token").
-Lyrics are fetched at build time and NOT committed to the public repo (copyright).
-"""
 import csv
 import os
 import re
@@ -26,16 +18,11 @@ def die(msg):
 
 
 def clean_lyrics(raw: str) -> list[list[str]]:
-    """Return Taylor's own lyrics as a list of sections, each a list of lines.
-
-    Drops: Genius header junk, parenthetical ad-libs, and sections sung by featured
-    artists (e.g. "[Verse 1: Future]" in End Game).
-    """
     if "Lyrics" in raw[:400]:
         raw = raw.split("Lyrics", 1)[1]
     raw = re.sub(r"\d*Embed$", "", raw.strip())
     raw = raw.replace("You might also like", "\n")
-    raw = re.sub(r"\([^)\[\]]*\)", "", raw)  # ad-libs, even when they span lines
+    raw = re.sub(r"\([^)\[\]]*\)", "", raw)
     for a, b in {"\u2019": "'", "\u2018": "'", "\u201c": '"', "\u201d": '"', "\u2005": " ", "\u205f": " "}.items():
         raw = raw.replace(a, b)
     sections, cur, skip = [], [], False
@@ -45,7 +32,7 @@ def clean_lyrics(raw: str) -> list[list[str]]:
             if cur and not skip:
                 sections.append(cur)
             cur = []
-            # "[Verse 1: Future]" -> skip unless Taylor is credited on that section
+
             skip = ":" in s and "taylor" not in s.lower()
             continue
         if not s:
@@ -61,7 +48,6 @@ def clean_lyrics(raw: str) -> list[list[str]]:
 
 
 def chunk(sections, seen_lines):
-    """Drop lines already used anywhere (choruses), then pair consecutive lines within a section."""
     out = []
     for sec in sections:
         fresh = []
@@ -89,15 +75,15 @@ def main():
     g = lyricsgenius.Genius(token, timeout=20, retries=3, verbose=False, remove_section_headers=False,
                             skip_non_songs=True)
 
-    songs = []  # (title, url, lyrics)
+    songs = []
     album = g.search_album("reputation", "Taylor Swift")
     if album is None:
         die("Genius could not find the album 'reputation'. Token invalid or API down?")
     for t in album.tracks:
-        s = t[1] if isinstance(t, tuple) else t.song  # lyricsgenius versions differ
+        s = t[1] if isinstance(t, tuple) else t.song
         if not s.lyrics:
             s = g.search_song(s.title, "Taylor Swift")
-        if "prologue" in s.title.lower():  # a prose essay, not a song
+        if "prologue" in s.title.lower():
             continue
         songs.append((s.title, s.url, s.lyrics))
     for title in EXTRA_SONGS:

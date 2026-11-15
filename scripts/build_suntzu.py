@@ -1,8 +1,3 @@
-"""Download The Art of War (Giles 1910, Project Gutenberg #17405) and split it into numbered verses.
-
-Output: data/suntzu.csv with columns text, chapter, verse, source_url.
-Keeps verses of 5-40 words. Strips the "Sun Tzu said:" opener so the model can't cheat on the name.
-"""
 import csv
 import re
 import sys
@@ -17,7 +12,7 @@ VERSE = re.compile(r"^(\d+(?:, \d+)*)\. (.*)")
 
 
 def clean(s: str) -> str:
-    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()  # Tzŭ -> Tzu, ’ dropped
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
     s = s.replace("_", "")
     s = re.sub(r"^Sun Tzu said:\s*", "", s)
     return re.sub(r"\s+", " ", s).strip()
@@ -25,7 +20,7 @@ def clean(s: str) -> str:
 
 def main():
     raw = urllib.request.urlopen(URL, timeout=30).read().decode("utf-8")
-    # straighten curly quotes before the ascii fold drops them
+
     raw = raw.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"').replace("—", " - ")
     body = raw.split("*** START OF")[1].split("*** END OF")[0]
     lines = body.splitlines()

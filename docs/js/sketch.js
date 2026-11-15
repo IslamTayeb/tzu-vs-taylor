@@ -6,11 +6,11 @@ const INK = COLORS.ink;
 const RED = COLORS[TAYLOR].line;
 const CYAN = COLORS[SUN_TZU].fill;
 
-function svgIn(parent, { className, viewBox } = {}) {
+function svgIn(parent, { className, viewBox, onTop = false } = {}) {
   const svg = document.createElementNS(SVG_NS, "svg");
   if (className) svg.classList.add(className);
   if (viewBox) svg.setAttribute("viewBox", viewBox);
-  parent.prepend(svg);
+  onTop ? parent.append(svg) : parent.prepend(svg);
   return svg;
 }
 
@@ -22,7 +22,7 @@ export function box(el, { fill, stroke = INK, seed = 1 }) {
     const back = svgIn(el, { className: "fillsvg" });
     back.append(rough.svg(back).rectangle(5, 5, w - 10, h - 10, { seed, fill, fillStyle: "solid", stroke: "none" }));
   }
-  const front = svgIn(el);
+  const front = svgIn(el, { onTop: true });
   const width = stroke === INK ? 1.6 : 2.2;
   front.append(rough.svg(front).rectangle(4, 4, w - 8, h - 8, { seed, stroke, strokeWidth: width, roughness: 1.2, bowing: 1 }));
 }

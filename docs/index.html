@@ -7,9 +7,6 @@
 <title>Taylor Swift or Sun Tzu?</title>
 <meta name="description" content="Guess who said it, then see if a computer can do better.">
 <link rel="preload" href="fonts/Virgil.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,44 +18,46 @@
 </header>
 
 <main>
-  <section id="play" class="view">
+  <section id="play" class="view stack">
     <p class="meta"><span id="round"></span><span id="score"></span></p>
     <blockquote id="line"></blockquote>
 
     <div class="picks" id="picks">
-      <button class="pick t sketch" data-pick="Taylor"><span><i class="doodle" data-doodle="guitar"></i>Taylor Swift</span></button>
-      <button class="pick s sketch" data-pick="Sun Tzu"><span><i class="doodle" data-doodle="sword"></i>Sun Tzu</span></button>
+      <button class="pick sketch" data-pick="Taylor"><span><i class="doodle" data-doodle="guitar"></i>Taylor Swift</span></button>
+      <button class="pick sketch" data-pick="Sun Tzu"><span><i class="doodle" data-doodle="sword"></i>Sun Tzu</span></button>
     </div>
 
-    <div id="reveal" hidden>
+    <div id="reveal" class="stack tight" hidden>
       <p class="answer" id="answer"></p>
       <dl class="verdicts">
         <dt>You said</dt><dd id="you-said"></dd>
         <dt>Model said</dt><dd id="model-said"></dd>
       </dl>
-      <div class="bar" id="bar"></div>
-      <p class="barlabel"><span class="t-ink">Taylor</span><span class="s-ink">Sun Tzu</span></p>
-      <p class="note" id="note"></p>
+      <div>
+        <div class="bar" id="bar"></div>
+        <p class="barlabel"><span class="t-ink">Taylor</span><span class="s-ink">Sun Tzu</span></p>
+      </div>
       <button class="go sketch" id="next"><span>Next</span></button>
     </div>
 
-    <div id="end" hidden>
+    <div id="end" class="stack tight" hidden>
       <p class="final" id="final"></p>
       <p class="note" id="end-note"></p>
-      <button class="go sketch" data-go="fool"><span>Try to fool it</span></button>
-      <button class="quiet" id="again">Play again</button>
+      <div class="actions">
+        <button class="go sketch" data-go="fool"><span>Try to fool it</span></button>
+        <button class="quiet" id="again">Play again</button>
+      </div>
     </div>
   </section>
 
-  <section id="fool" class="view" hidden>
+  <section id="fool" class="view stack tight" hidden>
     <h1>Fool it</h1>
     <p class="note">Write something Sun Tzu would say that the model thinks is Taylor, or the other way round.</p>
     <div class="field sketch" id="field"><textarea id="input" rows="3" placeholder="girl, let your plans be dark and impenetrable as night"></textarea></div>
     <div class="bar" id="live-bar"></div>
-    <p class="model" id="live-model">Loading the model, about 23 MB.</p>
+    <p id="live-model">Loading the model, about 23 MB.</p>
     <ul class="tries" id="tries"></ul>
   </section>
-
 </main>
 
 <script type="module" src="js/main.js"></script>

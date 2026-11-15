@@ -1,7 +1,7 @@
 import { $, $$, COLORS, TAYLOR, SUN_TZU } from "./common.js";
 import { loadWeights } from "./model.js";
 import { box, bar, doodle } from "./sketch.js";
-import { startGame, guess, next, restart, isWaitingForGuess } from "./play.js";
+import { startGame, guess, next, restart, isWaitingForGuess, canGoNext } from "./play.js";
 import { listTraps, openFool, update } from "./fool.js";
 
 function drawAll() {
@@ -43,9 +43,13 @@ async function init() {
   $("#again").addEventListener("click", () => { location.hash = ""; restart(); route(); });
   $("#input").addEventListener("input", update);
   document.addEventListener("keydown", (e) => {
-    if (!isWaitingForGuess()) return;
-    if (e.key === "ArrowLeft") guess(TAYLOR);
-    if (e.key === "ArrowRight") guess(SUN_TZU);
+    if (isWaitingForGuess()) {
+      if (e.key === "ArrowLeft") guess(TAYLOR);
+      if (e.key === "ArrowRight") guess(SUN_TZU);
+    } else if (canGoNext() && (e.key === "Enter" || e.key === " ") && !e.target.closest?.("button")) {
+      e.preventDefault();
+      next();
+    }
   });
 
   let timer;
