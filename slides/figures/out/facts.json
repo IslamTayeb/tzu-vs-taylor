@@ -8,24 +8,24 @@
   91,
   94,
   94,
-  61,
   79,
-  51,
+  71,
   86,
   67,
-  71,
+  51,
+  61,
   61
  ],
  "quiz_right": [
   true,
   true,
   true,
+  true,
+  true,
+  true,
+  true,
+  true,
   false,
-  true,
-  true,
-  true,
-  true,
-  true,
   false
  ]
 }
