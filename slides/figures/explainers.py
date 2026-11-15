@@ -29,8 +29,8 @@ def pill(cx, cy, s, color, small=False, anchor="middle"):
             + text(cx, cy + size * 0.36, s, size, 700, "white", "middle"))
 
 
-COLS = [330, 450, 570, 690]
-SCORE_X, GUESS_X = 930, 1225
+COLS = [280, 370, 460, 550]
+SCORE_X, GUESS_X = 905, 1265
 LIGHT = "#d8dee9"
 
 
@@ -39,7 +39,7 @@ def fmt(v, sign=False):
 
 
 def chip(cx, cy, w):
-    return (f"<rect x='{cx - 46}' y='{cy - 28}' width='92' height='56' rx='10' fill='{INK}'/>"
+    return (f"<rect x='{cx - 40}' y='{cy - 28}' width='80' height='56' rx='10' fill='{INK}'/>"
             + text(cx, cy + 11, fmt(w, True), 28, 700, SPAM if w > 0 else LIGHT, "middle"))
 
 
@@ -63,18 +63,14 @@ def value_cells(y, values, sign=False):
 
 
 def calc(values, weights):
-    terms = []
-    for v, w in zip(values, weights):
-        product = round(v * abs(w), 2)
-        op = "&#8722;" if w < 0 else "+"
-        terms.append(f"{op} {product:g}" if terms else ("&#8722;" if w < 0 else "") + f"{product:g}")
+    groups = [f"(<tspan font-weight='700'>{fmt(w)}</tspan>&#215;{fmt(v)})" for v, w in zip(values, weights)]
     total = round(sum(v * w for v, w in zip(values, weights)), 2)
-    return " ".join(terms), total
+    return " + ".join(groups), total
 
 
 def score_cell(y, values, weights):
     expr, total = calc(values, weights)
-    return text(SCORE_X, y + 11, f"{expr} = {fmt(total)}", 28, 400, INK, "middle"), total
+    return text(SCORE_X, y + 10, f"{expr} = <tspan font-weight='700'>{fmt(total)}</tspan>", 25, 400, INK, "middle"), total
 
 
 def guess_cell(y, total, right=None, sure=None):
@@ -82,7 +78,7 @@ def guess_cell(y, total, right=None, sure=None):
     if sure:
         out += text(GUESS_X, y + 52, f"{sure}% sure", 26, 700, INK, "middle")
     if right is not None:
-        out += tick(GUESS_X + 110, y) if right else cross(GUESS_X + 110, y)
+        out += tick(GUESS_X + 100, y) if right else cross(GUESS_X + 100, y)
     return out
 
 
@@ -90,8 +86,8 @@ PERFECT = [1, 1, -1, -1]
 
 
 def weights_slide():
-    terms = " ".join(f"{'&#8722;' if w < 0 else '+'} {abs(w):g} &#215; {n(k + 1)}" for k, w in enumerate(PERFECT))
-    parts = [text(680, 40, f"score = {terms[2:]}", 34, 700, INK, "middle"), header(130),
+    terms = " + ".join(f"({fmt(w)} &#215; {n(k + 1)})" for k, w in enumerate(PERFECT))
+    parts = [text(680, 40, f"score = {terms}", 34, 700, INK, "middle"), header(130),
              row_label(215, "Weights", "the model"), weight_cells(215, PERFECT)]
     for y, name, values in [(320, "Email A", [1, 1, 0, 0]), (420, "Email B", [0, 0, 1, 1])]:
         cell, total = score_cell(y, values, PERFECT)
@@ -111,7 +107,7 @@ def nudge():
              row_label(420, "Nudge", "add its numbers"), value_cells(420, email, sign=True),
              row_label(520, "Weights after"), weight_cells(520, after), new_cell, guess_cell(520, new, right=True),
              text(20, 615, "It should have scored higher, so each number is added to its weight. Zeros stay put.", 26, 400, SLATE)]
-    return svg(1380, 640, parts, top=100)
+    return svg(1400, 640, parts, top=100)
 
 
 def tick(cx, cy):
