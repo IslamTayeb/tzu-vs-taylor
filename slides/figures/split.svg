@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T00:29:28.295631</dc:date>
+    <dc:date>2026-11-15T00:34:24.841583</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -2416,7 +2416,7 @@ L 19.324056 81.88
 L 19.341071 82.88 
 L 19.354962 84.624 
 z
-" clip-path="url(#p1a63ae3abd)" style="fill: url(#h8a498e2ac6)"/>
+" clip-path="url(#p94d8cfffcc)" style="fill: url(#h6292a45295)"/>
    </g>
    <g id="patch_3">
     <path d="M 458.069725 84.624 
@@ -2743,7 +2743,7 @@ L 458.285669 81.88
 L 458.303887 82.88 
 L 458.359663 84.624 
 z
-" clip-path="url(#p1a63ae3abd)" style="fill: url(#ha76168d51a)"/>
+" clip-path="url(#p94d8cfffcc)" style="fill: url(#hfb6e0773cc)"/>
    </g>
    <g id="patch_4">
     <path d="M 18.666055 84.624 
@@ -3949,7 +3949,7 @@ L 18.494049 82.88
 L 18.539186 84.624 
 L 18.666055 84.624 
 z
-" clip-path="url(#p1a63ae3abd)" style="fill: none; stroke: #2e3440; stroke-width: 1.6; stroke-linejoin: miter"/>
+" clip-path="url(#p94d8cfffcc)" style="fill: none; stroke: #2e3440; stroke-width: 1.6; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 458.069725 84.624 
@@ -4004,7 +4004,7 @@ L 458.521767 36.624
 L 458.492995 35.624 
 L 458.456241 34.624 
 L 458.440719 32.88 
-" clip-path="url(#p1a63ae3abd)" style="fill: none; stroke: #2e3440; stroke-width: 1.6; stroke-linecap: square"/>
+" clip-path="url(#p94d8cfffcc)" style="fill: none; stroke: #2e3440; stroke-width: 1.6; stroke-linecap: square"/>
    </g>
    <g id="text_1">
     <g id="patch_5">
@@ -5188,12 +5188,12 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p1a63ae3abd">
+  <clipPath id="p94d8cfffcc">
    <rect x="14.4" y="14.4" width="558" height="88.704"/>
   </clipPath>
  </defs>
  <defs>
-  <pattern id="h8a498e2ac6" patternUnits="userSpaceOnUse" x="0" y="0" width="72" height="72">
+  <pattern id="h6292a45295" patternUnits="userSpaceOnUse" x="0" y="0" width="72" height="72">
    <rect x="0" y="0" width="73" height="73" fill="#ffffff"/>
    <path d="M 0 72.6 
 C 0.159122 72.6 0.311748 72.53678 0.424264 72.424264 
@@ -6827,7 +6827,7 @@ C 71.688252 0.53678 71.840878 0.6 72 0.6
 z
 " style="fill: #4c566a; stroke: #4c566a; stroke-width: 1.4; stroke-linecap: butt; stroke-linejoin: miter"/>
   </pattern>
-  <pattern id="ha76168d51a" patternUnits="userSpaceOnUse" x="0" y="0" width="72" height="72">
+  <pattern id="hfb6e0773cc" patternUnits="userSpaceOnUse" x="0" y="0" width="72" height="72">
    <rect x="0" y="0" width="73" height="73" fill="#ffffff"/>
    <path d="M -36 36 
 L 36 -36 
