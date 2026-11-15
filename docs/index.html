@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taylor Swift or Sun Tzu?</title>
+<meta name="description" content="Guess who said it, then see if a computer can do better.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <a class="mark" href="#" data-go="play">Taylor Swift or Sun Tzu?</a>
+  <nav>
+    <a href="#" data-go="play" class="on">Play</a>
+    <a href="#" data-go="fool">Fool the model</a>
+    <a href="#" data-go="how">How it works</a>
+  </nav>
+</header>
+
+<main>
+  <section id="play" class="view">
+    <p class="meta"><span id="round"></span><span id="score"></span></p>
+    <blockquote id="line"></blockquote>
+    <div class="choices" id="choices">
+      <button class="pick t" data-pick="Taylor"><span>Taylor Swift</span><kbd>T</kbd></button>
+      <button class="pick s" data-pick="Sun Tzu"><span>Sun Tzu</span><kbd>S</kbd></button>
+    </div>
+    <div id="reveal" class="reveal" hidden>
+      <p class="verdict" id="verdict"></p>
+      <div class="readout">
+        <p class="who">Word counter</p>
+        <div class="meter" id="meter-w" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+        <p class="model" id="model-w"></p>
+      </div>
+      <div class="readout">
+        <p class="who">Meaning model</p>
+        <div class="meter" id="meter-e" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+        <p class="model" id="model-e"></p>
+      </div>
+      <p class="note" id="note"></p>
+      <button class="next" id="next">Next line</button>
+    </div>
+    <div id="end" class="end" hidden>
+      <p class="final" id="final"></p>
+      <p class="lede" id="end-lede"></p>
+      <div class="end-actions">
+        <button class="next" data-go="fool">Try to fool it</button>
+        <button class="ghost" id="again">Play again</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="fool" class="view" hidden>
+    <h1>Fool the model</h1>
+    <p class="lede">Write something Sun Tzu might say that the models will think is Taylor, or the other way round. Both update as you type.</p>
+    <textarea id="input" rows="3" placeholder="All warfare is based on deception."></textarea>
+    <div class="readout">
+      <p class="who">Word counter</p>
+      <div class="meter live" id="live-w" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+      <p class="model" id="live-model-w">Start typing.</p>
+      <p class="words" id="live-words"></p>
+    </div>
+    <div class="readout">
+      <p class="who">Meaning model</p>
+      <div class="meter live" id="live-e" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+      <p class="model" id="live-model-e">Start typing.</p>
+    </div>
+    <h2>Try these</h2>
+    <ul class="tries" id="tries"></ul>
+  </section>
+
+  <section id="how" class="view" hidden>
+    <h1>How it works</h1>
+    <ol class="steps">
+      <li><b>Collect.</b> <span id="n-lines"></span> lines: verses from Sun Tzu's <i>The Art of War</i> (Lionel Giles, 1910) and Taylor Swift lyrics from <i>reputation</i> plus a few songs and interviews.</li>
+      <li><b>Turn text into numbers, two ways.</b> The word counter gives each line one number per word or word pair, with rare words counting for more. The meaning model uses a pre-trained AI (MiniLM) that squeezes the meaning of a line into 384 numbers, called an embedding.</li>
+      <li><b>Learn.</b> Each model learns weights that push those numbers toward Taylor or toward Sun Tzu.</li>
+      <li><b>Test.</b> We hid <span id="n-test"></span> lines while they learned. The word counter got <b id="acc"></b> right; the meaning model got <b id="acc-e"></b>.</li>
+    </ol>
+    <h2>The words the word counter leans on most</h2>
+    <div class="top">
+      <div><h3 class="t">Taylor</h3><ol id="top-t"></ol></div>
+      <div><h3 class="s">Sun Tzu</h3><ol id="top-s"></ol></div>
+    </div>
+    <p class="lede">Look at the Taylor list: <i>you, me, my</i>. It mostly learned who is talking, not what they talk about. That shortcut is why a Gen Z rewrite of Sun Tzu fools it. The meaning model has no word list to show: its 384 numbers don't line up with words.</p>
+  </section>
+</main>
+
+<footer>
+  <a href="https://github.com/IslamTayeb/tzu-vs-taylor">Code and data</a>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 """Helpers for the "Taylor Swift or Sun Tzu?" notebook."""
 import json
 import re
+from collections import Counter
 from html import escape
 from pathlib import Path
 
@@ -8,13 +9,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from IPython.display import HTML, display
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 DATA = Path(__file__).resolve().parent / "data"
 TAYLOR, TZU = "Taylor", "Sun Tzu"
-COLORS = {TAYLOR: "#c2185b", TZU: "#37474f"}
+COLORS = {TAYLOR: "#9e1b32", TZU: "#1d3b5c"}
+EMBEDDER = "sentence-transformers/all-MiniLM-L6-v2"
 
 plt.rcParams.update({"font.size": 16, "axes.titlesize": 20, "axes.spines.top": False,
                      "axes.spines.right": False, "figure.dpi": 110})
@@ -30,6 +32,13 @@ def _key(s):
     return re.sub(r"\W+", " ", s.lower()).strip()
 
 
+def embed(texts):
+    if "st" not in state:
+        from sentence_transformers import SentenceTransformer
+        state["st"] = SentenceTransformer(EMBEDDER)
+    return state["st"].encode(list(texts), normalize_embeddings=True, batch_size=64)
+
+
 def load(seed=0):
     tzu = pd.read_csv(DATA / "suntzu.csv").assign(label=TZU)
     tay = pd.read_csv(DATA / "taylor.csv").assign(label=TAYLOR)
@@ -41,54 +50,58 @@ def load(seed=0):
     df = df[~df.text.map(_key).isin(held)]
     n = df.label.value_counts().min()
     df = df.groupby("label").sample(n, random_state=seed).reset_index(drop=True)
+    df["vec"] = list(embed(df.text))
     train, test = train_test_split(df, test_size=0.2, stratify=df.label, random_state=seed)
-
-    vec = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True).fit(train.text)
-    state.update(df=df, train=train, test=test, quiz=quiz, traps=traps, vec=vec,
+    state.update(df=df, train=train, test=test, quiz=quiz, traps=traps,
                  score={"Class": 0, "Model": 0}, played=set())
-    say(f"<b>{n}</b> Sun Tzu lines + <b>{n}</b> Taylor lines "
+    say(f"<b>{n}</b> Sun Tzu lines + <b>{n}</b> Taylor lines, each turned into <b>384</b> numbers "
         f"&rarr; <b>{len(train)}</b> to learn from, <b>{len(test)}</b> kept secret for the test.")
 
 
-def text_to_numbers(text, top=20):
-    vec = state["vec"]
-    row = vec.transform([text]).tocoo()
-    names = vec.get_feature_names_out()
-    pairs = sorted(zip(row.data, (names[j] for j in row.col)), reverse=True)[:top]
-    say(f"&ldquo;{escape(text)}&rdquo;", 24)
-    if not pairs:
-        say("None of these words appear in the training data, so this line becomes all zeros.")
-        return
-    vals, words = zip(*pairs)
-    fig, ax = plt.subplots(figsize=(10, 0.45 * len(words) + 1))
-    ax.barh(words[::-1], vals[::-1], color="#78909c")
-    ax.set_xlabel("TF-IDF weight (rarer word = bigger)")
-    ax.set_title(f"{len(row.data)} of {len(names):,} columns are non-zero")
+def text_to_numbers(text):
+    v = embed([text])[0]
+    say(f"&ldquo;{escape(text)}&rdquo; &rarr; {len(v)} numbers", 24)
+    fig, ax = plt.subplots(figsize=(14, 1.6))
+    ax.imshow(v[None, :], aspect="auto", cmap="BrBG", vmin=-.15, vmax=.15)
+    ax.set_yticks([])
+    ax.set_xlabel("each stripe is one number (green = positive, brown = negative)")
     plt.show()
+    say("First 8: " + ", ".join(f"{x:+.2f}" for x in v[:8]) + " &hellip;", 20)
 
 
-def train(C=10):
-    t, vec = state["train"], state["vec"]
-    model = LogisticRegression(C=C, max_iter=1000).fit(vec.transform(t.text), t.label)
-    state["model"] = model
-    test = state["test"]
-    acc = model.score(vec.transform(test.text), test.label)
+def closest(text, k=3):
+    df = state["df"]
+    sims = np.vstack(df.vec) @ embed([text])[0]
+    say(f"Lines whose numbers are closest to &ldquo;{escape(text)}&rdquo;:", 22)
+    for j in np.argsort(-sims)[:k]:
+        r = df.iloc[j]
+        say(f"<span style='color:{COLORS[r.label]}'>{r.label}</span> &nbsp;{sims[j]:.2f} &nbsp;"
+            f"&ldquo;{escape(r.text)}&rdquo;", 20)
+
+
+def train(C=1):
+    t, test = state["train"], state["test"]
+    m = LogisticRegression(C=C, max_iter=2000).fit(np.vstack(t.vec), t.label)
+    state["model"] = m
+    acc = m.score(np.vstack(test.vec), test.label)
+    state["accuracy"] = acc
     say(f"Accuracy on {len(test)} lines it has never seen: <b style='font-size:48px'>{acc:.0%}</b>")
 
 
-def prob_taylor(text):
+def prob_taylor(texts):
     m = state["model"]
-    return m.predict_proba(state["vec"].transform([text]))[0, list(m.classes_).index(TAYLOR)]
+    single = isinstance(texts, str)
+    p = m.predict_proba(embed([texts] if single else texts))[:, list(m.classes_).index(TAYLOR)]
+    return float(p[0]) if single else p
 
 
 def _verdict(text):
     p = prob_taylor(text)
     guess = TAYLOR if p >= 0.5 else TZU
-    conf = max(p, 1 - p)
     bar = (f'<div style="display:flex;height:34px;border-radius:6px;overflow:hidden;font-size:18px;color:#fff;max-width:720px">'
            f'<div style="width:{p*100:.0f}%;background:{COLORS[TAYLOR]};padding:5px 10px;white-space:nowrap">Taylor {p:.0%}</div>'
            f'<div style="flex:1;background:{COLORS[TZU]};padding:5px 10px;text-align:right;white-space:nowrap">Sun Tzu {1-p:.0%}</div></div>')
-    return guess, conf, bar
+    return guess, max(p, 1 - p), bar
 
 
 def quiz(i):
@@ -97,10 +110,9 @@ def quiz(i):
     vote = input("Class vote - type T (Taylor) or S (Sun Tzu), then Enter: ").strip().upper()[:1]
     truth = q.label
     guess, conf, bar = _verdict(q.text)
-    class_guess = {"T": TAYLOR, "S": TZU}.get(vote)
     if i not in state["played"]:
         state["played"].add(i)
-        state["score"]["Class"] += class_guess == truth
+        state["score"]["Class"] += {"T": TAYLOR, "S": TZU}.get(vote) == truth
         state["score"]["Model"] += guess == truth
     say(f"Answer: <b style='color:{COLORS[truth]}'>{truth}</b>", 34)
     say(f"Model says <b>{guess}</b> ({conf:.0%} sure) {'&#10004;' if guess == truth else '&#10008;'}", 26)
@@ -115,17 +127,43 @@ def scoreboard():
         f" <span style='color:#999;font-size:18px'>after {len(state['played'])} rounds</span></div>", 30)
 
 
+def word_scores(min_count=2):
+    if "words" not in state:
+        counts = Counter(w for t in state["train"].text for w in re.findall(r"[a-z]{3,}", t.lower()))
+        words = sorted(w for w, c in counts.items() if c >= min_count)
+        state["words"] = pd.Series(prob_taylor(words), index=words)
+    return state["words"]
+
+
 def top_words(n=15):
-    vec, m = state["vec"], state["model"]
-    names = vec.get_feature_names_out()
-    coef = m.coef_[0] if m.classes_[1] == TAYLOR else -m.coef_[0]
-    order = np.argsort(coef)
+    s = word_scores().sort_values()
     fig, axes = plt.subplots(1, 2, figsize=(14, 0.42 * n + 1.5))
-    for ax, idx, who in [(axes[0], order[:n], TZU), (axes[1], order[-n:][::-1], TAYLOR)]:
-        ax.barh(names[idx][::-1], np.abs(coef[idx])[::-1], color=COLORS[who])
-        ax.set_title(f"Words that scream {who}")
-        ax.set_xlabel("weight")
+    for ax, part, who in [(axes[0], s.head(n), TZU), (axes[1], s.tail(n)[::-1], TAYLOR)]:
+        vals = part.values if who == TAYLOR else 1 - part.values
+        ax.barh(part.index[::-1], vals[::-1], color=COLORS[who])
+        ax.set_xlim(0.5, 1)
+        ax.set_title(f"Single words that scream {who}")
+        ax.set_xlabel(f"chance of {who}")
     plt.tight_layout()
+    plt.show()
+
+
+def vector_map():
+    df = state["df"]
+    pca = PCA(2, random_state=0).fit(np.vstack(df.vec))
+    xy = pca.transform(np.vstack(df.vec))
+    fig, ax = plt.subplots(figsize=(11, 8))
+    for who in (TZU, TAYLOR):
+        m = (df.label == who).values
+        ax.scatter(xy[m, 0], xy[m, 1], s=18, alpha=.45, color=COLORS[who], label=who)
+    pts = pca.transform(embed(state["traps"].text))
+    for (x, y), tag, dy in zip(pts, state["traps"].tag, [14, -22, 14, 14]):
+        ax.scatter(x, y, s=220, marker="*", color="#f2a900", edgecolor="black", zorder=3)
+        ax.annotate(tag, (x, y), fontsize=13, xytext=(0, dy), textcoords="offset points", ha="center",
+                    bbox=dict(boxstyle="round,pad=.2", fc="white", ec="none", alpha=.85), zorder=4)
+    ax.legend(frameon=False)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title("Every line as a dot (384 numbers squashed to 2)")
     plt.show()
 
 
@@ -144,23 +182,20 @@ def traps():
 
 
 def export_web(path):
-    vec, m = state["vec"], state["model"]
+    m = state["model"]
     sign = 1 if m.classes_[1] == TAYLOR else -1
-    rounds = [{"text": r.text, "label": r.label, "note": r.why_its_here, "p": round(float(prob_taylor(r.text)), 3)}
-              for r in state["quiz"].itertuples()]
-    trap_rows = [{"text": r.text, "label": r.label, "note": r.note, "p": round(float(prob_taylor(r.text)), 3)}
-                 for r in state["traps"].itertuples()]
-    names = vec.get_feature_names_out()
-    coef = sign * m.coef_[0]
-    order = np.argsort(coef)
+    row = lambda text, label, note: {"text": text, "label": label, "note": note, "p": round(prob_taylor(text), 3)}
+    s = word_scores().sort_values()
     out = {
-        "vocab": {w: [round(float(vec.idf_[j]), 4), round(float(coef[j]), 4)] for w, j in vec.vocabulary_.items()},
-        "intercept": round(float(sign * m.intercept_[0]), 4),
-        "accuracy": round(float(m.score(vec.transform(state["test"].text), state["test"].label)), 3),
+        "model": EMBEDDER,
+        "coef": [round(float(x), 5) for x in sign * m.coef_[0]],
+        "intercept": round(float(sign * m.intercept_[0]), 5),
+        "accuracy": round(float(state["accuracy"]), 3),
         "n_train": len(state["train"]), "n_test": len(state["test"]),
-        "top": {"Sun Tzu": [[names[j], round(float(-coef[j]), 3)] for j in order[:15]],
-                "Taylor": [[names[j], round(float(coef[j]), 3)] for j in order[-15:][::-1]]},
-        "rounds": rounds, "traps": trap_rows,
+        "top": {"Sun Tzu": [[w, round(1 - float(p), 3)] for w, p in s.head(15).items()],
+                "Taylor": [[w, round(float(p), 3)] for w, p in s.tail(15)[::-1].items()]},
+        "rounds": [row(r.text, r.label, r.why_its_here) for r in state["quiz"].itertuples()],
+        "traps": [row(r.text, r.label, r.note) for r in state["traps"].itertuples()],
     }
     Path(path).write_text(json.dumps(out, separators=(",", ":")))
     return out
