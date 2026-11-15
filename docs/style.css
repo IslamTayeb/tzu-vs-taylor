@@ -143,13 +143,11 @@ button {
 }
 .meter.live .fill { transition-duration: .25s; }
 
-.readout { margin-bottom: 1.5rem; }
-.who { margin: 0 0 .4rem; font-weight: 700; }
-.model { margin: .6rem 0 0; font-variant-numeric: tabular-nums; }
+.model { margin: .6rem 0 0; }
 .model .t { color: var(--taylor); font-weight: 700; }
 .model .s { color: var(--tzu); font-weight: 700; }
 
-.note { color: var(--muted); margin: 0 0 1.75rem; }
+.note { color: var(--muted); margin: .5rem 0 1.75rem; }
 
 .next {
   padding: .8rem 1.4rem;
@@ -188,9 +186,6 @@ textarea {
   margin-bottom: 1.25rem;
 }
 
-.words { color: var(--muted); font-size: .95rem; min-height: 1.5em; }
-.words .t { color: var(--taylor); }
-.words .s { color: var(--tzu); }
 
 .tries { list-style: none; padding: 0; margin: 0; }
 .tries li { border-top: 1px solid var(--rule); }

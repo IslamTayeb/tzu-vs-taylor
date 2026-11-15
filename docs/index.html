@@ -30,16 +30,8 @@
     </div>
     <div id="reveal" class="reveal" hidden>
       <p class="verdict" id="verdict"></p>
-      <div class="readout">
-        <p class="who">Word counter</p>
-        <div class="meter" id="meter-w" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
-        <p class="model" id="model-w"></p>
-      </div>
-      <div class="readout">
-        <p class="who">Meaning model</p>
-        <div class="meter" id="meter-e" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
-        <p class="model" id="model-e"></p>
-      </div>
+      <div class="meter" id="meter" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+      <p class="model" id="model"></p>
       <p class="note" id="note"></p>
       <button class="next" id="next">Next line</button>
     </div>
@@ -55,19 +47,10 @@
 
   <section id="fool" class="view" hidden>
     <h1>Fool the model</h1>
-    <p class="lede">Write something Sun Tzu might say that the models will think is Taylor, or the other way round. Both update as you type.</p>
+    <p class="lede">Write something Sun Tzu might say that the model will think is Taylor, or the other way round. It updates as you type.</p>
     <textarea id="input" rows="3" placeholder="All warfare is based on deception."></textarea>
-    <div class="readout">
-      <p class="who">Word counter</p>
-      <div class="meter live" id="live-w" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
-      <p class="model" id="live-model-w">Start typing.</p>
-      <p class="words" id="live-words"></p>
-    </div>
-    <div class="readout">
-      <p class="who">Meaning model</p>
-      <div class="meter live" id="live-e" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
-      <p class="model" id="live-model-e">Start typing.</p>
-    </div>
+    <div class="meter live" id="live-meter" aria-hidden="true"><div class="fill"></div><div class="mid"></div></div>
+    <p class="model" id="live-model">Loading the model (about 23 MB, once).</p>
     <h2>Try these</h2>
     <ul class="tries" id="tries"></ul>
   </section>
@@ -76,16 +59,16 @@
     <h1>How it works</h1>
     <ol class="steps">
       <li><b>Collect.</b> <span id="n-lines"></span> lines: verses from Sun Tzu's <i>The Art of War</i> (Lionel Giles, 1910) and Taylor Swift lyrics from <i>reputation</i> plus a few songs and interviews.</li>
-      <li><b>Turn text into numbers, two ways.</b> The word counter gives each line one number per word or word pair, with rare words counting for more. The meaning model uses a pre-trained AI (MiniLM) that squeezes the meaning of a line into 384 numbers, called an embedding.</li>
-      <li><b>Learn.</b> Each model learns weights that push those numbers toward Taylor or toward Sun Tzu.</li>
-      <li><b>Test.</b> We hid <span id="n-test"></span> lines while they learned. The word counter got <b id="acc"></b> right; the meaning model got <b id="acc-e"></b>.</li>
+      <li><b>Turn text into numbers.</b> A pre-trained AI (MiniLM) reads each line and squeezes its meaning into 384 numbers, called an embedding. Lines that mean similar things get similar numbers.</li>
+      <li><b>Learn.</b> A simple model learns which patterns in those numbers mean Taylor and which mean Sun Tzu.</li>
+      <li><b>Test.</b> We hid <span id="n-test"></span> lines while it learned. It got <b id="acc"></b> of them right.</li>
     </ol>
-    <h2>The words the word counter leans on most</h2>
+    <h2>Single words it is most sure about</h2>
     <div class="top">
       <div><h3 class="t">Taylor</h3><ol id="top-t"></ol></div>
       <div><h3 class="s">Sun Tzu</h3><ol id="top-s"></ol></div>
     </div>
-    <p class="lede">Look at the Taylor list: <i>you, me, my</i>. It mostly learned who is talking, not what they talk about. That shortcut is why a Gen Z rewrite of Sun Tzu fools it. The meaning model has no word list to show: its 384 numbers don't line up with words.</p>
+    <p class="lede">It learned topics: war goes to Sun Tzu, love and attitude go to Taylor. So Sun Tzu in Gen Z slang reads as Taylor, and Taylor talking about enemies reads as Sun Tzu.</p>
   </section>
 </main>
 

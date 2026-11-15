@@ -6,27 +6,21 @@ const pct = (x) => `${Math.round(x * 100)}%`;
 const side = (label) => (label.startsWith("Sun") ? S : T);
 const cls = (who) => (who === T ? "t" : "s");
 
-function tokens(text) {
-  const uni = (text.toLowerCase().match(/[\p{L}\p{N}_]{2,}/gu) || []);
-  const bi = uni.slice(1).map((w, k) => `${uni[k]} ${w}`);
-  return uni.concat(bi);
+const TRANSFORMERS = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2";
+let embedder, pending = 0;
+
+async function loadEmbedder() {
+  if (embedder) return embedder;
+  const { pipeline } = await import(TRANSFORMERS);
+  embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+  return embedder;
 }
 
-function score1(text) {
-  const tf = new Map();
-  for (const t of tokens(text)) if (M.vocab[t]) tf.set(t, (tf.get(t) || 0) + 1);
-  let norm = 0;
-  const w = [];
-  for (const [t, n] of tf) {
-    const [idf, coef] = M.vocab[t];
-    const v = (1 + Math.log(n)) * idf;
-    norm += v * v;
-    w.push([t, v, coef]);
-  }
-  norm = Math.sqrt(norm) || 1;
+async function probTaylor(text) {
+  const out = await (await loadEmbedder())(text, { pooling: "mean", normalize: true });
   let z = M.intercept;
-  for (const x of w) { x[1] /= norm; z += x[1] * x[2]; }
-  return { p: 1 / (1 + Math.exp(-z)), parts: w.map(([t, v, c]) => [t, v * c]) };
+  for (let k = 0; k < M.coef.length; k++) z += out.data[k] * M.coef[k];
+  return 1 / (1 + Math.exp(-z));
 }
 
 function setMeter(el, p) {
@@ -68,7 +62,7 @@ function guess(pick) {
   });
   const who = r.label === "Taylor" ? "Taylor Swift" : r.label;
   $("#verdict").innerHTML = `${pick === truth ? "Right." : "Wrong."} It's <span class="${cls(truth)}">${who}</span>.`;
-  $("#model").innerHTML = modelLine(r.p) + (modelPick === truth ? "" : " Wrong too.");
+  $("#model").innerHTML = modelLine(r.p) + (modelPick === truth ? "" : " It's wrong.");
   $("#note").textContent = r.note;
   $("#score").textContent = `You ${score.you}  ·  Model ${score.model}`;
   $("#reveal").hidden = false;
@@ -85,6 +79,7 @@ function next() {
   $("#choices").hidden = true;
   $("#reveal").hidden = true;
   $("#round").textContent = "Done";
+  $("#end-lede").textContent = `On ${M.n_test} lines it had never seen, the model was right ${pct(M.accuracy)} of the time. We picked these lines to show where it slips.`;
   const verdict = score.you > score.model ? "You beat the model." : score.you === score.model ? "A tie." : "The model wins.";
   $("#final").textContent = `You ${score.you}, model ${score.model}. ${verdict}`;
   $("#end").hidden = false;
@@ -99,25 +94,30 @@ function restart() {
 function go(view) {
   document.querySelectorAll(".view").forEach((v) => (v.hidden = v.id !== view));
   document.querySelectorAll("nav a").forEach((a) => a.classList.toggle("on", a.dataset.go === view));
-  if (view === "fool") $("#input").focus();
+  if (view === "fool") {
+    $("#input").focus();
+    loadEmbedder().then(() => { if (!$("#input").value.trim()) $("#live-model").textContent = "Start typing."; else live(); })
+      .catch(() => { $("#live-model").textContent = "The model didn't load. Check your connection and reload the page."; });
+  }
   history.replaceState(null, "", view === "play" ? location.pathname : `#${view}`);
 }
 
-function live() {
+async function live() {
   const text = $("#input").value.trim();
+  const ticket = ++pending;
   if (!text) {
     setMeter($("#live-meter"), 0.5);
-    $("#live-model").textContent = "Start typing.";
-    $("#live-words").textContent = "";
+    if (embedder) $("#live-model").textContent = "Start typing.";
     return;
   }
-  const { p, parts } = score1(text);
-  setMeter($("#live-meter"), p);
-  $("#live-model").innerHTML = parts.length ? modelLine(p) : "It doesn't know any of these words, so it can only guess 50/50.";
-  const top = parts.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 6);
-  $("#live-words").innerHTML = top.length
-    ? "Pulling hardest: " + top.map(([t, v]) => `<span class="${v > 0 ? "t" : "s"}">${t}</span>`).join(", ")
-    : "";
+  try {
+    const p = await probTaylor(text);
+    if (ticket !== pending) return;
+    setMeter($("#live-meter"), p);
+    $("#live-model").innerHTML = modelLine(p);
+  } catch {
+    $("#live-model").textContent = "The model didn't load. Check your connection and reload the page.";
+  }
 }
 
 async function init() {
