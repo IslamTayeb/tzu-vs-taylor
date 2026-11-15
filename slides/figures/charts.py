@@ -135,16 +135,52 @@ def table(name, spec):
 
 
 def vector_point():
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig = plt.figure(figsize=(17, 5.4))
+    grid = fig.add_gridspec(1, 4, width_ratios=[1, 1, 1.35, 1], wspace=0.22)
+
+    ax = fig.add_subplot(grid[0])
+    ax.plot([0, 5], [0, 0], color=INK, lw=2.5, zorder=2)
+    ax.scatter([3], [0], s=420, color=ORANGE, zorder=4)
+    ax.text(3, 0.55, "[3]", ha="center", fontsize=32, fontweight="bold")
+    for t in range(6):
+        ax.plot([t, t], [-0.12, 0.12], color=INK, lw=2)
+        ax.text(t, -0.45, str(t), ha="center", fontsize=18)
+    ax.set_xlim(-0.3, 5.3); ax.set_ylim(-1.6, 1.6)
+    ax.axis("off")
+
+    ax = fig.add_subplot(grid[1])
     ax.plot([3, 3], [0, 2], "--", color=SLATE, lw=2, zorder=2)
     ax.plot([0, 3], [2, 2], "--", color=SLATE, lw=2, zorder=2)
     ax.scatter([3], [2], s=420, color=ORANGE, zorder=4)
-    ax.text(3.18, 2.18, "[3, 2]", fontsize=34, fontweight="bold", zorder=5)
-    ax.text(1.5, 0.2, "3 over", ha="center", fontsize=22, color=SLATE)
-    ax.text(3.12, 1.0, "2 up", fontsize=22, color=SLATE, va="center")
+    ax.text(3, 2.45, "[3, 2]", ha="center", fontsize=32, fontweight="bold", zorder=5)
     ax.set_xlim(0, 5); ax.set_ylim(0, 3.5)
     ax.set_xticks(range(6)); ax.set_yticks(range(4))
     ax.tick_params(labelsize=18)
+
+    ax = fig.add_subplot(grid[2], projection="3d")
+    x, y, z = 3, 2, 4
+    for xs, ys, zs in [([x, x], [y, y], [0, z]), ([0, x], [y, y], [0, 0]), ([x, x], [0, y], [0, 0])]:
+        ax.plot(xs, ys, zs, "--", color=SLATE, lw=2)
+    ax.scatter([x], [y], [z], s=420, color=ORANGE, depthshade=False)
+    ax.text(x, y, z + 1.1, "[3, 2, 4]", ha="center", fontsize=32, fontweight="bold", zorder=10,
+            bbox=dict(facecolor="white", edgecolor="none", pad=2))
+    ax.set_xlim(0, 5); ax.set_ylim(0, 5); ax.set_zlim(0, 5)
+    ax.set_xticks(range(0, 6)); ax.set_yticks(range(0, 6)); ax.set_zticks(range(0, 6))
+    ax.tick_params(labelsize=14, pad=0)
+    ax.view_init(elev=18, azim=-58)
+    for axis in (ax.xaxis, ax.yaxis, ax.zaxis):
+        axis.set_pane_color((0, 0, 0, 0))
+    ax.set_box_aspect(None, zoom=1.12)
+
+    ax = fig.add_subplot(grid[3])
+    ax.text(0.5, 0.55, "[3, 2, 4, 1, ...]", ha="center", va="center", fontsize=28, fontweight="bold")
+    ax.text(0.5, 0.33, "Same idea,\nwe just can't draw it", ha="center", va="top", fontsize=22, color=SLATE)
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+    ax.axis("off")
+
+    for k, title in enumerate(["1D: one number", "2D: two numbers", "3D: three numbers", "4D and up"]):
+        left = grid[k].get_position(fig)
+        fig.text((left.x0 + left.x1) / 2, 0.93, title, ha="center", fontsize=26, fontweight="bold")
     save(fig, "vector_point")
 
 

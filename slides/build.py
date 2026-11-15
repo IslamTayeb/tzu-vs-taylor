@@ -83,7 +83,7 @@ def main():
     flip = [i + 1 for i, (s, ok) in enumerate(zip(facts["quiz_sure"], facts["quiz_right"])) if ok and s < 55]
 
     statement("How Machines Read", "Embeddings and classification")
-    figure("What's A Vector?", "vector_point", [("A vector is just a list of numbers. Two numbers make a point on a graph", False)])
+    figure("What's A Vector?", "vector_point", [("A vector is just a list of numbers. Each number adds a direction", False)])
     figure("Embedding: Anything Becomes A Vector", "diagram_1")
     figure("Then We Use The Vectors", "diagram_2")
     figure("Four Ways To Use Them", "diagram_3")
