@@ -3,6 +3,7 @@ from pathlib import Path
 import nbformat as nbf
 
 ROOT = Path(__file__).resolve().parent.parent
+ROUNDS = sum(1 for _ in open(ROOT / "data" / "quiz.csv")) - 1
 
 SETUP = '''#@title Setup: run once
 import os, sys
@@ -39,7 +40,7 @@ model = LogisticRegression(max_iter=2000).fit(x_train, y_train)   # learn which 
 show.accuracy(model.score(x_test, y_test), len(y_test))           # grade it on lines it never saw'''),
 
     ("md", "## 4. Class vs. model\nRead the line, vote, then see who was right."),
-    *[("code", f"show.quiz(model, {i})") for i in range(1, 8)],
+    *[("code", f"show.quiz(model, {i})") for i in range(1, ROUNDS + 1)],
 
     ("md", "## 5. What did it learn?\nFeed it single words and see which ones it is most sure about."),
     ("code", "show.top_words(model, lines)"),

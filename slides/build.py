@@ -96,7 +96,7 @@ def main():
 
     deck.qr("Play along", [(URL, 30), ("Guess first, then see what the model thinks", 22)])
     deck.statement("You vs. the model", f"{facts['rounds']} rounds")
-    deck.figure("How sure it was", "confidence.png", "Round 4, Sun Tzu writing about music, was nearly a coin flip")
+    deck.figure("How sure it was", "confidence.png", "Rounds 4 and 6 were nearly coin flips, and it missed round 10")
     deck.figure("What it learned", "top_words.png", "We fed it single words, one at a time")
     deck.figure("One word flips it", "girl.png", "Sun Tzu's \"Let your plans be dark and impenetrable as night...\"")
     deck.figure("Fooling it", "traps.png", "It learned topics and tone, not authors")
