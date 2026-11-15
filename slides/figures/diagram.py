@@ -113,9 +113,13 @@ def magnifier(cx, cy):
 
 
 def clusters(cx, cy):
-    groups = [(-38, -14, RED), (30, -20, CYAN), (0, 26, YELLOW)]
-    return "".join(f"<circle cx='{cx + gx + ox}' cy='{cy + gy + oy}' r='8' fill='{c}' stroke='{INK}' stroke-width='2.5'/>"
-                   for gx, gy, c in groups for ox, oy in [(-10, -6), (10, -4), (0, 10), (-2, -18)])
+    out = ""
+    for gx, gy in [(-36, -16), (32, -18), (0, 28)]:
+        out += (f"<circle cx='{cx + gx}' cy='{cy + gy}' r='27' fill='none' stroke='{INK}' stroke-width='3' "
+                f"stroke-dasharray='6 5'/>")
+        out += "".join(f"<circle cx='{cx + gx + ox}' cy='{cy + gy + oy}' r='6.5' fill='{SNOW}' stroke='{SLATE}' stroke-width='2.5'/>"
+                       for ox, oy in [(-9, -6), (9, -5), (0, 9)])
+    return out
 
 
 def scaled(svg, cx, cy, s):
@@ -144,7 +148,7 @@ def diagram(stage):
     uses = [(lambda x, y: picture(x, y, new=True) + sparkle(x + 62, y - 46), "Generation", "new text, images, audio"),
             (bins, "Classification", "is this email spam?"),
             (magnifier, "Search", "find stories like this one"),
-            (clusters, "Clustering", "sort a leak into piles")]
+            (clusters, "Clustering", "find themes nobody labeled")]
     shown = 1 if stage == 2 else 4 if stage >= 3 else 0
     if shown:
         parts.append(step(1080, 40, "2", "Using them"))

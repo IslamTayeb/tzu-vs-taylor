@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T03:19:08.130629</dc:date>
+    <dc:date>2026-11-15T03:39:20.966201</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -31,24 +31,24 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 7.2 134.208 
-L 542.254206 134.208 
-L 542.254206 13.248 
-L 7.2 13.248 
+    <path d="M 11.320615 134.208 
+L 539.789538 134.208 
+L 539.789538 13.248 
+L 11.320615 13.248 
 z
-" clip-path="url(#pb0534987aa)" style="fill: #d8dee9; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pff7d50b3c7)" style="fill: #d8dee9; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
-    <path d="M 542.254206 134.208 
-L 676.8 134.208 
-L 676.8 13.248 
-L 542.254206 13.248 
+    <path d="M 539.789538 134.208 
+L 672.679385 134.208 
+L 672.679385 13.248 
+L 539.789538 13.248 
 z
-" clip-path="url(#pb0534987aa)" style="fill: #ebcb8b; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pff7d50b3c7)" style="fill: #ebcb8b; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- 513 -->
-    <g style="fill: #2e3440" transform="translate(256.479603 65.914875) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(257.307577 65.914875) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-Bold-194" d="M 184 0 
 L 184 0 
@@ -170,7 +170,7 @@ z
      <use xlink:href="#Carlito-Bold-192" transform="translate(101.375 0)"/>
     </g>
     <!-- To Learn From -->
-    <g style="fill: #2e3440" transform="translate(204.360228 97.021125) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(205.188202 97.021125) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-Bold-24" d="M 3113 4150 
 L 3113 3481 
@@ -429,7 +429,7 @@ z
    </g>
    <g id="text_2">
     <!-- 129 -->
-    <g style="fill: #2e3440" transform="translate(591.279603 65.997375) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(587.986962 65.997375) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-Bold-191" d="M 216 0 
 L 216 0 
@@ -527,7 +527,7 @@ z
      <use xlink:href="#Carlito-Bold-196" transform="translate(101.375 0)"/>
     </g>
     <!-- Kept Secret -->
-    <g style="fill: #2e3440" transform="translate(552.890853 95.311125) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(549.598212 95.311125) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-Bold-14" d="M 1122 2428 
 L 1253 2428 
@@ -728,7 +728,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pb0534987aa">
+  <clipPath id="pff7d50b3c7">
    <rect x="7.2" y="7.2" width="669.6" height="133.056"/>
   </clipPath>
  </defs>

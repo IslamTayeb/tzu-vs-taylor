@@ -44,7 +44,7 @@ def split_bar(n_train, n_test):
     ax.barh(0, n_test, left=n_train, color=YELLOW, height=0.7, zorder=3)
     ax.text(n_train / 2, 0, f"{n_train}\nTo Learn From", ha="center", va="center", fontsize=24, fontweight="bold", linespacing=1.3)
     ax.text(n_train + n_test / 2, 0, f"{n_test}\nKept Secret", ha="center", va="center", fontsize=24, fontweight="bold", linespacing=1.3)
-    ax.set_xlim(0, n_train + n_test)
+    ax.set_xlim(-4, n_train + n_test + 4)
     ax.axis("off")
     save(fig, "split")
 
@@ -134,14 +134,39 @@ def table(name, spec):
     path.unlink()
 
 
-def neighbors(query="My flight got cancelled"):
-    candidates = ["The airline called off our trip", "Our plane never left the ground",
-                  "I baked bread this morning", "My dog loves the park"]
-    vectors = embed([query] + candidates)
-    closeness = vectors[1:] @ vectors[0]
-    rows = [{"label": c, "values": [f"{x:.2f}"]} for c, x in sorted(zip(candidates, closeness), key=lambda t: -t[1])]
-    table("neighbors", {"columns": ["Closeness"], "sections": [{"title": f"Closest to \"{query}\"", "rows": rows}],
-                        "highlight": [{"row": rows[0]["label"], "color": "yellow"}]})
+def vector_point():
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot([3, 3], [0, 2], "--", color=SLATE, lw=2, zorder=2)
+    ax.plot([0, 3], [2, 2], "--", color=SLATE, lw=2, zorder=2)
+    ax.scatter([3], [2], s=420, color=ORANGE, zorder=4)
+    ax.text(3.18, 2.18, "[3, 2]", fontsize=34, fontweight="bold", zorder=5)
+    ax.text(1.5, 0.2, "3 over", ha="center", fontsize=22, color=SLATE)
+    ax.text(3.12, 1.0, "2 up", fontsize=22, color=SLATE, va="center")
+    ax.set_xlim(0, 5); ax.set_ylim(0, 3.5)
+    ax.set_xticks(range(6)); ax.set_yticks(range(4))
+    ax.tick_params(labelsize=18)
+    save(fig, "vector_point")
+
+
+def sentence_map():
+    sentences = ["My flight got cancelled", "The airline called off our trip", "Our plane never took off",
+                 "My dog loves the park", "The puppy chased a ball", "I baked bread this morning", "The cake is in the oven"]
+    offsets = [(-16, -16, "right"), (-16, 14, "right"), (16, -34, "left"), (16, 14, "left"), (16, -14, "left"),
+               (16, 0, "left"), (16, 0, "left")]
+    groups = [SLATE, SLATE, SLATE, ORANGE, ORANGE, YELLOW, YELLOW]
+    xy = PCA(2, random_state=0).fit_transform(embed(sentences))
+    fig, ax = plt.subplots(figsize=(11, 6.2))
+    ax.scatter(xy[:, 0], xy[:, 1], s=260, color=groups, zorder=4)
+    for (x, y), text, (dx, dy, ha) in zip(xy, sentences, offsets):
+        ax.annotate(f"\"{text}\"", (x, y), xytext=(dx, dy), textcoords="offset points", ha=ha, va="center",
+                    fontsize=18, zorder=5)
+    ax.set_xlim(xy[:, 0].min() - 2.0, xy[:, 0].max() + 1.7)
+    ax.set_ylim(xy[:, 1].min() - 0.3, xy[:, 1].max() + 0.35)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.grid(False)
+    ax.set_xlabel("Squashed Number 1", fontsize=19)
+    ax.set_ylabel("Squashed Number 2", fontsize=19)
+    save(fig, "sentence_map")
 
 
 def toy(stage, seed=4):
@@ -164,14 +189,14 @@ def toy(stage, seed=4):
         ys = np.array([-3, 3])
         ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
     if stage == 3:
-        on_line = -(wy * 1.85 + b) / wx
-        for (x, y), dy in [((-2.2, -1.3), -50), ((on_line + 0.04, 1.85), 40)]:
+        on_line = -(wy * -0.95 + b) / wx
+        for (x, y), dx, ha in [((-2.5, -1.85), 28, "left"), ((on_line, -0.95), -28, "right")]:
             p = flat.predict_proba([[x, y]])[0, 1]
             sure = max(p, 1 - p)
             ax.scatter([x], [y], s=520, color="white", edgecolor=INK, linewidth=3, zorder=6)
             ax.text(x, y, "?", ha="center", va="center", fontsize=24, fontweight="bold", zorder=7)
-            note = f"Spam, {sure:.0%} sure" if sure > 0.6 else f"{sure:.0%} sure: a coin flip"
-            ax.annotate(note, (x, y), xytext=(0, dy), textcoords="offset points", ha="center", va="center",
+            note = f"Spam, {min(sure, 0.99):.0%} sure" if sure > 0.6 else f"{sure:.0%} sure: a coin flip"
+            ax.annotate(note, (x, y), xytext=(dx, 0), textcoords="offset points", ha=ha, va="center",
                         fontsize=21, fontweight="bold", zorder=7, bbox=dict(fc="white", ec="none", pad=2))
     if stage == 4:
         test = np.array([[-2.2, 1.3], [-1.5, -0.6], [-0.6, 1.6], [-1.8, 0.3], [0.45, 0.2],
@@ -188,9 +213,6 @@ def toy(stage, seed=4):
                 for sign in (1, -1):
                     ax.plot([mx - 0.09, mx + 0.09], [my - 0.09 * sign, my + 0.09 * sign], color="#b4412f", lw=3.5,
                             zorder=7, solid_capstyle="round")
-        right = int((guess == truth).sum())
-        ax.text(0.02, 0.03, f"{right} of {len(test)} hidden emails right", transform=ax.transAxes, fontsize=22,
-                fontweight="bold", zorder=7, bbox=dict(fc="white", ec="none", pad=3))
     ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
     ax.set_xticks([]); ax.set_yticks([])
     ax.grid(False)
@@ -225,7 +247,8 @@ def main():
     split_bar(len(lines) - n_test, n_test)
     dot_maps(lines, vectors)
     top_words(model, lines)
-    neighbors()
+    vector_point()
+    sentence_map()
     for stage in (1, 2, 3, 4):
         toy(stage)
     data_rows()
