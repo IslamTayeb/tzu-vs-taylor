@@ -1,0 +1,1619 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="857.707187pt" height="248.896pt" viewBox="0 0 857.707187 248.896" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-15T03:06:16.252172</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 248.896 
+L 857.707187 248.896 
+L 857.707187 0 
+L 0 0 
+L 0 248.896 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 163.023437 195.696 
+L 832.623438 195.696 
+L 832.623438 7.2 
+L 163.023437 7.2 
+L 163.023437 195.696 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 163.023437 195.696 
+L 163.023437 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m45e8c8e068" d="M 0 0 
+L 0 3.5 
+" style="stroke: #2e3440; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m45e8c8e068" x="163.023437" y="195.696" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <!-- 0% -->
+      <g style="fill: #2e3440" transform="translate(153.249687 214.696) scale(0.16 -0.16)">
+       <defs>
+        <path id="Carlito-18f" d="M 3078 2053 
+Q 3078 1516 2965 1120 
+Q 2853 725 2656 467 
+Q 2459 209 2192 82 
+Q 1925 -44 1619 -44 
+Q 1313 -44 1047 82 
+Q 781 209 586 467 
+Q 391 725 278 1120 
+Q 166 1516 166 2053 
+Q 166 2591 278 2986 
+Q 391 3381 586 3640 
+Q 781 3900 1047 4026 
+Q 1313 4153 1619 4153 
+Q 1925 4153 2192 4026 
+Q 2459 3900 2656 3640 
+Q 2853 3381 2965 2986 
+Q 3078 2591 3078 2053 
+z
+M 2534 2053 
+Q 2534 2522 2459 2839 
+Q 2384 3156 2257 3350 
+Q 2131 3544 1965 3628 
+Q 1800 3713 1619 3713 
+Q 1438 3713 1273 3628 
+Q 1109 3544 982 3350 
+Q 856 3156 781 2839 
+Q 706 2522 706 2053 
+Q 706 1584 781 1267 
+Q 856 950 982 756 
+Q 1109 563 1273 480 
+Q 1438 397 1619 397 
+Q 1800 397 1965 480 
+Q 2131 563 2257 756 
+Q 2384 950 2459 1267 
+Q 2534 1584 2534 2053 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-478" d="M 2059 3278 
+Q 2059 3025 1984 2826 
+Q 1909 2628 1781 2489 
+Q 1653 2350 1484 2278 
+Q 1316 2206 1131 2206 
+Q 934 2206 764 2278 
+Q 594 2350 470 2489 
+Q 347 2628 276 2826 
+Q 206 3025 206 3278 
+Q 206 3538 276 3741 
+Q 347 3944 470 4083 
+Q 594 4222 764 4294 
+Q 934 4366 1131 4366 
+Q 1328 4366 1498 4294 
+Q 1669 4222 1794 4083 
+Q 1919 3944 1989 3741 
+Q 2059 3538 2059 3278 
+z
+M 1631 3278 
+Q 1631 3478 1592 3615 
+Q 1553 3753 1486 3840 
+Q 1419 3928 1326 3967 
+Q 1234 4006 1131 4006 
+Q 1028 4006 937 3967 
+Q 847 3928 780 3840 
+Q 713 3753 675 3615 
+Q 638 3478 638 3278 
+Q 638 3084 675 2948 
+Q 713 2813 780 2728 
+Q 847 2644 937 2606 
+Q 1028 2569 1131 2569 
+Q 1234 2569 1326 2606 
+Q 1419 2644 1486 2728 
+Q 1553 2813 1592 2948 
+Q 1631 3084 1631 3278 
+z
+M 4369 1022 
+Q 4369 769 4294 569 
+Q 4219 369 4091 230 
+Q 3963 91 3794 19 
+Q 3625 -53 3441 -53 
+Q 3244 -53 3073 19 
+Q 2903 91 2778 230 
+Q 2653 369 2583 569 
+Q 2513 769 2513 1022 
+Q 2513 1281 2583 1482 
+Q 2653 1684 2778 1823 
+Q 2903 1963 3073 2036 
+Q 3244 2109 3441 2109 
+Q 3638 2109 3808 2036 
+Q 3978 1963 4101 1823 
+Q 4225 1684 4297 1482 
+Q 4369 1281 4369 1022 
+z
+M 3941 1022 
+Q 3941 1219 3902 1358 
+Q 3863 1497 3794 1583 
+Q 3725 1669 3634 1708 
+Q 3544 1747 3441 1747 
+Q 3338 1747 3247 1708 
+Q 3156 1669 3089 1583 
+Q 3022 1497 2983 1358 
+Q 2944 1219 2944 1022 
+Q 2944 825 2983 689 
+Q 3022 553 3089 468 
+Q 3156 384 3247 346 
+Q 3338 309 3441 309 
+Q 3544 309 3634 346 
+Q 3725 384 3794 468 
+Q 3863 553 3902 689 
+Q 3941 825 3941 1022 
+z
+M 969 163 
+Q 913 66 841 33 
+Q 769 0 678 0 
+L 444 0 
+L 3528 4134 
+Q 3581 4225 3651 4273 
+Q 3722 4322 3828 4322 
+L 4069 4322 
+L 969 163 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-18f"/>
+       <use xlink:href="#Carlito-478" transform="translate(50.6875 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 330.423437 195.696 
+L 330.423437 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m45e8c8e068" x="330.423437" y="195.696" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <!-- 25% -->
+      <g style="fill: #2e3440" transform="translate(316.594687 214.696) scale(0.16 -0.16)">
+       <defs>
+        <path id="Carlito-191" d="M 288 0 
+L 288 0 
+z
+M 1685 4153 
+Q 1944 4153 2166 4075 
+Q 2388 3997 2550 3850 
+Q 2713 3703 2805 3490 
+Q 2897 3278 2897 3006 
+Q 2897 2778 2830 2583 
+Q 2763 2388 2649 2209 
+Q 2535 2031 2385 1861 
+Q 2235 1691 2069 1519 
+L 1016 422 
+Q 1135 456 1255 475 
+Q 1375 494 1485 494 
+L 2788 494 
+Q 2872 494 2922 445 
+Q 2972 397 2972 316 
+L 2972 0 
+L 288 0 
+L 288 178 
+Q 288 231 310 292 
+Q 332 353 385 403 
+L 1657 1716 
+Q 1819 1881 1949 2034 
+Q 2079 2188 2169 2342 
+Q 2260 2497 2310 2656 
+Q 2360 2816 2360 2994 
+Q 2360 3172 2305 3306 
+Q 2250 3441 2156 3530 
+Q 2063 3619 1935 3662 
+Q 1807 3706 1657 3706 
+Q 1510 3706 1385 3661 
+Q 1260 3616 1163 3536 
+Q 1066 3456 997 3345 
+Q 929 3234 897 3103 
+Q 872 2997 811 2964 
+Q 750 2931 641 2947 
+L 369 2991 
+Q 407 3275 521 3492 
+Q 635 3709 807 3856 
+Q 979 4003 1202 4078 
+Q 1425 4153 1685 4153 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-194" d="M 291 0 
+L 291 0 
+z
+M 2741 3878 
+Q 2741 3769 2670 3697 
+Q 2600 3625 2435 3625 
+L 1194 3625 
+L 1016 2563 
+Q 1172 2597 1311 2612 
+Q 1450 2628 1581 2628 
+Q 1894 2628 2134 2533 
+Q 2375 2438 2537 2272 
+Q 2700 2106 2783 1879 
+Q 2866 1653 2866 1388 
+Q 2866 1059 2755 795 
+Q 2644 531 2448 343 
+Q 2253 156 1987 56 
+Q 1722 -44 1416 -44 
+Q 1238 -44 1075 -8 
+Q 913 28 769 87 
+Q 625 147 505 225 
+Q 385 303 291 391 
+L 450 613 
+Q 506 688 591 688 
+Q 647 688 717 644 
+Q 788 600 888 545 
+Q 988 491 1122 447 
+Q 1256 403 1444 403 
+Q 1650 403 1815 472 
+Q 1981 541 2097 666 
+Q 2213 791 2275 967 
+Q 2338 1144 2338 1363 
+Q 2338 1553 2283 1706 
+Q 2228 1859 2120 1968 
+Q 2013 2078 1850 2137 
+Q 1688 2197 1472 2197 
+Q 1169 2197 828 2084 
+L 503 2184 
+L 828 4106 
+L 2741 4106 
+L 2741 3878 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-191"/>
+       <use xlink:href="#Carlito-194" transform="translate(50.6875 0)"/>
+       <use xlink:href="#Carlito-478" transform="translate(101.375 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 497.823437 195.696 
+L 497.823437 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m45e8c8e068" x="497.823437" y="195.696" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <!-- 50% -->
+      <g style="fill: #2e3440" transform="translate(483.994687 214.696) scale(0.16 -0.16)">
+       <use xlink:href="#Carlito-194"/>
+       <use xlink:href="#Carlito-18f" transform="translate(50.6875 0)"/>
+       <use xlink:href="#Carlito-478" transform="translate(101.375 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 665.223438 195.696 
+L 665.223438 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m45e8c8e068" x="665.223438" y="195.696" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <!-- 75% -->
+      <g style="fill: #2e3440" transform="translate(651.394688 214.696) scale(0.16 -0.16)">
+       <defs>
+        <path id="Carlito-195" d="M 306 0 
+L 306 0 
+z
+M 3038 4106 
+L 3038 3875 
+Q 3038 3775 3016 3711 
+Q 2994 3647 2972 3603 
+L 1331 184 
+Q 1294 109 1225 54 
+Q 1156 0 1047 0 
+L 666 0 
+L 2334 3372 
+Q 2409 3519 2503 3625 
+L 434 3625 
+Q 381 3625 343 3662 
+Q 306 3700 306 3750 
+L 306 4106 
+L 3038 4106 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-195"/>
+       <use xlink:href="#Carlito-194" transform="translate(50.6875 0)"/>
+       <use xlink:href="#Carlito-478" transform="translate(101.375 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 832.623438 195.696 
+L 832.623438 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m45e8c8e068" x="832.623438" y="195.696" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <!-- 100% -->
+      <g style="fill: #2e3440" transform="translate(814.739688 214.696) scale(0.16 -0.16)">
+       <defs>
+        <path id="Carlito-190" d="M 797 400 
+L 1650 400 
+L 1650 3172 
+Q 1650 3294 1659 3425 
+L 963 2813 
+Q 888 2750 817 2770 
+Q 747 2791 719 2831 
+L 553 3059 
+L 1750 4119 
+L 2175 4119 
+L 2175 400 
+L 2956 400 
+L 2956 0 
+L 797 0 
+L 797 400 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-190"/>
+       <use xlink:href="#Carlito-18f" transform="translate(50.6875 0)"/>
+       <use xlink:href="#Carlito-18f" transform="translate(101.375 0)"/>
+       <use xlink:href="#Carlito-478" transform="translate(152.0625 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="text_6">
+     <!-- Model's Chance The Line Is Taylor's -->
+     <g style="fill: #2e3440" transform="translate(362.668125 236.946) scale(0.19 -0.19)">
+      <defs>
+       <path id="Carlito-18" d="M 2609 1497 
+Q 2650 1425 2683 1350 
+Q 2716 1275 2747 1197 
+Q 2778 1278 2811 1353 
+Q 2844 1428 2881 1497 
+L 4331 4013 
+Q 4369 4078 4412 4092 
+Q 4456 4106 4531 4106 
+L 4950 4106 
+L 4950 0 
+L 4447 0 
+L 4447 2997 
+Q 4447 3059 4451 3136 
+Q 4456 3213 4463 3291 
+L 2997 716 
+Q 2925 588 2791 588 
+L 2709 588 
+Q 2575 588 2503 716 
+L 1003 3288 
+Q 1022 3131 1022 2997 
+L 1022 0 
+L 522 0 
+L 522 4106 
+L 941 4106 
+Q 1016 4106 1058 4092 
+Q 1100 4078 1141 4009 
+L 2609 1497 
+L 2609 1497 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-6f" d="M 1691 3103 
+Q 2025 3103 2294 2992 
+Q 2563 2881 2750 2676 
+Q 2938 2472 3039 2181 
+Q 3141 1891 3141 1531 
+Q 3141 1169 3039 878 
+Q 2938 588 2750 383 
+Q 2563 178 2294 67 
+Q 2025 -44 1691 -44 
+Q 1356 -44 1086 67 
+Q 816 178 627 383 
+Q 438 588 336 878 
+Q 234 1169 234 1531 
+Q 234 1891 336 2181 
+Q 438 2472 627 2676 
+Q 816 2881 1086 2992 
+Q 1356 3103 1691 3103 
+z
+M 1691 384 
+Q 1913 384 2078 461 
+Q 2244 538 2355 684 
+Q 2466 831 2520 1043 
+Q 2575 1256 2575 1528 
+Q 2575 1800 2520 2012 
+Q 2466 2225 2355 2372 
+Q 2244 2519 2078 2597 
+Q 1913 2675 1691 2675 
+Q 1466 2675 1298 2597 
+Q 1131 2519 1020 2372 
+Q 909 2225 854 2012 
+Q 800 1800 800 1528 
+Q 800 1256 854 1043 
+Q 909 831 1020 684 
+Q 1131 538 1298 461 
+Q 1466 384 1691 384 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-37" d="M 2584 0 
+Q 2525 0 2487 26 
+Q 2450 53 2444 113 
+L 2388 478 
+Q 2194 244 1947 100 
+Q 1700 -44 1375 -44 
+Q 1116 -44 905 57 
+Q 694 159 544 356 
+Q 394 553 312 845 
+Q 231 1138 231 1519 
+Q 231 1856 320 2148 
+Q 409 2441 578 2653 
+Q 747 2866 989 2987 
+Q 1231 3109 1538 3109 
+Q 1816 3109 2012 3017 
+Q 2209 2925 2363 2753 
+L 2363 4444 
+L 2913 4444 
+L 2913 0 
+L 2584 0 
+z
+M 1553 397 
+Q 1813 397 2005 517 
+Q 2197 638 2363 853 
+L 2363 2331 
+Q 2216 2528 2044 2608 
+Q 1872 2688 1663 2688 
+Q 1247 2688 1022 2384 
+Q 797 2081 797 1519 
+Q 797 1222 848 1009 
+Q 900 797 997 661 
+Q 1094 525 1234 461 
+Q 1375 397 1553 397 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-3b" d="M 1672 3103 
+Q 1947 3103 2181 3012 
+Q 2416 2922 2587 2747 
+Q 2759 2572 2856 2319 
+Q 2953 2066 2953 1738 
+Q 2953 1609 2925 1567 
+Q 2897 1525 2822 1525 
+L 778 1525 
+Q 784 1238 856 1023 
+Q 928 809 1054 668 
+Q 1181 528 1356 458 
+Q 1531 388 1747 388 
+Q 1947 388 2094 433 
+Q 2241 478 2345 534 
+Q 2450 591 2522 636 
+Q 2594 681 2647 681 
+Q 2681 681 2706 667 
+Q 2731 653 2750 628 
+L 2906 428 
+Q 2803 306 2664 217 
+Q 2525 128 2365 70 
+Q 2206 13 2036 -15 
+Q 1866 -44 1700 -44 
+Q 1381 -44 1112 62 
+Q 844 169 648 376 
+Q 453 584 343 889 
+Q 234 1194 234 1591 
+Q 234 1909 332 2186 
+Q 431 2463 617 2667 
+Q 803 2872 1070 2987 
+Q 1338 3103 1672 3103 
+z
+M 1681 2703 
+Q 1297 2703 1073 2478 
+Q 850 2253 794 1863 
+L 2459 1863 
+Q 2459 2047 2406 2201 
+Q 2353 2356 2253 2467 
+Q 2153 2578 2008 2640 
+Q 1863 2703 1681 2703 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-474" d="M 1009 4444 
+L 1009 0 
+L 459 0 
+L 459 4444 
+L 1009 4444 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-15d" d="M 944 4322 
+L 944 3447 
+L 891 2981 
+Q 881 2884 840 2829 
+Q 800 2775 703 2775 
+Q 622 2775 576 2828 
+Q 531 2881 522 2981 
+L 469 3447 
+L 469 4322 
+L 944 4322 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-76" d="M 2122 2550 
+Q 2084 2481 2009 2481 
+Q 1963 2481 1908 2515 
+Q 1853 2550 1776 2589 
+Q 1700 2628 1595 2662 
+Q 1491 2697 1347 2697 
+Q 1225 2697 1128 2662 
+Q 1031 2628 962 2568 
+Q 894 2509 856 2429 
+Q 819 2350 819 2259 
+Q 819 2141 881 2062 
+Q 944 1984 1047 1928 
+Q 1150 1872 1283 1826 
+Q 1416 1781 1553 1734 
+Q 1691 1688 1823 1625 
+Q 1956 1563 2059 1472 
+Q 2163 1381 2225 1251 
+Q 2288 1122 2288 938 
+Q 2288 725 2216 545 
+Q 2144 366 2005 234 
+Q 1866 103 1661 28 
+Q 1456 -47 1191 -47 
+Q 888 -47 639 56 
+Q 391 159 219 325 
+L 347 531 
+Q 372 572 406 594 
+Q 441 616 494 616 
+Q 550 616 606 573 
+Q 663 531 742 479 
+Q 822 428 934 386 
+Q 1047 344 1216 344 
+Q 1359 344 1464 384 
+Q 1569 425 1637 492 
+Q 1706 559 1740 650 
+Q 1775 741 1775 841 
+Q 1775 966 1711 1048 
+Q 1647 1131 1544 1189 
+Q 1441 1247 1308 1290 
+Q 1175 1334 1036 1382 
+Q 897 1431 764 1492 
+Q 631 1553 528 1648 
+Q 425 1744 361 1881 
+Q 297 2019 297 2216 
+Q 297 2394 365 2555 
+Q 434 2716 565 2837 
+Q 697 2959 890 3031 
+Q 1084 3103 1334 3103 
+Q 1619 3103 1850 3009 
+Q 2081 2916 2244 2747 
+L 2122 2550 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-2" transform="scale(0.015625)"/>
+       <path id="Carlito-7" d="M 2981 856 
+Q 3025 856 3063 819 
+L 3288 575 
+Q 3066 281 2741 118 
+Q 2416 -44 1963 -44 
+Q 1563 -44 1239 109 
+Q 916 263 686 539 
+Q 456 816 332 1202 
+Q 209 1588 209 2053 
+Q 209 2519 340 2905 
+Q 472 3291 709 3569 
+Q 947 3847 1278 4000 
+Q 1609 4153 2009 4153 
+Q 2406 4153 2707 4012 
+Q 3009 3872 3234 3631 
+L 3047 3369 
+Q 3028 3341 3000 3322 
+Q 2972 3303 2928 3303 
+Q 2875 3303 2811 3359 
+Q 2747 3416 2644 3483 
+Q 2541 3550 2387 3606 
+Q 2234 3663 2006 3663 
+Q 1738 3663 1514 3553 
+Q 1291 3444 1130 3236 
+Q 969 3028 880 2729 
+Q 791 2431 791 2053 
+Q 791 1672 884 1372 
+Q 978 1072 1140 865 
+Q 1303 659 1523 550 
+Q 1744 441 1997 441 
+Q 2153 441 2276 462 
+Q 2400 484 2504 529 
+Q 2609 575 2701 645 
+Q 2794 716 2884 813 
+Q 2934 856 2981 856 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-5f" d="M 447 0 
+L 447 4444 
+L 997 4444 
+L 997 2653 
+Q 1188 2859 1420 2981 
+Q 1653 3103 1959 3103 
+Q 2209 3103 2398 3020 
+Q 2588 2938 2716 2786 
+Q 2844 2634 2908 2420 
+Q 2972 2206 2972 1947 
+L 2972 0 
+L 2422 0 
+L 2422 1947 
+Q 2422 2288 2269 2478 
+Q 2116 2669 1800 2669 
+Q 1566 2669 1366 2556 
+Q 1166 2444 997 2247 
+L 997 0 
+L 447 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-2d" d="M 2428 0 
+Q 2347 0 2303 25 
+Q 2259 50 2244 128 
+L 2175 413 
+Q 2056 303 1942 217 
+Q 1828 131 1703 72 
+Q 1578 13 1434 -17 
+Q 1291 -47 1119 -47 
+Q 941 -47 786 1 
+Q 631 50 514 151 
+Q 397 253 330 404 
+Q 263 556 263 763 
+Q 263 944 361 1111 
+Q 459 1278 681 1409 
+Q 903 1541 1259 1623 
+Q 1616 1706 2134 1719 
+L 2134 1953 
+Q 2134 2309 1982 2489 
+Q 1831 2669 1541 2669 
+Q 1347 2669 1214 2619 
+Q 1081 2569 984 2509 
+Q 888 2450 817 2400 
+Q 747 2350 675 2350 
+Q 619 2350 578 2378 
+Q 538 2406 513 2450 
+L 413 2625 
+Q 666 2869 958 2989 
+Q 1250 3109 1606 3109 
+Q 1863 3109 2063 3026 
+Q 2263 2944 2397 2791 
+Q 2531 2638 2601 2425 
+Q 2672 2213 2672 1953 
+L 2672 0 
+L 2428 0 
+z
+M 1284 338 
+Q 1422 338 1537 366 
+Q 1653 394 1756 445 
+Q 1859 497 1951 573 
+Q 2044 650 2134 744 
+L 2134 1375 
+Q 1769 1359 1512 1314 
+Q 1256 1269 1095 1194 
+Q 934 1119 862 1017 
+Q 791 916 791 791 
+Q 791 672 830 586 
+Q 869 500 934 445 
+Q 1000 391 1090 364 
+Q 1181 338 1284 338 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-6d" d="M 438 0 
+L 438 3056 
+L 766 3056 
+Q 825 3056 862 3029 
+Q 900 3003 906 2944 
+L 953 2619 
+Q 1150 2838 1394 2970 
+Q 1638 3103 1956 3103 
+Q 2206 3103 2395 3020 
+Q 2584 2938 2712 2786 
+Q 2841 2634 2906 2420 
+Q 2972 2206 2972 1947 
+L 2972 0 
+L 2422 0 
+L 2422 1947 
+Q 2422 2288 2267 2478 
+Q 2113 2669 1797 2669 
+Q 1563 2669 1359 2558 
+Q 1156 2447 988 2250 
+L 988 0 
+L 438 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-31" d="M 2403 2506 
+Q 2378 2472 2354 2455 
+Q 2331 2438 2288 2438 
+Q 2241 2438 2191 2475 
+Q 2141 2513 2066 2558 
+Q 1991 2603 1883 2640 
+Q 1775 2678 1619 2678 
+Q 1413 2678 1255 2598 
+Q 1097 2519 992 2370 
+Q 888 2222 833 2009 
+Q 778 1797 778 1531 
+Q 778 1256 836 1042 
+Q 894 828 1000 681 
+Q 1106 534 1256 457 
+Q 1406 381 1594 381 
+Q 1775 381 1890 428 
+Q 2006 475 2084 531 
+Q 2163 588 2214 634 
+Q 2266 681 2322 681 
+Q 2384 681 2422 628 
+L 2581 428 
+Q 2481 306 2359 217 
+Q 2238 128 2097 70 
+Q 1956 13 1804 -15 
+Q 1653 -44 1497 -44 
+Q 1228 -44 993 62 
+Q 759 169 586 370 
+Q 413 572 314 864 
+Q 216 1156 216 1531 
+Q 216 1872 306 2161 
+Q 397 2450 570 2659 
+Q 744 2869 998 2986 
+Q 1253 3103 1584 3103 
+Q 1897 3103 2131 2998 
+Q 2366 2894 2547 2706 
+L 2403 2506 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-24" d="M 3044 4106 
+L 3044 3631 
+L 1847 3631 
+L 1847 0 
+L 1275 0 
+L 1275 3631 
+L 75 3631 
+L 75 4106 
+L 3044 4106 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-15" d="M 1000 478 
+L 2584 478 
+L 2584 0 
+L 431 0 
+L 431 4106 
+L 1000 4106 
+L 1000 478 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-62" d="M 344 0 
+L 344 0 
+z
+M 1009 3056 
+L 1009 0 
+L 459 0 
+L 459 3056 
+L 1009 3056 
+z
+M 1115 4012 
+Q 1115 3934 1084 3864 
+Q 1053 3794 998 3742 
+Q 944 3691 873 3659 
+Q 803 3628 725 3628 
+Q 647 3628 578 3659 
+Q 509 3691 457 3742 
+Q 406 3794 375 3864 
+Q 344 3934 344 4012 
+Q 344 4094 375 4164 
+Q 406 4234 457 4287 
+Q 509 4341 578 4372 
+Q 647 4403 725 4403 
+Q 803 4403 873 4372 
+Q 944 4341 998 4287 
+Q 1053 4234 1084 4164 
+Q 1115 4094 1115 4012 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-11" d="M 1091 0 
+L 522 0 
+L 522 4106 
+L 1091 4106 
+L 1091 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-8b" d="M 1278 -900 
+Q 1253 -963 1211 -997 
+Q 1169 -1031 1088 -1031 
+L 678 -1031 
+L 1203 181 
+L 34 3056 
+L 509 3056 
+Q 581 3056 618 3022 
+Q 656 2988 675 2944 
+L 1388 1031 
+Q 1413 966 1436 900 
+Q 1459 834 1475 769 
+Q 1494 838 1517 905 
+Q 1541 972 1566 1038 
+L 2256 2944 
+Q 2275 2991 2319 3023 
+Q 2363 3056 2416 3056 
+L 2853 3056 
+L 1278 -900 
+z
+" transform="scale(0.015625)"/>
+       <path id="Carlito-75" d="M 409 0 
+L 409 3056 
+L 725 3056 
+Q 813 3056 848 3022 
+Q 884 2988 891 2906 
+L 928 2456 
+Q 1069 2759 1275 2934 
+Q 1481 3109 1772 3109 
+Q 1869 3109 1953 3089 
+Q 2038 3069 2106 3022 
+L 2063 2616 
+Q 2053 2538 1975 2538 
+Q 1931 2538 1851 2555 
+Q 1772 2572 1675 2572 
+Q 1534 2572 1426 2530 
+Q 1319 2488 1233 2405 
+Q 1147 2322 1081 2203 
+Q 1016 2084 959 1931 
+L 959 0 
+L 409 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#Carlito-18"/>
+      <use xlink:href="#Carlito-6f" transform="translate(85.5 0)"/>
+      <use xlink:href="#Carlito-37" transform="translate(138.234375 0)"/>
+      <use xlink:href="#Carlito-3b" transform="translate(190.78125 0)"/>
+      <use xlink:href="#Carlito-474" transform="translate(240.53125 0)"/>
+      <use xlink:href="#Carlito-15d" transform="translate(263.484375 0)"/>
+      <use xlink:href="#Carlito-76" transform="translate(285.5625 0)"/>
+      <use xlink:href="#Carlito-2" transform="translate(324.671875 0)"/>
+      <use xlink:href="#Carlito-7" transform="translate(347.28125 0)"/>
+      <use xlink:href="#Carlito-5f" transform="translate(400.609375 0)"/>
+      <use xlink:href="#Carlito-2d" transform="translate(453.15625 0)"/>
+      <use xlink:href="#Carlito-6d" transform="translate(501.0625 0)"/>
+      <use xlink:href="#Carlito-31" transform="translate(553.609375 0)"/>
+      <use xlink:href="#Carlito-3b" transform="translate(595.890625 0)"/>
+      <use xlink:href="#Carlito-2" transform="translate(645.640625 0)"/>
+      <use xlink:href="#Carlito-24" transform="translate(668.25 0)"/>
+      <use xlink:href="#Carlito-5f" transform="translate(716.984375 0)"/>
+      <use xlink:href="#Carlito-3b" transform="translate(769.53125 0)"/>
+      <use xlink:href="#Carlito-2" transform="translate(819.28125 0)"/>
+      <use xlink:href="#Carlito-15" transform="translate(841.890625 0)"/>
+      <use xlink:href="#Carlito-62" transform="translate(883.9375 0)"/>
+      <use xlink:href="#Carlito-6d" transform="translate(906.890625 0)"/>
+      <use xlink:href="#Carlito-3b" transform="translate(959.4375 0)"/>
+      <use xlink:href="#Carlito-2" transform="translate(1009.1875 0)"/>
+      <use xlink:href="#Carlito-11" transform="translate(1031.796875 0)"/>
+      <use xlink:href="#Carlito-76" transform="translate(1057 0)"/>
+      <use xlink:href="#Carlito-2" transform="translate(1096.109375 0)"/>
+      <use xlink:href="#Carlito-24" transform="translate(1118.71875 0)"/>
+      <use xlink:href="#Carlito-2d" transform="translate(1159.640625 0)"/>
+      <use xlink:href="#Carlito-8b" transform="translate(1205.6875 0)"/>
+      <use xlink:href="#Carlito-474" transform="translate(1250.953125 0)"/>
+      <use xlink:href="#Carlito-6f" transform="translate(1273.90625 0)"/>
+      <use xlink:href="#Carlito-75" transform="translate(1326.640625 0)"/>
+      <use xlink:href="#Carlito-15d" transform="translate(1361.5 0)"/>
+      <use xlink:href="#Carlito-76" transform="translate(1383.578125 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11">
+      <path d="M 163.023437 48.559111 
+L 832.623438 48.559111 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <defs>
+       <path id="m952ec2c74f" d="M 0 0 
+L -3.5 0 
+" style="stroke: #2e3440; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m952ec2c74f" x="163.023437" y="48.559111" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <!-- "If the enemy leaves -->
+      <g style="fill: #2e3440" transform="translate(7.2 45.315947) scale(0.18 -0.18)">
+       <defs>
+        <path id="Carlito-15e" d="M 556 2775 
+L 556 2775 
+z
+M 1032 4322 
+L 1032 3447 
+L 979 2981 
+Q 969 2884 928 2829 
+Q 888 2775 791 2775 
+Q 710 2775 664 2828 
+Q 619 2881 610 2981 
+L 557 3447 
+L 557 4322 
+L 1032 4322 
+z
+M 2166 4322 
+L 2166 3447 
+L 2113 2981 
+Q 2103 2884 2062 2829 
+Q 2022 2775 1925 2775 
+Q 1844 2775 1798 2828 
+Q 1753 2881 1744 2981 
+L 1691 3447 
+L 1691 4322 
+L 2166 4322 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-3d" d="M 531 0 
+L 531 2597 
+L 222 2638 
+Q 156 2644 115 2678 
+Q 75 2713 75 2775 
+L 75 3000 
+L 531 3000 
+L 531 3291 
+Q 531 3553 601 3758 
+Q 672 3963 803 4102 
+Q 934 4241 1121 4314 
+Q 1309 4388 1544 4388 
+Q 1641 4388 1733 4372 
+Q 1825 4356 1909 4328 
+L 1894 4053 
+Q 1888 3981 1819 3973 
+Q 1750 3966 1634 3966 
+Q 1503 3966 1398 3931 
+Q 1294 3897 1219 3815 
+Q 1144 3734 1103 3601 
+Q 1063 3469 1063 3275 
+L 1063 3000 
+L 1884 3000 
+L 1884 2600 
+L 1081 2600 
+L 1081 0 
+L 531 0 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-7c" d="M 1303 -47 
+Q 950 -47 759 156 
+Q 569 359 569 738 
+L 569 2600 
+L 219 2600 
+Q 172 2600 139 2631 
+Q 106 2663 106 2722 
+L 106 2941 
+L 588 3003 
+L 716 3944 
+Q 722 3991 755 4019 
+Q 788 4047 838 4047 
+L 1119 4047 
+L 1119 3000 
+L 1959 3000 
+L 1959 2600 
+L 1119 2600 
+L 1119 775 
+Q 1119 588 1205 494 
+Q 1291 400 1428 400 
+Q 1509 400 1567 422 
+Q 1625 444 1665 472 
+Q 1706 500 1736 522 
+Q 1766 544 1791 544 
+Q 1819 544 1836 531 
+Q 1853 519 1869 491 
+L 2031 228 
+Q 1891 97 1700 25 
+Q 1509 -47 1303 -47 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-6c" d="M 459 0 
+L 459 3056 
+L 784 3056 
+Q 847 3056 883 3029 
+Q 919 3003 925 2944 
+L 972 2631 
+Q 1059 2734 1154 2820 
+Q 1250 2906 1359 2970 
+Q 1469 3034 1594 3068 
+Q 1719 3103 1859 3103 
+Q 2175 3103 2373 2931 
+Q 2572 2759 2656 2469 
+Q 2722 2638 2830 2756 
+Q 2938 2875 3069 2953 
+Q 3200 3031 3350 3067 
+Q 3500 3103 3656 3103 
+Q 4156 3103 4429 2803 
+Q 4703 2503 4703 1947 
+L 4703 0 
+L 4153 0 
+L 4153 1947 
+Q 4153 2303 3990 2486 
+Q 3828 2669 3525 2669 
+Q 3388 2669 3266 2623 
+Q 3144 2578 3051 2486 
+Q 2959 2394 2904 2259 
+Q 2850 2125 2850 1947 
+L 2850 0 
+L 2300 0 
+L 2300 1947 
+Q 2300 2313 2148 2491 
+Q 1997 2669 1703 2669 
+Q 1503 2669 1328 2564 
+Q 1153 2459 1009 2275 
+L 1009 0 
+L 459 0 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-88" d="M 1694 0 
+L 1197 0 
+L 59 3056 
+L 513 3056 
+Q 575 3056 619 3022 
+Q 663 2988 678 2944 
+L 1331 988 
+Q 1372 878 1400 775 
+Q 1428 672 1453 566 
+Q 1475 669 1504 773 
+Q 1534 878 1578 988 
+L 2241 2944 
+Q 2259 2991 2301 3023 
+Q 2344 3056 2397 3056 
+L 2831 3056 
+L 1694 0 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-15e"/>
+       <use xlink:href="#Carlito-11" transform="translate(40.09375 0)"/>
+       <use xlink:href="#Carlito-3d" transform="translate(65.296875 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(95.8125 0)"/>
+       <use xlink:href="#Carlito-7c" transform="translate(118.421875 0)"/>
+       <use xlink:href="#Carlito-5f" transform="translate(151.921875 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(204.46875 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(254.21875 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(276.828125 0)"/>
+       <use xlink:href="#Carlito-6d" transform="translate(326.578125 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(379.125 0)"/>
+       <use xlink:href="#Carlito-6c" transform="translate(428.875 0)"/>
+       <use xlink:href="#Carlito-8b" transform="translate(506.90625 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(552.171875 0)"/>
+       <use xlink:href="#Carlito-474" transform="translate(574.78125 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(597.734375 0)"/>
+       <use xlink:href="#Carlito-2d" transform="translate(647.484375 0)"/>
+       <use xlink:href="#Carlito-88" transform="translate(693.734375 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(737.9375 0)"/>
+       <use xlink:href="#Carlito-76" transform="translate(787.6875 0)"/>
+      </g>
+      <!-- a door open..." -->
+      <g style="fill: #2e3440" transform="translate(46.3275 67.288603) scale(0.18 -0.18)">
+       <defs>
+        <path id="Carlito-72" d="M 441 -1031 
+L 441 3056 
+L 769 3056 
+Q 828 3056 865 3029 
+Q 903 3003 909 2944 
+L 963 2588 
+Q 1156 2822 1406 2965 
+Q 1656 3109 1981 3109 
+Q 2244 3109 2456 3007 
+Q 2669 2906 2819 2709 
+Q 2969 2513 3050 2222 
+Q 3131 1931 3131 1550 
+Q 3131 1213 3040 920 
+Q 2950 628 2779 414 
+Q 2609 200 2365 78 
+Q 2122 -44 1816 -44 
+Q 1538 -44 1341 50 
+Q 1144 144 991 313 
+L 991 -1031 
+L 441 -1031 
+z
+M 1800 2669 
+Q 1544 2669 1348 2550 
+Q 1153 2431 991 2213 
+L 991 738 
+Q 1134 541 1307 461 
+Q 1481 381 1694 381 
+Q 2113 381 2339 684 
+Q 2566 988 2566 1550 
+Q 2566 1847 2514 2059 
+Q 2463 2272 2364 2408 
+Q 2266 2544 2123 2606 
+Q 1981 2669 1800 2669 
+z
+" transform="scale(0.015625)"/>
+        <path id="Carlito-13a" d="M 419 0 
+L 419 0 
+z
+M 1190 334 
+Q 1190 256 1159 186 
+Q 1128 116 1073 64 
+Q 1019 13 948 -18 
+Q 878 -50 800 -50 
+Q 722 -50 653 -18 
+Q 584 13 532 64 
+Q 481 116 450 186 
+Q 419 256 419 334 
+Q 419 416 450 486 
+Q 481 556 532 609 
+Q 584 663 653 694 
+Q 722 725 800 725 
+Q 878 725 948 694 
+Q 1019 663 1073 609 
+Q 1128 556 1159 486 
+Q 1190 416 1190 334 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-2d"/>
+       <use xlink:href="#Carlito-2" transform="translate(47.90625 0)"/>
+       <use xlink:href="#Carlito-37" transform="translate(70.515625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(123.0625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(175.796875 0)"/>
+       <use xlink:href="#Carlito-75" transform="translate(228.53125 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(263.390625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(286 0)"/>
+       <use xlink:href="#Carlito-72" transform="translate(338.734375 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(391.28125 0)"/>
+       <use xlink:href="#Carlito-6d" transform="translate(441.03125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(493.578125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(518.828125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(544.078125 0)"/>
+       <use xlink:href="#Carlito-15e" transform="translate(569.328125 0)"/>
+      </g>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_13">
+      <path d="M 163.023437 154.336889 
+L 832.623438 154.336889 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke: #808080; stroke-opacity: 0.7; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m952ec2c74f" x="163.023437" y="154.336889" style="fill: #2e3440; stroke: #2e3440; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <!-- "If my ex leaves -->
+      <g style="fill: #2e3440" transform="translate(42.533437 151.093725) scale(0.18 -0.18)">
+       <defs>
+        <path id="Carlito-8a" d="M 1022 1569 
+L 113 3056 
+L 638 3056 
+Q 700 3056 729 3034 
+Q 759 3013 784 2975 
+L 1422 1866 
+Q 1434 1900 1448 1933 
+Q 1463 1966 1488 2000 
+L 2022 2963 
+Q 2050 3006 2081 3031 
+Q 2113 3056 2156 3056 
+L 2659 3056 
+L 1747 1597 
+L 2700 0 
+L 2172 0 
+Q 2109 0 2070 36 
+Q 2031 72 2006 113 
+L 1359 1269 
+Q 1334 1197 1303 1147 
+L 719 113 
+Q 694 69 658 34 
+Q 622 0 563 0 
+L 72 0 
+L 1022 1569 
+z
+" transform="scale(0.015625)"/>
+       </defs>
+       <use xlink:href="#Carlito-15e"/>
+       <use xlink:href="#Carlito-11" transform="translate(40.09375 0)"/>
+       <use xlink:href="#Carlito-3d" transform="translate(65.296875 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(95.8125 0)"/>
+       <use xlink:href="#Carlito-6c" transform="translate(118.421875 0)"/>
+       <use xlink:href="#Carlito-8b" transform="translate(196.453125 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(241.71875 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(264.328125 0)"/>
+       <use xlink:href="#Carlito-8a" transform="translate(312.5625 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(355.875 0)"/>
+       <use xlink:href="#Carlito-474" transform="translate(378.484375 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(401.4375 0)"/>
+       <use xlink:href="#Carlito-2d" transform="translate(451.1875 0)"/>
+       <use xlink:href="#Carlito-88" transform="translate(497.4375 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(541.640625 0)"/>
+       <use xlink:href="#Carlito-76" transform="translate(591.390625 0)"/>
+      </g>
+      <!-- a door open..." -->
+      <g style="fill: #2e3440" transform="translate(46.3275 173.066381) scale(0.18 -0.18)">
+       <use xlink:href="#Carlito-2d"/>
+       <use xlink:href="#Carlito-2" transform="translate(47.90625 0)"/>
+       <use xlink:href="#Carlito-37" transform="translate(70.515625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(123.0625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(175.796875 0)"/>
+       <use xlink:href="#Carlito-75" transform="translate(228.53125 0)"/>
+       <use xlink:href="#Carlito-2" transform="translate(263.390625 0)"/>
+       <use xlink:href="#Carlito-6f" transform="translate(286 0)"/>
+       <use xlink:href="#Carlito-72" transform="translate(338.734375 0)"/>
+       <use xlink:href="#Carlito-3b" transform="translate(391.28125 0)"/>
+       <use xlink:href="#Carlito-6d" transform="translate(441.03125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(493.578125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(518.828125 0)"/>
+       <use xlink:href="#Carlito-13a" transform="translate(544.078125 0)"/>
+       <use xlink:href="#Carlito-15e" transform="translate(569.328125 0)"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 163.023437 195.696 
+L 163.023437 7.2 
+" style="fill: none; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 832.623438 195.696 
+L 832.623438 7.2 
+" style="fill: none; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 163.023437 195.696 
+L 832.623438 195.696 
+" style="fill: none; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 163.023437 7.2 
+L 832.623438 7.2 
+" style="fill: none; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 163.023437 81.350222 
+L 294.719939 81.350222 
+L 294.719939 15.768 
+L 163.023437 15.768 
+z
+" clip-path="url(#pe7f3d7279b)" style="fill: #8fbbba; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 163.023437 187.128 
+L 732.071201 187.128 
+L 732.071201 121.545778 
+L 163.023437 121.545778 
+z
+" clip-path="url(#pe7f3d7279b)" style="fill: #8fbbba; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_15">
+    <path d="M 497.823437 195.696 
+L 497.823437 7.2 
+" clip-path="url(#pe7f3d7279b)" style="fill: none; stroke-dasharray: 7.4,3.2; stroke-dashoffset: 0; stroke: #2e3440; stroke-width: 2"/>
+   </g>
+   <g id="text_9">
+    <g id="patch_9">
+     <path d="M 303.363939 59.959111 
+L 341.020189 59.959111 
+L 341.020189 37.159111 
+L 303.363939 37.159111 
+z
+" style="fill: #ffffff"/>
+    </g>
+    <!-- 20% -->
+    <g style="fill: #2e3440" transform="translate(304.763939 53.559111) scale(0.2 -0.2)">
+     <defs>
+      <path id="Carlito-Bold-191" d="M 216 0 
+L 216 0 
+z
+M 1681 4197 
+Q 1969 4197 2205 4111 
+Q 2441 4025 2608 3869 
+Q 2775 3713 2867 3492 
+Q 2959 3272 2959 3006 
+Q 2959 2778 2893 2583 
+Q 2828 2388 2718 2211 
+Q 2609 2034 2462 1867 
+Q 2316 1700 2153 1531 
+L 1272 609 
+Q 1413 653 1553 676 
+Q 1694 700 1816 700 
+L 2756 700 
+Q 2875 700 2948 631 
+Q 3022 563 3022 450 
+L 3022 0 
+L 216 0 
+L 216 253 
+Q 216 325 245 408 
+Q 275 491 350 563 
+L 1556 1803 
+Q 1709 1963 1826 2106 
+Q 1944 2250 2023 2392 
+Q 2103 2534 2143 2679 
+Q 2184 2825 2184 2984 
+Q 2184 3272 2040 3419 
+Q 1897 3566 1634 3566 
+Q 1522 3566 1428 3531 
+Q 1334 3497 1259 3437 
+Q 1184 3378 1131 3297 
+Q 1078 3216 1050 3122 
+Q 1000 2978 914 2934 
+Q 828 2891 678 2916 
+L 278 2984 
+Q 325 3288 447 3514 
+Q 569 3741 751 3892 
+Q 934 4044 1171 4120 
+Q 1409 4197 1681 4197 
+z
+" transform="scale(0.015625)"/>
+      <path id="Carlito-Bold-18f" d="M 3113 2078 
+Q 3113 1534 2998 1134 
+Q 2884 734 2682 471 
+Q 2481 209 2207 82 
+Q 1934 -44 1616 -44 
+Q 1297 -44 1026 82 
+Q 756 209 556 471 
+Q 356 734 243 1134 
+Q 131 1534 131 2078 
+Q 131 2622 243 3020 
+Q 356 3419 556 3680 
+Q 756 3941 1026 4069 
+Q 1297 4197 1616 4197 
+Q 1934 4197 2207 4069 
+Q 2481 3941 2682 3680 
+Q 2884 3419 2998 3020 
+Q 3113 2622 3113 2078 
+z
+M 2334 2078 
+Q 2334 2522 2273 2811 
+Q 2213 3100 2113 3270 
+Q 2013 3441 1883 3508 
+Q 1753 3575 1616 3575 
+Q 1478 3575 1351 3508 
+Q 1225 3441 1126 3270 
+Q 1028 3100 968 2811 
+Q 909 2522 909 2078 
+Q 909 1631 968 1342 
+Q 1028 1053 1126 883 
+Q 1225 713 1351 645 
+Q 1478 578 1616 578 
+Q 1753 578 1883 645 
+Q 2013 713 2113 883 
+Q 2213 1053 2273 1342 
+Q 2334 1631 2334 2078 
+z
+" transform="scale(0.015625)"/>
+      <path id="Carlito-Bold-478" d="M 2125 3313 
+Q 2125 3069 2044 2869 
+Q 1963 2669 1827 2528 
+Q 1691 2388 1512 2311 
+Q 1334 2234 1141 2234 
+Q 928 2234 748 2311 
+Q 569 2388 437 2528 
+Q 306 2669 232 2869 
+Q 159 3069 159 3313 
+Q 159 3566 232 3769 
+Q 306 3972 437 4115 
+Q 569 4259 748 4336 
+Q 928 4413 1141 4413 
+Q 1353 4413 1534 4336 
+Q 1716 4259 1847 4115 
+Q 1978 3972 2051 3769 
+Q 2125 3566 2125 3313 
+z
+M 1513 3313 
+Q 1513 3481 1484 3593 
+Q 1456 3706 1406 3775 
+Q 1356 3844 1287 3873 
+Q 1219 3903 1141 3903 
+Q 1059 3903 993 3873 
+Q 928 3844 878 3775 
+Q 828 3706 801 3593 
+Q 775 3481 775 3313 
+Q 775 3150 801 3040 
+Q 828 2931 878 2865 
+Q 928 2800 993 2772 
+Q 1059 2744 1141 2744 
+Q 1219 2744 1287 2772 
+Q 1356 2800 1406 2865 
+Q 1456 2931 1484 3040 
+Q 1513 3150 1513 3313 
+z
+M 4506 1028 
+Q 4506 784 4425 584 
+Q 4344 384 4208 242 
+Q 4072 100 3894 23 
+Q 3716 -53 3519 -53 
+Q 3306 -53 3128 23 
+Q 2950 100 2819 242 
+Q 2688 384 2614 584 
+Q 2541 784 2541 1028 
+Q 2541 1281 2614 1484 
+Q 2688 1688 2819 1831 
+Q 2950 1975 3128 2051 
+Q 3306 2128 3519 2128 
+Q 3734 2128 3915 2051 
+Q 4097 1975 4228 1831 
+Q 4359 1688 4432 1484 
+Q 4506 1281 4506 1028 
+z
+M 3894 1028 
+Q 3894 1194 3866 1306 
+Q 3838 1419 3786 1487 
+Q 3734 1556 3665 1586 
+Q 3597 1616 3519 1616 
+Q 3441 1616 3375 1586 
+Q 3309 1556 3261 1487 
+Q 3213 1419 3184 1306 
+Q 3156 1194 3156 1028 
+Q 3156 866 3184 756 
+Q 3213 647 3261 581 
+Q 3309 516 3375 487 
+Q 3441 459 3519 459 
+Q 3597 459 3665 487 
+Q 3734 516 3786 581 
+Q 3838 647 3866 756 
+Q 3894 866 3894 1028 
+z
+M 1297 225 
+Q 1216 94 1120 47 
+Q 1025 0 900 0 
+L 563 0 
+L 3222 4109 
+Q 3300 4234 3398 4301 
+Q 3497 4369 3638 4369 
+L 3978 4369 
+L 1297 225 
+z
+" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#Carlito-Bold-191"/>
+     <use xlink:href="#Carlito-Bold-18f" transform="translate(50.6875 0)"/>
+     <use xlink:href="#Carlito-Bold-478" transform="translate(101.375 0)"/>
+    </g>
+   </g>
+   <g id="text_10">
+    <g id="patch_10">
+     <path d="M 740.715201 165.736889 
+L 778.371451 165.736889 
+L 778.371451 142.936889 
+L 740.715201 142.936889 
+z
+" style="fill: #ffffff"/>
+    </g>
+    <!-- 85% -->
+    <g style="fill: #2e3440" transform="translate(742.115201 159.336889) scale(0.2 -0.2)">
+     <defs>
+      <path id="Carlito-Bold-476" d="M 1622 -47 
+Q 1303 -47 1039 43 
+Q 775 134 586 301 
+Q 397 469 294 706 
+Q 191 944 191 1234 
+Q 191 1609 359 1878 
+Q 528 2147 903 2278 
+Q 613 2409 469 2654 
+Q 325 2900 325 3241 
+Q 325 3491 420 3706 
+Q 516 3922 687 4080 
+Q 859 4238 1098 4328 
+Q 1338 4419 1622 4419 
+Q 1906 4419 2145 4328 
+Q 2384 4238 2556 4080 
+Q 2728 3922 2823 3706 
+Q 2919 3491 2919 3241 
+Q 2919 2900 2775 2654 
+Q 2631 2409 2338 2278 
+Q 2713 2147 2883 1878 
+Q 3053 1609 3053 1234 
+Q 3053 944 2950 706 
+Q 2847 469 2658 301 
+Q 2469 134 2205 43 
+Q 1941 -47 1622 -47 
+z
+M 1622 569 
+Q 1778 569 1893 620 
+Q 2009 672 2084 762 
+Q 2159 853 2196 976 
+Q 2234 1100 2234 1247 
+Q 2234 1588 2089 1767 
+Q 1944 1947 1622 1947 
+Q 1303 1947 1156 1765 
+Q 1009 1584 1009 1247 
+Q 1009 1100 1046 976 
+Q 1084 853 1159 762 
+Q 1234 672 1350 620 
+Q 1466 569 1622 569 
+z
+M 1622 2569 
+Q 1775 2569 1876 2625 
+Q 1978 2681 2039 2772 
+Q 2100 2863 2123 2981 
+Q 2147 3100 2147 3225 
+Q 2147 3341 2117 3450 
+Q 2088 3559 2023 3640 
+Q 1959 3722 1861 3772 
+Q 1763 3822 1622 3822 
+Q 1481 3822 1382 3772 
+Q 1284 3722 1220 3640 
+Q 1156 3559 1126 3450 
+Q 1097 3341 1097 3225 
+Q 1097 3100 1120 2981 
+Q 1144 2863 1205 2772 
+Q 1266 2681 1366 2625 
+Q 1466 2569 1622 2569 
+z
+" transform="scale(0.015625)"/>
+      <path id="Carlito-Bold-194" d="M 184 0 
+L 184 0 
+z
+M 2778 3834 
+Q 2778 3675 2675 3573 
+Q 2572 3472 2335 3472 
+L 1272 3472 
+L 1135 2656 
+Q 1382 2706 1610 2706 
+Q 1928 2706 2173 2607 
+Q 2419 2509 2584 2337 
+Q 2750 2166 2834 1934 
+Q 2919 1703 2919 1438 
+Q 2919 1106 2805 832 
+Q 2691 559 2488 365 
+Q 2285 172 2005 64 
+Q 1725 -44 1394 -44 
+Q 1200 -44 1026 -3 
+Q 853 38 700 106 
+Q 547 175 417 265 
+Q 288 356 185 456 
+L 416 775 
+Q 494 878 610 878 
+Q 685 878 756 833 
+Q 828 788 920 731 
+Q 1013 675 1136 629 
+Q 1260 584 1438 584 
+Q 1622 584 1758 646 
+Q 1894 709 1984 818 
+Q 2075 928 2120 1076 
+Q 2166 1225 2166 1400 
+Q 2166 1731 1981 1912 
+Q 1797 2094 1447 2094 
+Q 1307 2094 1163 2067 
+Q 1019 2041 875 1988 
+L 410 2116 
+L 747 4150 
+L 2778 4150 
+L 2778 3834 
+z
+" transform="scale(0.015625)"/>
+     </defs>
+     <use xlink:href="#Carlito-Bold-476"/>
+     <use xlink:href="#Carlito-Bold-194" transform="translate(50.6875 0)"/>
+     <use xlink:href="#Carlito-Bold-478" transform="translate(101.375 0)"/>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pe7f3d7279b">
+   <rect x="163.023437" y="7.2" width="669.6" height="188.496"/>
+  </clipPath>
+ </defs>
+</svg>

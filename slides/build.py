@@ -1,124 +1,131 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 
-from PIL import Image
-from pptx import Presentation
-from pptx.dml.color import RGBColor
-from pptx.util import Emu, Inches, Pt
+from pptx.util import Inches, Pt
 
 HERE = Path(__file__).resolve().parent
-FIGURES = HERE / "figures" / "out"
-FONT = "Lato"
-INK = RGBColor(0x2E, 0x34, 0x40)
-URL = "islamtayeb.github.io/tzu-vs-taylor"
-SHORT_URL = "tinyurl.com/tzuvt"
+TOOLS, FIGURES = HERE / "tools", HERE / "figures" / "out"
+sys.path.insert(0, str(TOOLS))
+from deck_tools import body_of, fit_picture, open_deck, write_bullets
+
+DECK = HERE / "tzu_vs_taylor_lecture.pptx"
+SHORT_URL, URL = "tinyurl.com/tzuvt", "islamtayeb.github.io/tzu-vs-taylor"
+CREDIT = "Photos: Glenn Francis (CC BY-SA 4.0); 663highland (CC BY 2.5); Wikimedia Commons"
+
+deck, layouts = open_deck(HERE / "template.pptx")
+W, H = deck.slide_width, deck.slide_height
 
 
-class Deck:
-    def __init__(self, template):
-        self.prs = Presentation(template)
-        self.layouts = {layout.name: layout for layout in self.prs.slide_layouts}
-        self.width, self.height = self.prs.slide_width, self.prs.slide_height
+def figure(title, name, note=None, png_only=False):
+    if note:
+        slide = deck.slides.add_slide(layouts["Title and Content"])
+        write_bullets(body_of(slide).text_frame, [(0, note)], size=24)
+        top = Inches(2.5)
+    else:
+        slide = deck.slides.add_slide(layouts["Title Only"])
+        top = Inches(1.35)
+    slide.shapes.title.text = title
+    fit_picture(slide, str(FIGURES / f"{name}.png"), (Inches(0.45), top, W - Inches(0.9), H - top - Inches(0.2)),
+                f"fixed_{name}", png_only=png_only)
 
-    def slide(self, layout, title):
-        slide = self.prs.slides.add_slide(self.layouts[layout])
-        slide.shapes.title.text = title
-        return slide
 
-    def picture(self, slide, name, left, top, width, height):
-        path = FIGURES / name
-        w, h = Image.open(path).size
-        scale = min(width / w, height / h)
-        shown_w, shown_h = int(w * scale), int(h * scale)
-        slide.shapes.add_picture(str(path), Emu(left + (width - shown_w) // 2), Emu(top + (height - shown_h) // 2),
-                                 Emu(shown_w), Emu(shown_h))
+def bullets(title, items):
+    slide = deck.slides.add_slide(layouts["Title and Content"])
+    slide.shapes.title.text = title
+    write_bullets(body_of(slide).text_frame, items, size=26)
 
-    def figure(self, title, name, note=None):
-        slide = self.slide("Title and Content" if note else "Title Only", title)
-        top = Inches(1.6)
-        if note:
-            body = slide.placeholders[1]
-            body.text = note
-            body.height = Inches(0.8)
-            top = Inches(2.5)
-        margin = Inches(0.6)
-        self.picture(slide, name, margin, top, self.width - 2 * margin, self.height - top - Inches(0.4))
 
-    def bullets(self, title, items):
-        frame = self.slide("Title and Content", title).placeholders[1].text_frame
-        frame.clear()
-        for k, runs in enumerate(items):
-            paragraph = frame.paragraphs[0] if k == 0 else frame.add_paragraph()
-            for text, bold in runs:
-                run = paragraph.add_run()
-                run.text = text
-                run.font.bold = bold or None
-                run.font.size = Pt(28)
+def statement(title, subtitle=None):
+    slide = deck.slides.add_slide(layouts["Title Slide"])
+    slide.shapes.title.text = title
+    if subtitle:
+        slide.placeholders[1].text = subtitle
 
-    def statement(self, title, subtitle):
-        self.slide("Title Slide", title).placeholders[1].text = subtitle
 
-    def qr(self, title, lines):
-        slide = self.slide("Title Only", title)
-        frame = slide.shapes.add_textbox(Inches(0.8), Inches(3.2), Inches(6.8), Inches(1.6)).text_frame
-        frame.word_wrap = True
-        for k, (text, size) in enumerate(lines):
-            paragraph = frame.paragraphs[0] if k == 0 else frame.add_paragraph()
-            paragraph.text = text
-            paragraph.font.size = Pt(size)
-        self.picture(slide, "qr.png", Inches(8.2), Inches(1.6), Inches(4.6), Inches(4.6))
+def textbox(slide, left, top, width, height, lines, center=False):
+    frame = slide.shapes.add_textbox(left, top, width, height).text_frame
+    frame.word_wrap = True
+    for k, (text, size, bold) in enumerate(lines):
+        paragraph = frame.paragraphs[0] if k == 0 else frame.add_paragraph()
+        if center:
+            paragraph.alignment = 2
+        run = paragraph.add_run()
+        run.text, run.font.size, run.font.bold = text, Pt(size), bold or None
 
-    def save(self, path):
-        for slide in self.prs.slides:
-            for shape in slide.shapes:
-                if shape.has_text_frame:
-                    for run in (r for p in shape.text_frame.paragraphs for r in p.runs):
-                        run.font.name = FONT
-                        run.font.color.rgb = INK
-        self.prs.save(path)
+
+def classes():
+    slide = deck.slides.add_slide(layouts["Title Only"])
+    slide.shapes.title.text = "Today's Classification Problem"
+    pic_h = H - Inches(2.85)
+    pic_w = int(pic_h * 0.8)
+    for k, (label, photo) in enumerate([("Class A: Taylor Swift", "photo_taylor"), ("Class B: Sun Tzu", "photo_suntzu")]):
+        left = W * (1 + 2 * k) // 4 - pic_w // 2
+        textbox(slide, left - Inches(0.5), Inches(1.55), pic_w + Inches(1.0), Inches(0.6), [(label, 26, True)], center=True)
+        picture = slide.shapes.add_picture(str(FIGURES / f"{photo}.jpg"), left, Inches(2.2), pic_w, pic_h)
+        picture.name = f"fixed_{photo}"
+    textbox(slide, Inches(0.5), H - Inches(0.55), W - Inches(1.0), Inches(0.35), [(CREDIT, 10, False)], center=True)
+
+
+def play_along():
+    slide = deck.slides.add_slide(layouts["Title Only"])
+    slide.shapes.title.text = "Play Along"
+    textbox(slide, Inches(0.9), Inches(2.9), Inches(6.6), Inches(2.0),
+            [(SHORT_URL, 44, True), (URL, 18, False), ("", 10, False), ("Guess first, then see what the model thinks", 24, False)])
+    picture = slide.shapes.add_picture(str(FIGURES / "qr.png"), Inches(8.0), Inches(1.7), Inches(4.6), Inches(4.6))
+    picture.name = "fixed_qr"
 
 
 def main():
     facts = json.loads((FIGURES / "facts.json").read_text())
-    deck = Deck(HERE / "template.pptx")
+    missed = [i + 1 for i, ok in enumerate(facts["quiz_right"]) if not ok]
+    flip = [i + 1 for i, (s, ok) in enumerate(zip(facts["quiz_sure"], facts["quiz_right"])) if ok and s < 55]
 
-    deck.figure("Taylor Swift or Sun Tzu?", "title.png")
-    deck.figure("Everything becomes numbers", "diagram_embed.png")
-    deck.figure("Then numbers become anything", "diagram_full.png")
-    deck.figure("One line, 384 numbers", "stripe.png",
-                "An AI model reads \"Trash takes itself out every single time.\" and writes down 384 numbers")
-    deck.figure("Close numbers, close meaning", "neighbors.png", "No shared words needed")
-    deck.figure("Our data", "data_rows.png",
-                f"{facts['n_each']} lines each: The Art of War (1910 translation) vs. Taylor's reputation lyrics and interviews")
-    deck.figure("Hide some for the test", "split.png", "Like an exam with questions the model has never seen")
-    deck.figure("Every line as a dot", "map.png", "384 numbers squashed down to 2 so we can look at them")
-    deck.figure("Training draws the line", "map_line.png", "The model learns where Taylor ends and Sun Tzu begins")
-    deck.statement(f"{facts['right']} out of {facts['n_test']}", "right on lines it had never seen")
+    statement("How Machines Read", "Embeddings, and a game")
+    figure("Everything Becomes Numbers", "diagram_1")
+    figure("Numbers Become New Things", "diagram_2")
+    figure("Three More Uses", "diagram_3")
+    figure("Close Numbers, Close Meaning", "neighbors",
+           [("Similar meaning gets similar numbers, even with no shared words", False)])
 
-    deck.qr("Play along", [(SHORT_URL, 40), (URL, 18), ("Guess first, then see what the model thinks", 22)])
-    deck.statement("You vs. the model", f"{facts['rounds']} rounds")
-    deck.figure("How sure it was", "confidence.png", "Round 5 was a coin flip, and it missed rounds 7 and 10")
-    deck.figure("What it learned", "top_words.png", "We fed it single words, one at a time")
-    deck.figure("One word flips it", "girl.png", "Sun Tzu's \"Let your plans be dark and impenetrable as night...\"")
-    deck.figure("Fooling it", "traps.png", "It learned topics and tone, not authors")
-    deck.bullets("Anything modern looks like Taylor", [
-        [("\"The library closes at midnight\" scores ", False), ("79% Taylor", True)],
-        [("It only knows two worlds: a 1910 translation and a 2017 pop star", False)],
+    classes()
+    play_along()
+
+    figure("What It Learned From", "data_rows",
+           [(f"{facts['n_each']} lines each: ", True), ("The Art of War (1910) vs. Taylor's lyrics and interviews", False)])
+    figure("Hide Some For The Test", "split", [("Like an exam with questions it has never seen", False)])
+    statement(f"{facts['right']} Out Of {facts['n_test']}", "right on lines it had never seen")
+    figure("How Sure It Was", "confidence",
+           [(f"Round {flip[0]} was a coin flip; it missed rounds {missed[0]} and {missed[1]}", False)])
+
+    figure("Every Line As A Dot", "map", [("384 numbers per line, squashed to 2 so we can look", False)])
+    figure("Training Draws The Line", "map_line", [("Learning means finding where Taylor ends and Sun Tzu begins", False)])
+    figure("Words It Is Most Sure About", "top_words", [("It learned topics, not authors", False)])
+
+    a, b = facts["flip_p"]
+    figure("Two Words Flip It", "flip",
+           [("Swap \"the enemy\" for \"my ex\" in a real Sun Tzu verse: ", False), (f"{a}% to {b}% Taylor", True)])
+    figure("Fooling It", "traps", [("Small edits fool it; Taylor on enemies reads as Sun Tzu", False)])
+    bullets("Anything Modern Looks Like Taylor", [
+        (0, [("\"The library closes at midnight.\" scores ", False), ("82% Taylor", True)]),
+        (0, [("It only knows two worlds: a 1910 translation and a 2017 pop star", False)]),
     ])
-    deck.bullets("Where this shows up in reporting", [
-        [("Classify: ", True), ("tag thousands of documents or comments", False)],
-        [("Search: ", True), ("find documents that mean the same thing", False)],
-        [("Cluster: ", True), ("sort a document dump into piles", False)],
-        [("Generate: ", True), ("draft, summarize, translate", False)],
+    bullets("Where This Shows Up In Reporting", [
+        (0, [("Classify: ", True), ("tag thousands of documents or comments", False)]),
+        (0, [("Search: ", True), ("find documents that mean the same thing", False)]),
+        (0, [("Cluster: ", True), ("sort a document dump into piles", False)]),
+        (0, [("Generate: ", True), ("draft, summarize, translate", False)]),
     ])
-    deck.bullets("Ask any AI tool", [
-        [("What data did it learn from?", False)],
-        [("Was it tested on data it had never seen?", False)],
-        [("What shortcut could it be using?", False)],
+    bullets("Three Questions For Any AI Tool", [
+        (0, [("What data did it learn from?", False)]),
+        (0, [("Was it tested on data it had never seen?", False)]),
+        (0, [("What shortcut could it be using?", False)]),
     ])
 
-    deck.save(HERE / "tzu_vs_taylor_lecture.pptx")
-    print(len(deck.prs.slides), "slides")
+    deck.save(DECK)
+    subprocess.run([sys.executable, str(TOOLS / "center_figures.py"), str(DECK), "7.1"], check=True)
+    print(len(deck.slides), "slides")
 
 
 if __name__ == "__main__":

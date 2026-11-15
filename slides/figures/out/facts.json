@@ -2,8 +2,16 @@
  "n_each": 321,
  "n_test": 129,
  "right": 126,
- "rounds": 10,
- "traps": 4,
+ "trap_p": [
+  85,
+  75,
+  71,
+  44
+ ],
+ "flip_p": [
+  20,
+  85
+ ],
  "quiz_sure": [
   91,
   94,

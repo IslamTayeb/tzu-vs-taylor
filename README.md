@@ -34,7 +34,8 @@ docs/              GitHub Pages site, no build step
   js/sketch.js     hand-drawn boxes, bars, doodles (rough.js)
 slides/
   build.py         builds the deck from figures/out
-  figures/         charts.py, diagrams.py, style.py, assets/
+  figures/         diagram.py (flat-icon diagram), charts.py, assets/
+  tools/           slide helpers and chart style (Carlito font)
 data/              CSVs: suntzu, taylor, taylor_quotes, quiz, traps
 ```
 
@@ -46,9 +47,9 @@ python scripts/build_suntzu.py
 GENIUS_TOKEN=... python scripts/build_taylor.py
 python scripts/export_site.py
 python scripts/build_notebook.py
-python slides/figures/diagrams.py && python slides/figures/charts.py && python slides/build.py
+python slides/figures/diagram.py && python slides/figures/charts.py && python slides/build.py
 ```
 
 ## Sources
 
-Sun Tzu: Lionel Giles translation (1910), Project Gutenberg #17405. Taylor Swift: interview quotes checked word for word against TIME (2023) and Vogue (2019); lyrics via the Genius API. Diagram images: myoglobin render and Sun Tzu portrait, both public domain (Wikimedia Commons). Fonts: Virgil and Lato (SIL Open Font License).
+Sun Tzu: Lionel Giles translation (1910), Project Gutenberg #17405. Taylor Swift: interview quotes checked word for word against TIME (2023) and Vogue (2019); lyrics via the Genius API. Photos (Wikimedia Commons): Taylor Swift by Glenn Francis (CC BY-SA 4.0); Sun Tzu statue by 663highland (CC BY 2.5); Sun Tzu portrait, public domain. Fonts: Virgil (site) and Carlito (slides), SIL Open Font License.

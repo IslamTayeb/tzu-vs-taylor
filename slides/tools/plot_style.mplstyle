@@ -1,0 +1,17 @@
+axes.prop_cycle: cycler("color", ["8FBBBA", "BE616A", "CF8770", "EBCB8B", "4c566a", "d8dee9"])
+axes.axisbelow: True
+axes.grid: True
+axes.edgecolor: 2e3440
+axes.labelcolor: 2e3440
+grid.color: gray
+grid.alpha: 0.7
+patch.force_edgecolor: True
+patch.edgecolor: black
+patch.linewidth: 0.6
+text.color: 2e3440
+xtick.color: 2e3440
+ytick.color: 2e3440
+font.family: Carlito
+svg.fonttype: path
+savefig.dpi: 600
+savefig.bbox: tight
