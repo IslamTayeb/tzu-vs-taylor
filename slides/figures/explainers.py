@@ -1,9 +1,9 @@
+import math
 import subprocess
 
-from diagram import FROST, INK, OUT, SLATE, SNOW, YELLOW, flow, head, label, page, text
+from diagram import FROST, INK, OUT, SLATE, flow, head, text
 
 SPAM, REAL = "#CF8770", "#4c566a"
-PICK = "#f6e7c8"
 
 
 def envelope(cx, cy, tag=None, color=SLATE):
@@ -25,62 +25,158 @@ def pill(cx, cy, s, color, small=False, anchor="middle"):
             + text(cx, cy + size * 0.36, s, size, 700, "white", "middle"))
 
 
-def bubble(cx, cy):
-    return (f"<path d='M{cx - 56},{cy - 38} h112 a10,10 0 0 1 10,10 v52 a10,10 0 0 1 -10,10 h-70 l-22,20 v-20 h-20 "
-            f"a10,10 0 0 1 -10,-10 v-52 a10,10 0 0 1 10,-10 z' fill='white' stroke='{INK}' stroke-width='4' stroke-linejoin='round'/>"
-            + "".join(f"<rect x='{cx - 40}' y='{cy - 20 + 18 * i}' width='{[80, 60, 70][i]}' height='7' rx='3.5' fill='{SLATE}'/>" for i in range(3)))
+ROW_Y = [215, 290, 365]
 
 
-def newspaper(cx, cy):
-    x, y = cx - 54, cy - 46
-    return (f"<rect x='{x}' y='{y}' width='108' height='92' rx='6' fill='white' stroke='{INK}' stroke-width='4'/>"
-            f"<rect x='{x + 12}' y='{y + 12}' width='84' height='16' rx='3' fill='{INK}'/>"
-            f"<rect x='{x + 12}' y='{y + 38}' width='36' height='40' fill='{SNOW}' stroke='{SLATE}' stroke-width='2'/>"
-            + "".join(f"<rect x='{x + 56}' y='{y + 40 + 12 * i}' width='40' height='5' rx='2.5' fill='{SLATE}'/>" for i in range(4)))
+def fmt(v, sign=False):
+    return (f"+{v:g}" if sign and v > 0 else f"{v:g}").replace("-", "&#8722;")
 
 
-def bin_choice(cx, cy, s, chosen):
-    w, h = 230, 70
-    fill, stroke = (PICK, YELLOW) if chosen else (FROST, FROST)
-    return (f"<rect x='{cx - w / 2}' y='{cy - h / 2}' width='{w}' height='{h}' rx='14' fill='{fill}' stroke='{stroke}' stroke-width='4'/>"
-            + text(cx, cy + 11, s, 30, 700 if chosen else 400, INK if chosen else SLATE, "middle"))
+def bracket(cx, values, title):
+    top, bottom = ROW_Y[0] - 45, ROW_Y[-1] + 85
+    style = f"stroke='{INK}' stroke-width='4' fill='none'"
+    out = (text(cx, 120, title, 28, 700, INK, "middle")
+           + f"<path d='M{cx - 46},{top} h-12 v{bottom - top} h12' {style}/><path d='M{cx + 46},{top} h12 v{bottom - top} h-12' {style}/>")
+    out += "".join(text(cx, y + 12, fmt(v), 34, 400, INK, "middle") for v, y in zip(values, ROW_Y))
+    return out + text(cx, ROW_Y[-1] + 62, "&#8942;", 30, 700, SLATE, "middle")
 
 
-def model(cx, cy):
-    return (f"<rect x='{cx - 110}' y='{cy - 62}' width='220' height='124' rx='20' fill='{INK}'/>"
-            + text(cx, cy + 12, "Model", 36, 700, "white", "middle"))
+def weight_box(cx, weights, title):
+    top, bottom = ROW_Y[0] - 45, ROW_Y[-1] + 85
+    out = (text(cx, 120, title, 28, 700, INK, "middle")
+           + f"<rect x='{cx - 75}' y='{top}' width='150' height='{bottom - top}' rx='16' fill='{INK}'/>")
+    out += "".join(text(cx, y + 12, fmt(w, True), 34, 700, SPAM if w > 0 else "#d8dee9", "middle") for w, y in zip(weights, ROW_Y))
+    return out + text(cx, ROW_Y[-1] + 62, "&#8942;", 30, 700, "#d8dee9", "middle")
 
 
-def examples():
-    rows = [(envelope, "An email", ("Spam", "Not spam"), 0),
-            (newspaper, "A news story", ("Sports", "Politics"), 1),
-            (bubble, "A comment", ("Toxic", "Civil"), 1)]
-    parts = []
-    for k, (icon, name, (a, b), pick) in enumerate(rows):
-        y = 110 + k * 190
-        parts += [icon(150, y), text(250, y + 10, name, 32), flow(500, y, 640, y), head(640, y),
-                  bin_choice(820, y, a, pick == 0), bin_choice(1100, y, b, pick == 1)]
-    return svg(1300, 600, parts)
+def score_line(x, y, total):
+    return (f"<line x1='{x - 120}' y1='{y - 52}' x2='{x + 90}' y2='{y - 52}' stroke='{INK}' stroke-width='3'/>"
+            + text(x - 20, y, f"Score {fmt(total)}", 38, 700, INK, "middle")
+            + text(x - 20, y + 40, "add them up", 24, 400, SLATE, "middle"))
 
 
-def learn(stage):
-    parts = [text(20, 46, "Learning", 40), text(20, 88, "from labeled examples", 28, 400, SLATE)]
+def weights_slide():
+    values, weights = [0.9, 0.2, 0.8], [2.0, -1.0, 1.5]
+    parts = [function_line(weights), envelope(90, ROW_Y[1]), text(90, ROW_Y[1] + 74, "an email", 26, 400, SLATE, "middle"),
+             flow(160, ROW_Y[1], 220, ROW_Y[1]), head(222, ROW_Y[1]),
+             bracket(330, values, "Its vector"), text(470, ROW_Y[1] + 12, "&#215;", 44, 400, SLATE, "middle"),
+             weight_box(610, weights, "Weights")]
+    sums = [round(v * w, 2) for v, w in zip(values, weights)]
+    parts += [text(900, 120, "Each pair", 28, 700, INK, "middle")]
+    parts += [text(900, y + 12, f"{fmt(v)} &#215; {fmt(w)} = {fmt(p, True)}", 30, 400, INK, "middle")
+              for v, w, p, y in zip(values, weights, sums, ROW_Y)]
+    parts += [score_line(920, 545, round(sum(sums), 2)),
+              flow(1080, 530, 1140, 530), head(1142, 530), pill(1245, 530, "Spam", SPAM),
+              text(1245, 590, "score above 0", 24, 400, SLATE, "middle")]
+    return svg(1360, 640, parts, top=0)
+
+
+def function_line(weights, y=40):
+    terms = " ".join(f"{'&#8722;' if w < 0 else '+'} {abs(w):g} &#215; number {k + 1}" for k, w in enumerate(weights))
+    return text(680, y, f"score = {terms[2:] if weights[0] > 0 else terms} + ...", 34, 700, INK, "middle")
+
+
+def nudge():
+    values, before, step = [0.5, 0.9, 0.4], [0.1, 0.3, -0.2], 0.5
+    changes = [round(-step * v, 2) for v in values]
+    after = [round(b + c, 2) for b, c in zip(before, changes)]
+    old = round(sum(v * w for v, w in zip(values, before)), 2)
+    new = round(sum(v * w for v, w in zip(values, after)), 2)
+    cols = [(170, "Its number"), (430, "Weight before"), (720, "Nudge"), (1010, "Weight after")]
+    rows = [140 + 70 * (k + 1) for k in range(3)]
+    parts = [envelope(70, 40), pill(150, 40, "Not spam", REAL, small=True, anchor="left"),
+             text(330, 52, f"Old weights score it {fmt(old, True)}: guesses Spam", 30, 400, INK),
+             cross(1015, 40)]
+    parts += [text(x, 140, h, 26, 700, SLATE, "middle") for x, h in cols]
+    parts += [f"<line x1='60' y1='158' x2='1150' y2='158' stroke='{FROST}' stroke-width='3'/>"]
+    for v, b, c, a, y in zip(values, before, changes, after, rows):
+        parts += [text(170, y + 11, fmt(v), 32, 400, INK, "middle"),
+                  weight_chip(430, y, b),
+                  text(720, y + 11, f"&#8722;{step:g} &#215; {fmt(v)} = {fmt(c)}", 30, 400, INK, "middle"),
+                  weight_chip(1010, y, a)]
+    parts += [text(60, 465, "Wrong toward spam, so every weight goes down.", 28, 400, SLATE),
+              text(60, 505, "A bigger number gets a bigger nudge.", 28, 400, SLATE),
+              envelope(70, 590), pill(150, 590, "Not spam", REAL, small=True, anchor="left"),
+              text(330, 602, f"New weights score it {fmt(new)}: guesses Not spam", 30, 400, INK),
+              tick(1095, 590)]
+    return svg(1180, 650, parts)
+
+
+def weight_chip(cx, cy, w):
+    return (f"<rect x='{cx - 50}' y='{cy - 28}' width='100' height='56' rx='10' fill='{INK}'/>"
+            + text(cx, cy + 11, fmt(w, True), 28, 700, SPAM if w > 0 else "#d8dee9", "middle"))
+
+
+def tick(cx, cy):
+    return (f"<path d='M{cx - 16},{cy + 2} L{cx - 4},{cy + 15} L{cx + 18},{cy - 14}' fill='none' stroke='#3b7d4a' "
+            f"stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/>")
+
+
+def cross(cx, cy):
+    return (f"<path d='M{cx - 13},{cy - 13} L{cx + 13},{cy + 13} M{cx + 13},{cy - 13} L{cx - 13},{cy + 13}' "
+            f"stroke='#b4412f' stroke-width='7' stroke-linecap='round'/>")
+
+
+def node(cx, cy, title, sub):
+    return (f"<rect x='{cx - 165}' y='{cy - 58}' width='330' height='116' rx='18' fill='{FROST}' stroke='{INK}' stroke-width='4'/>"
+            + text(cx, cy - 8, title, 34, 700, INK, "middle") + text(cx, cy + 32, sub, 24, 400, SLATE, "middle"))
+
+
+def arrow(x1, y1, x2, y2, color=SLATE):
+    a = math.atan2(y2 - y1, x2 - x1)
+    tip = lambda r, da: (x2 - r * math.cos(a + da), y2 - r * math.sin(a + da))
+    (lx, ly), (rx, ry) = tip(26, 0.55), tip(26, -0.55)
+    return (f"<line x1='{x1}' y1='{y1}' x2='{x2 - 14 * math.cos(a):.1f}' y2='{y2 - 14 * math.sin(a):.1f}' stroke='{color}' stroke-width='7' stroke-linecap='round'/>"
+            f"<path d='M{x2},{y2} L{lx:.1f},{ly:.1f} L{rx:.1f},{ry:.1f} z' fill='{color}'/>")
+
+
+def weight_row(cx, y, weights, caption):
+    out = text(cx, y - 44, caption, 24, 400, SLATE, "middle")
+    for k, w in enumerate(weights):
+        x = cx + (k - 1) * 92
+        out += f"<rect x='{x - 42}' y='{y - 28}' width='84' height='56' rx='10' fill='{INK}'/>"
+        out += text(x, y + 11, fmt(w, True), 26, 700, SPAM if w > 0 else "#d8dee9", "middle")
+    return out
+
+
+def training_loop():
+    parts = [text(110, 120, "Labeled emails", 28, 700, INK, "middle")]
     for k, (tag, color) in enumerate([("Spam", SPAM), ("Not spam", REAL), ("Spam", SPAM)]):
-        parts.append(envelope(80, 165 + k * 100, tag, color))
-    parts += [flow(330, 265, 520, 265), head(520, 265), text(425, 240, "training", 28, 400, SLATE, "middle"),
-              model(670, 265), text(670, 368, "learns the pattern", 28, 400, SLATE, "middle")]
-    if stage >= 2:
-        y = 590
-        parts += [f"<line x1='20' y1='430' x2='1080' y2='430' stroke='{FROST}' stroke-width='4'/>",
-                  text(20, 488, "Using it", 40), text(20, 530, "on something new", 28, 400, SLATE),
-                  envelope(360, y), text(360, y + 78, "a new email", 28, 400, SLATE, "middle"),
-                  flow(425, y, 520, y), head(520, y), model(670, y), flow(785, y, 880, y), head(880, y),
-                  pill(990, y - 18, "Spam", SPAM), text(990, y + 50, "87% sure", 34, 700, INK, "middle")]
-    return svg(1100, 680, parts)
+        parts.append(envelope(60, 200 + k * 110, tag, color))
+    guess, check, nudge = (640, 130), (850, 470), (430, 470)
+    parts += [flow(290, 310, 440, 130), head(445, 130),
+              arrow(760, 195, 860, 395), arrow(680, 470, 605, 470), arrow(420, 395, 520, 195),
+              node(*guess, "1  Guess", "score it with the weights"),
+              node(*check, "2  Check", "was the guess right?"),
+              node(*nudge, "3  Nudge", "if wrong, tweak each weight"),
+              text(640, 600, "repeat for every email, many times", 26, 400, SLATE, "middle")]
+    parts += [text(1215, 120, "Weights", 28, 700, INK, "middle"),
+              weight_row(1215, 230, [0.1, 0.3, -0.2], "at the start: random"),
+              arrow(1215, 290, 1215, 380),
+              weight_row(1215, 470, [2.0, -1.0, 1.5], "after training")]
+    return svg(1400, 640, parts, top=55)
 
 
-def svg(w, h, parts):
-    return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {w} {h}' width='{w}' height='{h}'>{''.join(parts)}</svg>"
+def inference():
+    values, weights = [0.6, 0.2, 0.6], [2.0, -1.0, 1.5]
+    sums = [round(v * w, 2) for v, w in zip(values, weights)]
+    total = round(sum(sums), 2)
+    sure = round(100 / (1 + math.exp(-total)))
+    parts = [envelope(90, ROW_Y[1]), text(90, ROW_Y[1] + 74, "a new email", 26, 400, SLATE, "middle"),
+             flow(160, ROW_Y[1], 220, ROW_Y[1]), head(222, ROW_Y[1]),
+             bracket(330, values, "Its vector"), text(470, ROW_Y[1] + 12, "&#215;", 44, 400, SLATE, "middle"),
+             weight_box(610, weights, "Same weights"),
+             text(900, 120, "Each pair", 28, 700, INK, "middle")]
+    parts += [text(900, y + 12, f"{fmt(v)} &#215; {fmt(w)} = {fmt(p, True)}", 30, 400, INK, "middle")
+              for v, w, p, y in zip(values, weights, sums, ROW_Y)]
+    parts += [score_line(920, 545, total),
+              flow(1080, 530, 1140, 530), head(1142, 530), pill(1245, 510, "Spam", SPAM),
+              text(1245, 580, f"{sure}% sure", 34, 700, INK, "middle")]
+    return svg(1360, 640, parts, top=70)
+
+
+def svg(w, h, parts, top=0):
+    return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 {top} {w} {h - top}' width='{w}' height='{h - top}'>{''.join(parts)}</svg>"
 
 
 def export(name, markup):
@@ -93,6 +189,7 @@ def export(name, markup):
 
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
-    export("examples", examples())
-    export("learn_1", learn(1))
-    export("learn_2", learn(2))
+    export("weights", weights_slide())
+    export("training_loop", training_loop())
+    export("inference", inference())
+    export("nudge", nudge())

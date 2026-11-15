@@ -6,6 +6,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.path import Path as MplPath
 import numpy as np
 import qrcode
 from PIL import Image
@@ -17,7 +18,7 @@ ROOT, TOOLS, ASSETS, OUT = HERE.parents[1], HERE.parent / "tools", HERE / "asset
 sys.path[:0] = [str(ROOT), str(TOOLS)]
 
 import plot_style
-from tvt import SUN_TZU, TAYLOR, chance_of_taylor, embed, load, quiz, train, traps, word_scores
+from tvt import SUN_TZU, TAYLOR, chance_of_taylor, embed, load, quiz, split, train, traps, word_scores
 
 RED, CYAN, ORANGE, YELLOW, INK, SLATE, SNOW = "#BE616A", "#8FBBBA", "#CF8770", "#EBCB8B", "#2e3440", "#4c566a", "#d8dee9"
 COLOR = {TAYLOR: RED, SUN_TZU: CYAN}
@@ -38,15 +39,19 @@ def percent_axis(ax, axis="x"):
     getattr(ax, f"set_{axis}ticklabels")([f"{t}%" for t in ticks])
 
 
-def split_bar(n_train, n_test):
-    fig, ax = plt.subplots(figsize=(12, 2.4))
+def split_bar(n_train, n_test, name="split"):
+    fig, ax = plt.subplots(figsize=(12, 2.6))
     ax.barh(0, n_train, color=SNOW, height=0.7, zorder=3)
     ax.barh(0, n_test, left=n_train, color=YELLOW, height=0.7, zorder=3)
-    ax.text(n_train / 2, 0, f"{n_train}\nTo Learn From", ha="center", va="center", fontsize=24, fontweight="bold", linespacing=1.3)
-    ax.text(n_train + n_test / 2, 0, f"{n_test}\nKept Secret", ha="center", va="center", fontsize=24, fontweight="bold", linespacing=1.3)
+    total = n_train + n_test
+    ax.text(n_train / 2, 0, str(n_train), ha="center", va="center", fontsize=28, fontweight="bold")
+    ax.text(n_train + n_test / 2, 0, str(n_test), ha="center", va="center", fontsize=28, fontweight="bold")
+    ax.text(n_train / 2, -0.62, "To learn from", ha="center", va="top", fontsize=24)
+    ax.text(total, -0.62, "Hidden for the test", ha="right", va="top", fontsize=24)
+    ax.set_ylim(-1.15, 0.4)
     ax.set_xlim(-4, n_train + n_test + 4)
     ax.axis("off")
-    save(fig, "split")
+    save(fig, name)
 
 
 def confidence(rounds, p_taylor):
@@ -70,21 +75,34 @@ def confidence(rounds, p_taylor):
     return sure, right
 
 
-def dot_maps(lines, vectors):
-    xy = PCA(2, random_state=0).fit_transform(vectors)
-    for name, with_line in [("map", False), ("map_line", True)]:
+def dot_maps(lines, vectors, model):
+    labels = lines.label.values
+    train_idx, test_idx, _, _ = split(np.arange(len(lines)), labels)
+    sign = 1 if model.classes_[1] == TAYLOR else -1
+    w, b = sign * model.coef_[0], sign * model.intercept_[0]
+    along = vectors @ w / np.linalg.norm(w)
+    rest = vectors - np.outer(along, w / np.linalg.norm(w))
+    xy = np.column_stack([along, PCA(1, random_state=0).fit_transform(rest)[:, 0]])
+    boundary = -b / np.linalg.norm(w)
+    missed = test_idx[model.predict(vectors[test_idx]) != labels[test_idx]]
+    pad = 0.03 * (xy[:, 1].max() - xy[:, 1].min())
+    for name in ("map", "map_line", "map_test"):
         fig, ax = plt.subplots(figsize=(10, 6.4))
+        shown = test_idx if name == "map_test" else train_idx
         for who in (SUN_TZU, TAYLOR):
-            m = (lines.label == who).values
-            ax.scatter(xy[m, 0], xy[m, 1], s=34, color=COLOR[who], alpha=0.85, zorder=3)
-            cx, top = xy[m, 0].mean(), xy[:, 1].max()
-            ax.text(cx, top + 0.06, who, ha="center", fontsize=26, fontweight="bold", color=LABEL_COLOR[who])
-        if with_line:
-            flat = LogisticRegression().fit(xy, lines.label)
-            (wx, wy), b = flat.coef_[0], flat.intercept_[0]
-            ys = np.array([xy[:, 1].min() - 0.05, xy[:, 1].max() + 0.12])
-            ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
-        ax.set_ylim(xy[:, 1].min() - 0.05, xy[:, 1].max() + 0.16)
+            if name == "map_test":
+                m = train_idx[labels[train_idx] == who]
+                ax.scatter(xy[m, 0], xy[m, 1], s=24, color=COLOR[who], alpha=0.15, zorder=2)
+            m = shown[labels[shown] == who]
+            ax.scatter(xy[m, 0], xy[m, 1], s=70 if name == "map_test" else 34, color=COLOR[who],
+                       edgecolor=INK if name == "map_test" else "none", linewidth=1.2, alpha=0.9, zorder=3)
+            cx = xy[labels == who, 0].mean()
+            ax.text(cx, xy[:, 1].max() + 3 * pad, who, ha="center", fontsize=26, fontweight="bold", color=LABEL_COLOR[who])
+        if name != "map":
+            ax.plot([boundary, boundary], [xy[:, 1].min() - pad, xy[:, 1].max() + 2 * pad], "--", color=INK, lw=3, zorder=4)
+        if name == "map_test":
+            ax.scatter(xy[missed, 0], xy[missed, 1], s=700, facecolor="none", edgecolor="#b4412f", linewidth=3.5, zorder=5)
+        ax.set_ylim(xy[:, 1].min() - pad, xy[:, 1].max() + 7 * pad)
         ax.set_xticks([]); ax.set_yticks([])
         ax.grid(False)
         ax.set_xlabel("Squashed Number 1", fontsize=19)
@@ -205,13 +223,53 @@ def sentence_map():
     save(fig, "sentence_map")
 
 
-def toy(stage, seed=4):
+def toy_data(seed=4):
     rng = np.random.default_rng(seed)
     spam = rng.normal([-1.1, 0.6], 0.55, (40, 2))
     real = rng.normal([1.1, -0.4], 0.55, (40, 2))
-    xy, labels = np.vstack([spam, real]), np.array([1] * 40 + [0] * 40)
+    xy = np.vstack([spam, real])[np.ravel(np.column_stack([np.arange(40), np.arange(40, 80)]))]
+    return xy, np.tile([1, 0], 40)
+
+
+def equation(model):
+    (wx, wy), b = model.coef_[0], model.intercept_[0]
+    sign = lambda v: "+" if v >= 0 else "\u2212"
+    first = f"{wx:.1f}".replace("-", "\u2212")
+    return f"score = {first} \u00d7 number 1 {sign(wy)} {abs(wy):.1f} \u00d7 number 2 {sign(b)} {abs(b):.1f}"
+
+
+def toy_axes(ax):
+    ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.grid(False)
+    ax.set_xlabel("Number 1", fontsize=19)
+    ax.set_ylabel("Number 2", fontsize=19)
+
+
+def toy_line(ax, model):
+    (wx, wy), b = model.coef_[0], model.intercept_[0]
+    ys = np.array([-3, 3])
+    ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
+
+
+def toy_training(seen, name):
+    xy, labels = toy_data()
+    colors = {1: ORANGE, 0: SLATE}
+    model = LogisticRegression().fit(xy[:seen], labels[:seen])
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.scatter(xy[seen:, 0], xy[seen:, 1], s=90, color=SNOW, zorder=2)
+    ax.scatter(xy[:seen, 0], xy[:seen, 1], s=110 if seen < 80 else 90, color=[colors[k] for k in labels[:seen]], zorder=3)
+    toy_line(ax, model)
+    ax.text(0, 3.05, equation(model), ha="center", va="center", fontsize=21, fontweight="bold", zorder=6,
+            bbox=dict(fc="white", ec=INK, lw=2, boxstyle="round,pad=0.4"))
+    toy_axes(ax)
+    ax.set_ylim(-2.4, 3.5)
+    save(fig, name)
+
+
+def toy(stage):
+    xy, labels = toy_data()
     flat = LogisticRegression().fit(xy, labels)
-    (wx, wy), b = flat.coef_[0], flat.intercept_[0]
     colors = {1: ORANGE, 0: SLATE}
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -219,18 +277,18 @@ def toy(stage, seed=4):
     for k, name in [(1, "Spam"), (0, "Not spam")]:
         pts = xy[labels == k]
         ax.scatter(pts[:, 0], pts[:, 1], s=90, color=colors[k], alpha=fade, zorder=3)
-        cx, cy = pts.mean(0)
-        ax.text(cx, pts[:, 1].max() + 0.35, name, ha="center", fontsize=26, fontweight="bold", color=colors[k], alpha=max(fade, 0.6))
+        cx = pts[:, 0].mean()
+        if stage == 1:
+            ax.text(cx, pts[:, 1].max() + 0.35, name, ha="center", fontsize=26, fontweight="bold", color=colors[k])
     if stage >= 2:
-        ys = np.array([-3, 3])
-        ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
+        toy_line(ax, flat)
     if stage == 3:
-        on_line = -(wy * -0.95 + b) / wx
+        on_line = -(flat.coef_[0][1] * -0.95 + flat.intercept_[0]) / flat.coef_[0][0]
         for (x, y), dx, ha in [((-2.5, -1.85), 28, "left"), ((on_line, -0.95), -28, "right")]:
             p = flat.predict_proba([[x, y]])[0, 1]
             sure = max(p, 1 - p)
             ax.scatter([x], [y], s=520, color="white", edgecolor=INK, linewidth=3, zorder=6)
-            ax.text(x, y, "?", ha="center", va="center", fontsize=24, fontweight="bold", zorder=7)
+            ax.text(x, y, "?", ha="center", va="center_baseline", fontsize=24, fontweight="bold", zorder=7)
             note = f"Spam, {min(sure, 0.99):.0%} sure" if sure > 0.6 else f"{sure:.0%} sure: a coin flip"
             ax.annotate(note, (x, y), xytext=(dx, 0), textcoords="offset points", ha=ha, va="center",
                         fontsize=21, fontweight="bold", zorder=7, bbox=dict(fc="white", ec="none", pad=2))
@@ -239,30 +297,22 @@ def toy(stage, seed=4):
                          [2.2, 0.8], [1.6, -1.4], [0.9, 0.6], [2.4, -0.6], [1.0, -1.9]])
         truth = np.array([1] * 5 + [0] * 5)
         guess = flat.predict(test)
+        tick = MplPath([(-0.5, 0.05), (-0.12, -0.4), (0.55, 0.5)], [MplPath.MOVETO, MplPath.LINETO, MplPath.LINETO])
         for (x, y), t, g in zip(test, truth, guess):
             ax.scatter([x], [y], s=260, color=colors[t], edgecolor=INK, linewidth=2.5, zorder=6)
-            mx, my = x + 0.24, y + 0.2
-            if t == g:
-                ax.plot([mx - 0.08, mx, mx + 0.16], [my, my - 0.1, my + 0.14], color="#3b7d4a", lw=3.5, zorder=7,
-                        solid_capstyle="round")
-            else:
-                for sign in (1, -1):
-                    ax.plot([mx - 0.09, mx + 0.09], [my - 0.09 * sign, my + 0.09 * sign], color="#b4412f", lw=3.5,
-                            zorder=7, solid_capstyle="round")
-    ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
-    ax.set_xticks([]); ax.set_yticks([])
-    ax.grid(False)
-    ax.set_xlabel("Number 1", fontsize=19)
-    ax.set_ylabel("Number 2", fontsize=19)
+            ok = t == g
+            ax.plot([x + 0.26], [y + 0.22], marker=tick if ok else "x", markersize=15 if ok else 12,
+                    markeredgewidth=3.5, color="#3b7d4a" if ok else "#b4412f", fillstyle="none", zorder=7)
+    toy_axes(ax)
     save(fig, f"toy_{stage}")
 
 
-def data_rows():
+def data_rows(n_lines):
     rows = [("The art of war is of vital importance to the State.", SUN_TZU, "The Art of War, I.1"),
             ("Lately, I've been dressin' for revenge", TAYLOR, "\"Vigilante Shit\" lyric"),
             ("If he is taking his ease, give him no rest.", SUN_TZU, "The Art of War, I.23"),
             ("I respond to extreme pain with defiance.", TAYLOR, "TIME interview, 2023")]
-    table("data_rows", {"columns": ["Who", "Source"], "sections": [{"title": "Four of the 642 lines", "rows": [
+    table("data_rows", {"columns": ["Who", "Source"], "sections": [{"title": f"Four of the {n_lines} lines", "rows": [
         {"label": text, "swatch": COLOR[who], "values": [who, source]} for text, who, source in rows]}]})
 
 
@@ -281,13 +331,16 @@ def main():
     n_test = int(np.ceil(len(lines) * 0.2))
 
     split_bar(len(lines) - n_test, n_test)
-    dot_maps(lines, vectors)
+    dot_maps(lines, vectors, model)
     top_words(model, lines)
     vector_point()
     sentence_map()
-    for stage in (1, 2, 3, 4):
+    for stage in (1, 3, 4):
         toy(stage)
-    data_rows()
+    split_bar(80, 10, "toy_split")
+    for k, seen in enumerate([4, 16, 80], 1):
+        toy_training(seen, f"toy_train_{k}")
+    data_rows(len(lines))
     photos()
 
     t = traps()
@@ -309,6 +362,7 @@ def main():
     qrcode.make(URL, border=1).convert("RGB").save(OUT / "qr.png")
     facts = {"n_each": len(lines) // 2, "n_test": n_test, "right": round(accuracy * n_test),
              "trap_p": [round(float(x)) for x in trap_p], "flip_p": [round(float(x)) for x in flip_p],
+             "library_p": round(chance_of_taylor(model, "The library closes at midnight.") * 100),
              "quiz_sure": [round(float(s)) for s in sure], "quiz_right": [bool(r) for r in right]}
     (OUT / "facts.json").write_text(json.dumps(facts, indent=1))
     print(facts)

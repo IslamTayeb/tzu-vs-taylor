@@ -32,10 +32,13 @@ def protein(cx, cy, new=False):
 
 def page(cx, cy, new=False):
     x, y = cx - 42, cy - 54
-    lines = "".join(f"<rect x='{x + 14}' y='{y + 26 + 18 * i}' width='{[56, 44, 56, 30][i]}' height='7' rx='3.5' fill='{RED if new and i == 1 else SLATE}'/>"
+    outline = f"M{x},{y} h60 l24,24 v84 h-84 z"
+    fold = f"M{x + 60},{y} v24 h24 z"
+    lines = "".join(f"<rect x='{x + 14}' y='{y + 38 + 17 * i}' width='{[44, 56, 56, 30][i]}' height='7' rx='3.5' fill='{RED if new and i == 1 else SLATE}'/>"
                     for i in range(4))
-    return (f"<path d='M{x},{y} h60 l24,24 v84 h-84 z' fill='white' stroke='{INK}' stroke-width='4' stroke-linejoin='round'/>"
-            f"<path d='M{x + 60},{y} v24 h24' fill='{SNOW}' stroke='{INK}' stroke-width='4' stroke-linejoin='round'/>{lines}")
+    return (f"<path d='{outline}' fill='white'/><path d='{fold}' fill='{SNOW}'/>"
+            f"<path d='{outline}' fill='none' stroke='{INK}' stroke-width='4' stroke-linejoin='round'/>"
+            f"<path d='M{x + 60},{y} v24 h24' fill='none' stroke='{INK}' stroke-width='4' stroke-linejoin='round'/>{lines}")
 
 
 def picture(cx, cy, new=False):
@@ -43,7 +46,7 @@ def picture(cx, cy, new=False):
     sky, hill = (FROST, CYAN) if not new else ("#f6e7c8", ORANGE)
     return (f"<rect x='{x}' y='{y}' width='112' height='88' rx='8' fill='{sky}' stroke='{INK}' stroke-width='4'/>"
             f"<circle cx='{x + 84}' cy='{y + 26}' r='12' fill='{YELLOW}' stroke='{INK}' stroke-width='3'/>"
-            f"<path d='M{x + 6},{y + 82} l34,-44 l26,30 l14,-16 l26,30 z' fill='{hill}' stroke='{INK}' stroke-width='3' stroke-linejoin='round'/>")
+            f"<path d='M{x + 12},{y + 74} l30,-38 l24,28 l12,-14 l24,24 z' fill='{hill}' stroke='{INK}' stroke-width='3' stroke-linejoin='round'/>")
 
 
 def sound(cx, cy, new=False):
@@ -114,10 +117,10 @@ def magnifier(cx, cy):
 
 def clusters(cx, cy):
     out = ""
-    for gx, gy in [(-36, -16), (32, -18), (0, 28)]:
+    for (gx, gy), color in zip([(-36, -16), (32, -18), (0, 28)], [ORANGE, YELLOW, CYAN]):
         out += (f"<circle cx='{cx + gx}' cy='{cy + gy}' r='27' fill='none' stroke='{INK}' stroke-width='3' "
                 f"stroke-dasharray='6 5'/>")
-        out += "".join(f"<circle cx='{cx + gx + ox}' cy='{cy + gy + oy}' r='6.5' fill='{SNOW}' stroke='{SLATE}' stroke-width='2.5'/>"
+        out += "".join(f"<circle cx='{cx + gx + ox}' cy='{cy + gy + oy}' r='6.5' fill='{color}' stroke='{INK}' stroke-width='2.5'/>"
                        for ox, oy in [(-9, -6), (9, -5), (0, 9)])
     return out
 
@@ -149,22 +152,24 @@ def diagram(stage):
             (bins, "Classification", "is this email spam?"),
             (magnifier, "Search", "find stories like this one"),
             (clusters, "Clustering", "find themes nobody labeled")]
-    shown = 1 if stage == 2 else 4 if stage >= 3 else 0
+    shown = min(stage - 1, 4)
+    focus = stage == 6
     if shown:
         parts.append(step(1080, 40, "2", "Using them"))
-    if stage >= 3:
+    if focus:
         y = ROWS[1]
         parts.append(f"<rect x='{icon_x - 75}' y='{y - 50}' width='{1570 - icon_x + 75}' height='100' rx='14' "
                      f"fill='#f6e7c8' stroke='{YELLOW}' stroke-width='4'/>")
-    for (icon, title, sub), y in list(zip(uses, ROWS))[:shown]:
-        parts += [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y), scaled(icon(icon_x, y), icon_x, y, 0.8),
-                  label(label_x, y, title, sub)]
+    for k, ((icon, title, sub), y) in enumerate(list(zip(uses, ROWS))[:shown]):
+        row = [flow(right_x + 10, cy, arrow_x, y), head(arrow_x - 2, y), scaled(icon(icon_x, y), icon_x, y, 0.8),
+               label(label_x, y, title, sub)]
+        parts.append(f"<g opacity='0.3'>{''.join(row)}</g>" if focus and k != 1 else "".join(row))
     return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' width='{W}' height='{H}'>{''.join(parts)}</svg>"
 
 
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
-    for stage in (1, 2, 3):
+    for stage in range(1, 7):
         svg = OUT / f"diagram_{stage}.svg"
         source = OUT / f"diagram_{stage}_source.svg"
         source.write_text(diagram(stage))

@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T03:39:23.714016</dc:date>
+    <dc:date>2026-11-15T15:40:25.470557</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 642.24 91.213151
 L 642.24 63.976438 
 L 10.8 63.976438 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #eceff4"/>
+" clip-path="url(#pb109d3e140)" style="fill: #eceff4"/>
    </g>
    <g id="patch_3">
     <path d="M 10.8 118.449863 
@@ -43,7 +43,7 @@ L 642.24 118.449863
 L 642.24 91.213151 
 L 10.8 91.213151 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #ffffff"/>
+" clip-path="url(#pb109d3e140)" style="fill: #ffffff"/>
    </g>
    <g id="patch_4">
     <path d="M 10.8 145.686575 
@@ -51,7 +51,7 @@ L 642.24 145.686575
 L 642.24 118.449863 
 L 10.8 118.449863 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #eceff4"/>
+" clip-path="url(#pb109d3e140)" style="fill: #eceff4"/>
    </g>
    <g id="patch_5">
     <path d="M 10.8 172.923288 
@@ -59,12 +59,12 @@ L 642.24 172.923288
 L 642.24 145.686575 
 L 10.8 145.686575 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #ffffff"/>
+" clip-path="url(#pb109d3e140)" style="fill: #ffffff"/>
    </g>
    <g id="line2d_1">
     <path d="M 10.8 63.976438 
 L 642.24 63.976438 
-" clip-path="url(#p7fe3f849fc)" style="fill: none; stroke: #2e3440; stroke-width: 1.4; stroke-linecap: square"/>
+" clip-path="url(#pb109d3e140)" style="fill: none; stroke: #2e3440; stroke-width: 1.4; stroke-linecap: square"/>
    </g>
    <g id="patch_6">
     <path d="M 18.595556 84.728219 
@@ -72,7 +72,7 @@ L 31.588148 84.728219
 L 31.588148 70.46137 
 L 18.595556 70.46137 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #8fbbba; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#pb109d3e140)" style="fill: #8fbbba; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 18.595556 111.964932 
@@ -80,7 +80,7 @@ L 31.588148 111.964932
 L 31.588148 97.698082 
 L 18.595556 97.698082 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #be616a; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#pb109d3e140)" style="fill: #be616a; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 18.595556 139.201644 
@@ -88,7 +88,7 @@ L 31.588148 139.201644
 L 31.588148 124.934795 
 L 18.595556 124.934795 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #8fbbba; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#pb109d3e140)" style="fill: #8fbbba; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 18.595556 166.438356 
@@ -96,15 +96,15 @@ L 31.588148 166.438356
 L 31.588148 152.171507 
 L 18.595556 152.171507 
 z
-" clip-path="url(#p7fe3f849fc)" style="fill: #be616a; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#pb109d3e140)" style="fill: #be616a; stroke: #2e3440; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_2">
     <path d="M 10.8 172.923288 
 L 642.24 172.923288 
-" clip-path="url(#p7fe3f849fc)" style="fill: none; stroke: #2e3440; stroke-width: 1.4; stroke-linecap: square"/>
+" clip-path="url(#pb109d3e140)" style="fill: none; stroke: #2e3440; stroke-width: 1.4; stroke-linecap: square"/>
    </g>
    <g id="text_1">
-    <!-- Four of the 642 lines -->
+    <!-- Four of the 600 lines -->
     <g style="fill: #2e3440" transform="translate(10.8 27.769863) scale(0.16 -0.16)">
      <defs>
       <path id="Carlito-Bold-d" d="M 2781 4150 
@@ -361,75 +361,41 @@ Q 1069 1828 1020 1686
 Q 972 1544 972 1375 
 z
 " transform="scale(0.015625)"/>
-      <path id="Carlito-Bold-193" d="M 47 0 
-L 47 0 
+      <path id="Carlito-Bold-18f" d="M 3113 2078 
+Q 3113 1534 2998 1134 
+Q 2884 734 2682 471 
+Q 2481 209 2207 82 
+Q 1934 -44 1616 -44 
+Q 1297 -44 1026 82 
+Q 756 209 556 471 
+Q 356 734 243 1134 
+Q 131 1534 131 2078 
+Q 131 2622 243 3020 
+Q 356 3419 556 3680 
+Q 756 3941 1026 4069 
+Q 1297 4197 1616 4197 
+Q 1934 4197 2207 4069 
+Q 2481 3941 2682 3680 
+Q 2884 3419 2998 3020 
+Q 3113 2622 3113 2078 
 z
-M 2669 1578 
-L 3147 1578 
-L 3147 1147 
-Q 3147 1084 3106 1040 
-Q 3066 997 2994 997 
-L 2669 997 
-L 2669 0 
-L 2012 0 
-L 2012 997 
-L 328 997 
-Q 256 997 198 1042 
-Q 141 1088 125 1159 
-L 47 1538 
-L 1950 4153 
-L 2669 4153 
-L 2669 1578 
-z
-M 2012 2863 
-Q 2012 2953 2017 3061 
-Q 2022 3169 2037 3284 
-L 841 1578 
-L 2012 1578 
-L 2012 2863 
-z
-" transform="scale(0.015625)"/>
-      <path id="Carlito-Bold-191" d="M 216 0 
-L 216 0 
-z
-M 1681 4197 
-Q 1969 4197 2205 4111 
-Q 2441 4025 2608 3869 
-Q 2775 3713 2867 3492 
-Q 2959 3272 2959 3006 
-Q 2959 2778 2893 2583 
-Q 2828 2388 2718 2211 
-Q 2609 2034 2462 1867 
-Q 2316 1700 2153 1531 
-L 1272 609 
-Q 1413 653 1553 676 
-Q 1694 700 1816 700 
-L 2756 700 
-Q 2875 700 2948 631 
-Q 3022 563 3022 450 
-L 3022 0 
-L 216 0 
-L 216 253 
-Q 216 325 245 408 
-Q 275 491 350 563 
-L 1556 1803 
-Q 1709 1963 1826 2106 
-Q 1944 2250 2023 2392 
-Q 2103 2534 2143 2679 
-Q 2184 2825 2184 2984 
-Q 2184 3272 2040 3419 
-Q 1897 3566 1634 3566 
-Q 1522 3566 1428 3531 
-Q 1334 3497 1259 3437 
-Q 1184 3378 1131 3297 
-Q 1078 3216 1050 3122 
-Q 1000 2978 914 2934 
-Q 828 2891 678 2916 
-L 278 2984 
-Q 325 3288 447 3514 
-Q 569 3741 751 3892 
-Q 934 4044 1171 4120 
-Q 1409 4197 1681 4197 
+M 2334 2078 
+Q 2334 2522 2273 2811 
+Q 2213 3100 2113 3270 
+Q 2013 3441 1883 3508 
+Q 1753 3575 1616 3575 
+Q 1478 3575 1351 3508 
+Q 1225 3441 1126 3270 
+Q 1028 3100 968 2811 
+Q 909 2522 909 2078 
+Q 909 1631 968 1342 
+Q 1028 1053 1126 883 
+Q 1225 713 1351 645 
+Q 1478 578 1616 578 
+Q 1753 578 1883 645 
+Q 2013 713 2113 883 
+Q 2213 1053 2273 1342 
+Q 2334 1631 2334 2078 
 z
 " transform="scale(0.015625)"/>
       <path id="Carlito-Bold-474" d="M 1184 4491 
@@ -559,8 +525,8 @@ z
      <use xlink:href="#Carlito-Bold-3b" transform="translate(406.609375 0)"/>
      <use xlink:href="#Carlito-Bold-2" transform="translate(456.953125 0)"/>
      <use xlink:href="#Carlito-Bold-475" transform="translate(479.5625 0)"/>
-     <use xlink:href="#Carlito-Bold-193" transform="translate(530.25 0)"/>
-     <use xlink:href="#Carlito-Bold-191" transform="translate(580.9375 0)"/>
+     <use xlink:href="#Carlito-Bold-18f" transform="translate(530.25 0)"/>
+     <use xlink:href="#Carlito-Bold-18f" transform="translate(580.9375 0)"/>
      <use xlink:href="#Carlito-Bold-2" transform="translate(631.625 0)"/>
      <use xlink:href="#Carlito-Bold-474" transform="translate(654.234375 0)"/>
      <use xlink:href="#Carlito-Bold-62" transform="translate(678.796875 0)"/>
@@ -2210,7 +2176,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p7fe3f849fc">
+  <clipPath id="pb109d3e140">
    <rect x="10.8" y="10.8" width="631.44" height="189.36"/>
   </clipPath>
  </defs>

@@ -18,7 +18,7 @@ deck, layouts = open_deck(HERE / "template.pptx")
 W, H = deck.slide_width, deck.slide_height
 
 
-def figure(title, name, note=None, png_only=False):
+def figure(title, name, note=None, png_only=False, notes=None):
     if note:
         slide = deck.slides.add_slide(layouts["Title and Content"])
         write_bullets(body_of(slide).text_frame, [(0, note)], size=24)
@@ -29,6 +29,8 @@ def figure(title, name, note=None, png_only=False):
     slide.shapes.title.text = title
     fit_picture(slide, str(FIGURES / f"{name}.png"), (Inches(0.45), top, W - Inches(0.9), H - top - Inches(0.2)),
                 f"fixed_{name}", png_only=png_only)
+    if notes:
+        slide.notes_slide.notes_text_frame.text = notes
 
 
 def bullets(title, items):
@@ -72,7 +74,8 @@ def play_along():
     slide = deck.slides.add_slide(layouts["Title Only"])
     slide.shapes.title.text = "Play Along"
     textbox(slide, Inches(0.9), Inches(2.9), Inches(6.6), Inches(2.0),
-            [(SHORT_URL, 44, True), (URL, 18, False), ("", 10, False), ("Guess first, then see what the model thinks", 24, False)])
+            [(SHORT_URL, 44, True), (URL, 18, False), ("", 10, False), ("I trained the model.", 24, False),
+             ("Let's see how well it does against you.", 24, False)])
     picture = slide.shapes.add_picture(str(FIGURES / "qr.png"), Inches(8.0), Inches(1.7), Inches(4.6), Inches(4.6))
     picture.name = "fixed_qr"
 
@@ -85,39 +88,57 @@ def main():
     statement("How Machines Read", "Embeddings and classification")
     figure("What's A Vector?", "vector_point", [("A vector is just a list of numbers. Each number adds a direction", False)])
     figure("Embedding: Anything Becomes A Vector", "diagram_1")
-    figure("Then We Use The Vectors", "diagram_2")
-    figure("Four Ways To Use Them", "diagram_3")
+    for stage in (2, 3, 4, 5):
+        figure("Then We Use The Vectors", f"diagram_{stage}")
+    figure("Today: Classification", "diagram_6")
     figure("Close Numbers, Close Meaning", "sentence_map",
-           [("Each sentence's embedding is 384 numbers; similar meanings land close", False)])
+           [("Each sentence becomes a vector. Similar meanings land close together", False)])
 
-    figure("What Is Classification?", "examples", [("Sorting each thing into one of a few groups", False)])
-    figure("How A Model Learns", "learn_1")
-    figure("Then It Guesses", "learn_2")
-    figure("Every Email Becomes A Dot", "toy_1", [("Each email's embedding, squashed from 384 numbers to 2 so we can draw it", False)])
-    figure("Training Draws A Line", "toy_2", [("Learning means finding the line between the two groups", False)])
+    figure("The Model Is A Function", "weights",
+           [("Each number in the vector gets a weight. The weights are the model", False)])
+    figure("Training: Guess, Check, Nudge", "training_loop")
+    figure("One Nudge, Up Close", "nudge")
+    figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
+    figure("Hide Some For The Test", "toy_split", [("Hide some emails before training. They are the exam", False)])
+    for k, note in enumerate(["After 4 emails", "After 16 emails", "After all 80: the line is where the score is 0"], 1):
+        figure("Training Draws A Line", f"toy_train_{k}", [(note, False)])
+    figure("Then It Guesses", "inference", [("The weights are frozen now. Same function, new email", False)])
     figure("New Emails Land On A Side", "toy_3", [("Far from the line: sure. Near the line: a coin flip", False)])
-    figure("Then We Grade It", "toy_4", [("Test it on emails it never saw, like an exam: ", False), ("9 of 10 right", True)])
+    figure("Then We Grade It", "toy_4", [("Test it on the 10 hidden emails: ", False), ("9 of 10 right", True)])
 
     classes()
     figure("What It Learned From", "data_rows",
            [(f"{facts['n_each']} lines each: ", True), ("The Art of War (1910) vs. Taylor's lyrics and interviews", False)])
-    figure("Hide Some For The Test", "split", [("Same recipe as the emails", False)])
-    figure("Every Line As A Dot", "map", [("Each line's embedding, squashed to 2 numbers, just like the emails", False)])
-    figure("Training Draws The Line", "map_line", [("Where Taylor ends and Sun Tzu begins", False)])
-    statement(f"{facts['right']} Out Of {facts['n_test']}", "right on lines it had never seen. Can you beat it?")
+    bullets("Where The Taylor Lines Come From", [
+        (0, [("Every song on ", False), ("reputation", True), (" (2017), her revenge album, plus Bad Blood, Mean and Vigilante Shit", False)]),
+        (0, [("Why those: they talk about enemies too, so it isn't easy", False)]),
+        (0, [("Lyrics from Genius, two lines at a time, repeats removed", False)]),
+        (0, [("19 interview quotes, each checked against the article", False)]),
+        (0, [(f"{facts['n_each']} picked at random from all of that", False)]),
+    ])
+    n_test = facts["n_test"]
+    figure("Hide Some For The Test", "split",
+           [(f"Same as the emails: {2 * facts['n_each'] - n_test} to learn from, {n_test} hidden", False)])
+    figure("Every Line As A Dot", "map", [("Each line's embedding is 384 numbers, squashed to 2 so we can draw it", False)])
+    figure("Training Draws The Line", "map_line", [("Same function as the emails, now with 384 weights", False)])
+    figure(f"{facts['right']} Out Of {n_test} Right", "map_test",
+           [("Faded: lines it learned from. Bold: hidden test lines. Circled: misses", False)])
 
     play_along()
 
     figure("How Sure It Was", "confidence",
            [(f"Round {flip[0]} was a coin flip; it missed rounds {missed[0]} and {missed[1]}", False)])
-    figure("Words It Is Most Sure About", "top_words", [("It learned topics, not authors", False)])
+    figure("Words It Is Most Sure About", "top_words", [("It learned topics, not authors", False)],
+           notes=(f"How we got these: we took every word that shows up at least twice in the {2 * facts['n_each']} lines "
+                  "and fed each one to the model on its own, as if it were a one-word line. "
+                  "The bars are the model's chance for each word. Left: lowest chance of Taylor. Right: highest."))
 
     a, b = facts["flip_p"]
     figure("Two Words Flip It", "flip",
            [("Swap \"the enemy\" for \"my ex\" in a real Sun Tzu verse: ", False), (f"{a}% to {b}% Taylor", True)])
     figure("Fooling It", "traps", [("Small edits fool it; Taylor on enemies reads as Sun Tzu", False)])
     bullets("Anything Modern Looks Like Taylor", [
-        (0, [("\"The library closes at midnight.\" scores ", False), ("82% Taylor", True)]),
+        (0, [("\"The library closes at midnight.\" scores ", False), (f"{facts['library_p']}% Taylor", True)]),
         (0, [("It only knows two worlds: a 1910 translation and a 2017 pop star", False)]),
     ])
     bullets("Where This Shows Up In Reporting", [
@@ -125,11 +146,6 @@ def main():
         (0, [("Search: ", True), ("find documents that mean the same thing", False)]),
         (0, [("Cluster: ", True), ("find themes in thousands of comments nobody labeled", False)]),
         (0, [("Generate: ", True), ("draft, summarize, translate", False)]),
-    ])
-    bullets("Three Questions For Any AI Tool", [
-        (0, [("What data did it learn from?", False)]),
-        (0, [("Was it tested on data it had never seen?", False)]),
-        (0, [("What shortcut could it be using?", False)]),
     ])
 
     deck.save(DECK)
