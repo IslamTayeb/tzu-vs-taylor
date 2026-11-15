@@ -6,6 +6,7 @@
 <meta name="color-scheme" content="light">
 <title>Taylor Swift or Sun Tzu?</title>
 <meta name="description" content="Guess who said it, then see if a computer can do better.">
+<link rel="preload" href="fonts/Virgil.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
@@ -13,11 +14,9 @@
 </head>
 <body>
 <header>
-  <a href="#" data-go="play" class="home">Taylor Swift or Sun Tzu?</a>
   <nav>
     <a href="#" data-go="play" class="on">Play</a>
     <a href="#" data-go="fool">Fool it</a>
-    <a href="#" data-go="how">How it works</a>
   </nav>
 </header>
 
@@ -27,22 +26,22 @@
     <blockquote id="line"></blockquote>
 
     <div class="picks" id="picks">
-      <button class="pick t" data-pick="Taylor"><img src="img/taylor_face.jpg" alt="">Taylor Swift</button>
-      <button class="pick s" data-pick="Sun Tzu"><img src="img/suntzu_face.jpg" alt="">Sun Tzu</button>
+      <button class="pick t sketch" data-pick="Taylor"><span><i class="doodle" data-doodle="guitar"></i>Taylor Swift</span></button>
+      <button class="pick s sketch" data-pick="Sun Tzu"><span><i class="doodle" data-doodle="sword"></i>Sun Tzu</span></button>
     </div>
 
     <div id="reveal" hidden>
       <p class="answer" id="answer"></p>
-      <div class="bar" id="bar"><div class="fill"></div></div>
+      <div class="bar" id="bar"></div>
       <p class="model" id="model"></p>
       <p class="note" id="note"></p>
-      <button class="go" id="next">Next</button>
+      <button class="go sketch" id="next"><span>Next</span></button>
     </div>
 
     <div id="end" hidden>
       <p class="final" id="final"></p>
       <p class="note" id="end-note"></p>
-      <button class="go" data-go="fool">Try to fool it</button>
+      <button class="go sketch" data-go="fool"><span>Try to fool it</span></button>
       <button class="quiet" id="again">Play again</button>
     </div>
   </section>
@@ -50,29 +49,14 @@
   <section id="fool" class="view" hidden>
     <h1>Fool it</h1>
     <p class="note">Write something Sun Tzu would say that the model thinks is Taylor, or the other way round.</p>
-    <textarea id="input" rows="3" placeholder="girl, let your plans be dark and impenetrable as night"></textarea>
-    <div class="bar" id="live-bar"><div class="fill"></div></div>
+    <div class="field sketch" id="field"><textarea id="input" rows="3" placeholder="girl, let your plans be dark and impenetrable as night"></textarea></div>
+    <div class="bar" id="live-bar"></div>
     <p class="model" id="live-model">Loading the model, about 23 MB.</p>
     <ul class="tries" id="tries"></ul>
   </section>
 
-  <section id="how" class="view" hidden>
-    <h1>How it works</h1>
-    <p>Each line goes through a small AI model (MiniLM) that turns its meaning into 384 numbers. A second, simple model learned which patterns in those numbers mean Taylor and which mean Sun Tzu.</p>
-    <p>It learned from <span id="n-train"></span> lines and was tested on <span id="n-test"></span> it had never seen. It got <b id="acc"></b> right.</p>
-    <p>Single words it is most sure about:</p>
-    <div class="words">
-      <ol class="t" id="top-t"></ol>
-      <ol class="s" id="top-s"></ol>
-    </div>
-    <p class="note">Everything runs in your browser. Nothing you type leaves your device.</p>
-  </section>
 </main>
 
-<footer>
-  <a href="https://github.com/IslamTayeb/tzu-vs-taylor">Code and data</a>
-  <span>Photos via Wikimedia Commons: Taylor Swift by Toglenn, CC BY-SA 4.0; Sun Tzu portrait, public domain.</span>
-</footer>
 <script type="module" src="app.js"></script>
 </body>
 </html>
