@@ -95,14 +95,14 @@ def main():
            [("Each sentence becomes a vector. Similar meanings land close together", False)])
 
     figure("The Model Is A Function", "weights",
-           [("Each number in the vector gets a weight. The weights are the model", False)])
+           [("Pretend high numbers 1 and 2 mean spam, and high 3 and 4 mean not spam", False)])
     figure("Training: Guess, Check, Nudge", "training_loop")
     figure("One Nudge, Up Close", "nudge")
     figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
     figure("Hide Some For The Test", "toy_split", [("Hide some emails before training. They are the exam", False)])
-    for k, note in enumerate(["After 4 emails", "After 16 emails", "After all 80: the line is where the score is 0"], 1):
+    for k, note in enumerate(["After 4 emails", "After 16 emails", "After all 90: the line is where the score is exactly 0"], 1):
         figure("Training Draws A Line", f"toy_train_{k}", [(note, False)])
-    figure("Then It Guesses", "inference", [("The weights are frozen now. Same function, new email", False)])
+    figure("Then It Guesses", "inference", [("Same function, new email. A bigger score means a surer guess", False)])
     figure("New Emails Land On A Side", "toy_3", [("Far from the line: sure. Near the line: a coin flip", False)])
     figure("Then We Grade It", "toy_4", [("Test it on the 10 hidden emails: ", False), ("9 of 10 right", True)])
 

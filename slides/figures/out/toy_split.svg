@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-15T15:41:36.993341</dc:date>
+    <dc:date>2026-11-15T16:24:28.383324</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -31,82 +31,70 @@ z
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 34.530612 76.947097 
-L 581.142857 76.947097 
-L 581.142857 11.849806 
-L 34.530612 11.849806 
+    <path d="M 32 76.947097 
+L 590 76.947097 
+L 590 11.849806 
+L 32 11.849806 
 z
-" clip-path="url(#p28fa7e5502)" style="fill: #d8dee9; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#p1d783c7f60)" style="fill: #d8dee9; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
-    <path d="M 581.142857 76.947097 
-L 649.469388 76.947097 
-L 649.469388 11.849806 
-L 581.142857 11.849806 
+    <path d="M 590 76.947097 
+L 652 76.947097 
+L 652 11.849806 
+L 590 11.849806 
 z
-" clip-path="url(#p28fa7e5502)" style="fill: #ebcb8b; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#p1d783c7f60)" style="fill: #ebcb8b; stroke: #000000; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <!-- 80 -->
-    <g style="fill: #2e3440" transform="translate(293.644235 51.398452) scale(0.28 -0.28)">
+    <!-- 90 -->
+    <g style="fill: #2e3440" transform="translate(296.8075 51.398452) scale(0.28 -0.28)">
      <defs>
-      <path id="Carlito-Bold-476" d="M 1622 -47 
-Q 1303 -47 1039 43 
-Q 775 134 586 301 
-Q 397 469 294 706 
-Q 191 944 191 1234 
-Q 191 1609 359 1878 
-Q 528 2147 903 2278 
-Q 613 2409 469 2654 
-Q 325 2900 325 3241 
-Q 325 3491 420 3706 
-Q 516 3922 687 4080 
-Q 859 4238 1098 4328 
-Q 1338 4419 1622 4419 
-Q 1906 4419 2145 4328 
-Q 2384 4238 2556 4080 
-Q 2728 3922 2823 3706 
-Q 2919 3491 2919 3241 
-Q 2919 2900 2775 2654 
-Q 2631 2409 2338 2278 
-Q 2713 2147 2883 1878 
-Q 3053 1609 3053 1234 
-Q 3053 944 2950 706 
-Q 2847 469 2658 301 
-Q 2469 134 2205 43 
-Q 1941 -47 1622 -47 
+      <path id="Carlito-Bold-196" d="M 347 0 
+L 347 0 
 z
-M 1622 569 
-Q 1778 569 1893 620 
-Q 2009 672 2084 762 
-Q 2159 853 2196 976 
-Q 2234 1100 2234 1247 
-Q 2234 1588 2089 1767 
-Q 1944 1947 1622 1947 
-Q 1303 1947 1156 1765 
-Q 1009 1584 1009 1247 
-Q 1009 1100 1046 976 
-Q 1084 853 1159 762 
-Q 1234 672 1350 620 
-Q 1466 569 1622 569 
+M 1938 1600 
+Q 1981 1656 2022 1709 
+Q 2063 1763 2100 1816 
+Q 1966 1734 1805 1690 
+Q 1644 1647 1466 1647 
+Q 1259 1647 1059 1722 
+Q 859 1797 700 1945 
+Q 541 2094 444 2317 
+Q 347 2541 347 2841 
+Q 347 3119 447 3366 
+Q 547 3613 731 3797 
+Q 916 3981 1172 4089 
+Q 1428 4197 1744 4197 
+Q 2059 4197 2312 4095 
+Q 2566 3994 2742 3812 
+Q 2919 3631 3012 3378 
+Q 3106 3125 3106 2822 
+Q 3106 2625 3075 2450 
+Q 3044 2275 2984 2114 
+Q 2925 1953 2842 1801 
+Q 2759 1650 2656 1500 
+L 1750 172 
+Q 1697 100 1594 50 
+Q 1491 0 1359 0 
+L 672 0 
+L 1938 1600 
 z
-M 1622 2569 
-Q 1775 2569 1876 2625 
-Q 1978 2681 2039 2772 
-Q 2100 2863 2123 2981 
-Q 2147 3100 2147 3225 
-Q 2147 3341 2117 3450 
-Q 2088 3559 2023 3640 
-Q 1959 3722 1861 3772 
-Q 1763 3822 1622 3822 
-Q 1481 3822 1382 3772 
-Q 1284 3722 1220 3640 
-Q 1156 3559 1126 3450 
-Q 1097 3341 1097 3225 
-Q 1097 3100 1120 2981 
-Q 1144 2863 1205 2772 
-Q 1266 2681 1366 2625 
-Q 1466 2569 1622 2569 
+M 2388 2894 
+Q 2388 3059 2339 3187 
+Q 2291 3316 2203 3405 
+Q 2116 3494 1997 3539 
+Q 1878 3584 1734 3584 
+Q 1588 3584 1470 3532 
+Q 1353 3481 1270 3389 
+Q 1188 3297 1142 3172 
+Q 1097 3047 1097 2900 
+Q 1097 2563 1259 2386 
+Q 1422 2209 1731 2209 
+Q 1891 2209 2012 2261 
+Q 2134 2313 2217 2405 
+Q 2300 2497 2344 2622 
+Q 2388 2747 2388 2894 
 z
 " transform="scale(0.015625)"/>
       <path id="Carlito-Bold-18f" d="M 3113 2078 
@@ -147,13 +135,13 @@ Q 2334 1631 2334 2078
 z
 " transform="scale(0.015625)"/>
      </defs>
-     <use xlink:href="#Carlito-Bold-476"/>
+     <use xlink:href="#Carlito-Bold-196"/>
      <use xlink:href="#Carlito-Bold-18f" transform="translate(50.6875 0)"/>
     </g>
    </g>
    <g id="text_2">
     <!-- 10 -->
-    <g style="fill: #2e3440" transform="translate(601.113622 51.398452) scale(0.28 -0.28)">
+    <g style="fill: #2e3440" transform="translate(606.8075 51.398452) scale(0.28 -0.28)">
      <defs>
       <path id="Carlito-Bold-190" d="M 738 563 
 L 1541 563 
@@ -181,7 +169,7 @@ z
    </g>
    <g id="text_3">
     <!-- To learn from -->
-    <g style="fill: #2e3440" transform="translate(242.77236 120.056052) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(245.935625 120.056052) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-24" d="M 3044 4106 
 L 3044 3631 
@@ -462,7 +450,7 @@ z
    </g>
    <g id="text_4">
     <!-- Hidden for the test -->
-    <g style="fill: #2e3440" transform="translate(465.640638 120.056052) scale(0.24 -0.24)">
+    <g style="fill: #2e3440" transform="translate(468.17125 120.056052) scale(0.24 -0.24)">
      <defs>
       <path id="Carlito-f" d="M 3550 0 
 L 2978 0 
@@ -671,7 +659,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p28fa7e5502">
+  <clipPath id="p1d783c7f60">
    <rect x="7.2" y="7.2" width="669.6" height="144.144"/>
   </clipPath>
  </defs>

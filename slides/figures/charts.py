@@ -225,17 +225,21 @@ def sentence_map():
 
 def toy_data(seed=4):
     rng = np.random.default_rng(seed)
-    spam = rng.normal([-1.1, 0.6], 0.55, (40, 2))
-    real = rng.normal([1.1, -0.4], 0.55, (40, 2))
-    xy = np.vstack([spam, real])[np.ravel(np.column_stack([np.arange(40), np.arange(40, 80)]))]
-    return xy, np.tile([1, 0], 40)
+    spam = rng.normal([-1.1, 0.6], 0.55, (45, 2))
+    real = rng.normal([1.1, -0.4], 0.55, (45, 2))
+    xy = np.vstack([spam, real])[np.ravel(np.column_stack([np.arange(45), np.arange(45, 90)]))]
+    return xy, np.tile([1, 0], 45)
+
+
+def fit_toy(xy, labels):
+    return LogisticRegression(fit_intercept=False).fit(xy, labels)
 
 
 def equation(model):
-    (wx, wy), b = model.coef_[0], model.intercept_[0]
-    sign = lambda v: "+" if v >= 0 else "\u2212"
+    wx, wy = model.coef_[0]
+    sign = "+" if wy >= 0 else "\u2212"
     first = f"{wx:.1f}".replace("-", "\u2212")
-    return f"score = {first} \u00d7 number 1 {sign(wy)} {abs(wy):.1f} \u00d7 number 2 {sign(b)} {abs(b):.1f}"
+    return f"score = {first} \u00d7 number 1 {sign} {abs(wy):.1f} \u00d7 number 2"
 
 
 def toy_axes(ax):
@@ -250,26 +254,30 @@ def toy_line(ax, model):
     (wx, wy), b = model.coef_[0], model.intercept_[0]
     ys = np.array([-3, 3])
     ax.plot(-(wy * ys + b) / wx, ys, "--", color=INK, lw=3, zorder=4)
+    return -(wy * ys + b) / wx
 
 
 def toy_training(seen, name):
     xy, labels = toy_data()
     colors = {1: ORANGE, 0: SLATE}
-    model = LogisticRegression().fit(xy[:seen], labels[:seen])
-    fig, ax = plt.subplots(figsize=(10, 6))
+    model = fit_toy(xy[:seen], labels[:seen])
+    fig, ax = plt.subplots(figsize=(10, 6.4))
     ax.scatter(xy[seen:, 0], xy[seen:, 1], s=90, color=SNOW, zorder=2)
-    ax.scatter(xy[:seen, 0], xy[:seen, 1], s=110 if seen < 80 else 90, color=[colors[k] for k in labels[:seen]], zorder=3)
+    ax.scatter(xy[:seen, 0], xy[:seen, 1], s=110 if seen < len(xy) else 90, color=[colors[k] for k in labels[:seen]], zorder=3)
     toy_line(ax, model)
-    ax.text(0, 3.05, equation(model), ha="center", va="center", fontsize=21, fontweight="bold", zorder=6,
+    ax.text(0, 3.25, equation(model), ha="center", va="center", fontsize=22, fontweight="bold", zorder=6,
             bbox=dict(fc="white", ec=INK, lw=2, boxstyle="round,pad=0.4"))
+    style = dict(fontsize=20, fontweight="bold", va="bottom", zorder=6, bbox=dict(fc="white", ec="none", pad=1))
+    ax.text(-2.85, -2.3, "above 0: spam", ha="left", color=ORANGE, **style)
+    ax.text(2.85, -2.3, "below 0: not spam", ha="right", color=SLATE, **style)
     toy_axes(ax)
-    ax.set_ylim(-2.4, 3.5)
+    ax.set_ylim(-2.4, 3.75)
     save(fig, name)
 
 
 def toy(stage):
     xy, labels = toy_data()
-    flat = LogisticRegression().fit(xy, labels)
+    flat = fit_toy(xy, labels)
     colors = {1: ORANGE, 0: SLATE}
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -337,8 +345,8 @@ def main():
     sentence_map()
     for stage in (1, 3, 4):
         toy(stage)
-    split_bar(80, 10, "toy_split")
-    for k, seen in enumerate([4, 16, 80], 1):
+    split_bar(90, 10, "toy_split")
+    for k, seen in enumerate([4, 16, 90], 1):
         toy_training(seen, f"toy_train_{k}")
     data_rows(len(lines))
     photos()
