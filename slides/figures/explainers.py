@@ -104,10 +104,17 @@ def nudge():
              text(GUESS_X, 130, "guess", 24, 700, SLATE, "middle"),
              row_label(215, "The email", "labeled Spam"), value_cells(215, email),
              row_label(320, "Weights before"), weight_cells(320, before), old_cell, guess_cell(320, old, right=False),
-             row_label(420, "Nudge", "add its numbers"), value_cells(420, email, sign=True),
-             row_label(520, "Weights after"), weight_cells(520, after), new_cell, guess_cell(520, new, right=True),
-             text(20, 615, "It should have scored higher, so each number is added to its weight. Zeros stay put.", 26, 400, SLATE)]
+             row_label(420, "Nudge", "+1 &#215; its number"), nudge_cells(420, email),
+             text(SCORE_X, 412, "Score too low, so push up:", 25, 400, INK, "middle"),
+             text(SCORE_X, 446, "nudge = <tspan font-weight='700'>+1</tspan> &#215; each number", 25, 400, INK, "middle"),
+             row_label(520, "Weights after", "before + nudge"), weight_cells(520, after), new_cell, guess_cell(520, new, right=True),
+             text(20, 615, "If the score were too high, the nudge would be &#8722;1 &#215; each number. A 0 means no nudge.", 26, 400, SLATE)]
     return svg(1400, 640, parts, top=100)
+
+
+def nudge_cells(y, values):
+    return "".join(text(x, y - 6, f"+1&#215;{fmt(v)}", 22, 400, SLATE, "middle") + text(x, y + 30, f"= {fmt(v, True)}", 28, 700, INK, "middle")
+                   for x, v in zip(COLS, values))
 
 
 def tick(cx, cy):
