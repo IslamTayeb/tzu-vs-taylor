@@ -1,37 +1,29 @@
 {
  "n_each": 300,
  "n_test": 120,
- "right": 117,
+ "right": 118,
  "trap_p": [
   82,
-  77,
+  67,
   68,
-  40
+  42
  ],
  "flip_p": [
   17,
   82
  ],
- "library_p": 80,
+ "library_p": 75,
  "quiz_sure": [
   91,
-  94,
-  94,
-  76,
-  78,
   93,
-  51,
-  60,
-  75,
-  79,
-  52,
-  62,
-  67,
+  94,
+  94,
+  59,
+  74,
   53,
-  89,
-  50,
-  61,
-  63
+  57,
+  54,
+  58
  ],
  "quiz_right": [
   true,
@@ -40,17 +32,9 @@
   true,
   true,
   true,
-  false,
-  true,
-  true,
-  true,
   true,
   false,
   true,
-  false,
-  true,
-  true,
-  false,
   false
  ]
 }
