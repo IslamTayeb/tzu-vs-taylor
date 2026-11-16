@@ -136,7 +136,7 @@ def main():
     play_along()
 
     figure("How Sure It Was", "confidence",
-           [(f"Round {flip[0]} was a coin flip; it missed rounds {missed[0]} and {missed[1]}", False)])
+           [(f"It missed {len(missed)} of {len(facts['quiz_right'])}, all close calls", False)])
     figure("Words It Is Most Sure About", "top_words", [("It learned topics, not authors", False)],
            notes=(f"How we got these: we took every word that shows up at least twice in the {2 * facts['n_each']} lines "
                   "and fed each one to the model on its own, as if it were a one-word line. "

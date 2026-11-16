@@ -83,13 +83,12 @@ def confidence(rounds, p_taylor):
     right = (p_taylor >= 0.5) == (rounds.label == TAYLOR).values
     colors = [RED if not ok else PINK if s < 55 else SNOW for s, ok in zip(sure, right)]
     fig, ax = plt.subplots(figsize=(12, 5))
-    ax.bar(rounds["round"], sure, color=colors, width=0.7, zorder=3)
-    for x, s, ok in zip(rounds["round"], sure, right):
-        note = "" if ok and s >= 55 else "\nCoin Flip" if ok else "\nMissed"
-        ax.text(x, s + 2, f"{s:.0f}%{note}", ha="center", va="bottom", fontsize=17,
-                fontweight="bold" if note else "normal")
+    ax.bar(rounds["round"], sure, color=colors, width=0.7, edgecolor=INK, linewidth=1.5, zorder=3)
+    handles = [plt.Rectangle((0, 0), 1, 1, fc=c, ec=INK) for c in (RED, PINK)]
+    ax.legend(handles, ["Missed", "Coin flip (under 55%)"], loc="lower center", bbox_to_anchor=(0.5, 1.0),
+              ncol=2, frameon=False, fontsize=18)
     percent_axis(ax, "y")
-    ax.set_ylim(0, 118)
+    ax.set_ylim(0, 100)
     ax.set_yticks([0, 25, 50, 75, 100])
     ax.set_xticks(rounds["round"])
     ax.tick_params(labelsize=17)
