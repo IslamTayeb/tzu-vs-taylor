@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -34,27 +35,24 @@ URL = "https://islamtayeb.github.io/tzu-vs-taylor/"
 
 def hand_drawn():
     font_manager.fontManager.addfont(str(TOOLS / "fonts" / "Excalifont-Regular.ttf"))
-    plt.rcParams.update({"font.family": "Excalifont", "path.sketch": (1.2, 80, 2), "hatch.linewidth": 2.2,
+    plt.rcParams.update({"font.family": "Excalifont",
                          "mathtext.fontset": "custom", "mathtext.it": "Excalifont", "mathtext.rm": "Excalifont"})
 
 
-def hachure(fig):
-    for ax in fig.axes:
-        for bar in list(ax.patches):
-            if not isinstance(bar, Rectangle) or bar.get_width() == 0 or bar.get_height() == 0:
-                continue
-            color = matplotlib.colors.to_hex(bar.get_facecolor())
-            ink = "#aab3c2" if color.lower() == SNOW.lower() else color
-            bar.set(facecolor="none", edgecolor=ink, hatch="///", linewidth=0)
-            ax.add_patch(Rectangle(bar.get_xy(), bar.get_width(), bar.get_height(), fill=False,
-                                   edgecolor=INK, linewidth=1.8, zorder=bar.get_zorder() + 0.1))
+ROUGHEN = TOOLS / "rough" / "roughen.mjs"
 
 
 def save(fig, name):
-    hachure(fig)
-    for ext in ("png", "svg"):
-        fig.savefig(OUT / f"{name}.{ext}", transparent=True)
+    raw = OUT / f"{name}_raw.svg"
+    with plt.rc_context({"svg.fonttype": "none"}):
+        fig.savefig(raw, transparent=True)
     plt.close(fig)
+    rough = subprocess.run(["node", str(ROUGHEN)], input=raw.read_text(), capture_output=True, text=True, check=True).stdout
+    raw.write_text(rough)
+    width = int(float(re.search(r'width="([\d.]+)pt"', rough).group(1)) / 72 * 600)
+    subprocess.run(["rsvg-convert", "-w", str(width), str(raw), "-o", str(OUT / f"{name}.png")], check=True)
+    subprocess.run(["rsvg-convert", "-f", "svg", str(raw), "-o", str(OUT / f"{name}.svg")], check=True)
+    raw.unlink()
 
 
 def percent_axis(ax, axis="x"):
@@ -65,16 +63,17 @@ def percent_axis(ax, axis="x"):
 
 
 def split_bar(n_train, n_test, name="split"):
-    fig, ax = plt.subplots(figsize=(12, 2.6))
-    ax.barh(0, n_train, color=SNOW, height=0.7, zorder=3)
-    ax.barh(0, n_test, left=n_train, color=PINK, height=0.7, zorder=3)
     total = n_train + n_test
-    ax.text(n_train / 2, 0, str(n_train), ha="center", va="center", fontsize=28, fontweight="bold")
-    ax.text(n_train + n_test / 2, 0, str(n_test), ha="center", va="center", fontsize=28, fontweight="bold")
-    ax.text(n_train / 2, -0.62, "To learn from", ha="center", va="top", fontsize=24)
-    ax.text(total, -0.62, "Hidden for the test", ha="right", va="top", fontsize=24)
-    ax.set_ylim(-1.15, 0.4)
-    ax.set_xlim(-4, n_train + n_test + 4)
+    test_w = max(n_test, 0.2 * total)
+    train_w = total - test_w
+    fig, ax = plt.subplots(figsize=(12, 2.2))
+    ax.barh(0, train_w, color=SNOW, height=0.9, edgecolor=INK, linewidth=2, zorder=3)
+    ax.barh(0, test_w, left=train_w, color=PINK, height=0.9, edgecolor=INK, linewidth=2, zorder=3)
+    for x, n, label in [(train_w / 2, n_train, "to learn from"), (train_w + test_w / 2, n_test, "hidden")]:
+        ax.text(x, 0.12, str(n), ha="center", va="center", fontsize=30, zorder=4)
+        ax.text(x, -0.2, label, ha="center", va="center", fontsize=20, color=SLATE, zorder=4)
+    ax.set_xlim(-4, total + 4)
+    ax.set_ylim(-0.5, 0.5)
     ax.axis("off")
     save(fig, name)
 
@@ -128,6 +127,8 @@ def dot_maps(lines, vectors, model):
         if name == "map_test":
             ax.scatter(xy[missed, 0], xy[missed, 1], s=700, facecolor="none", edgecolor="#b4412f", linewidth=3.5, zorder=5)
         ax.set_ylim(xy[:, 1].min() - pad, xy[:, 1].max() + 7 * pad)
+        span = xy[:, 0].max() - xy[:, 0].min()
+        ax.set_xlim(xy[:, 0].min() - 0.04 * span, xy[:, 0].max() + 0.04 * span)
         ax.set_xticks([]); ax.set_yticks([])
         ax.grid(False)
         ax.set_xlabel("Squashed Number 1", fontsize=19)
@@ -202,10 +203,11 @@ def vector_point():
     ax.tick_params(labelsize=18)
 
     ax = fig.add_subplot(grid[2], projection="3d")
+    ax.computed_zorder = False
     x, y, z = 3, 2, 4
     for xs, ys, zs in [([x, x], [y, y], [0, z]), ([0, x], [y, y], [0, 0]), ([x, x], [0, y], [0, 0])]:
-        ax.plot(xs, ys, zs, "--", color=SLATE, lw=2)
-    ax.scatter([x], [y], [z], s=420, color=RED, depthshade=False)
+        ax.plot(xs, ys, zs, "--", color=SLATE, lw=2, zorder=2)
+    ax.scatter([x], [y], [z], s=420, color=RED, depthshade=False, zorder=5)
     ax.text(x, y, z + 1.1, "[3, 2, 4]", ha="center", fontsize=32, fontweight="bold", zorder=10,
             bbox=dict(facecolor="white", edgecolor="none", pad=2))
     ax.set_xlim(0, 5); ax.set_ylim(0, 5); ax.set_zlim(0, 5)
@@ -335,7 +337,7 @@ def toy(stage):
         for (x, y), t, g in zip(test, truth, guess):
             ax.scatter([x], [y], s=260, color=colors[t], edgecolor=INK, linewidth=2.5, zorder=6)
             ok = t == g
-            ax.plot([x + 0.26], [y + 0.22], marker=tick if ok else "x", markersize=15 if ok else 12,
+            ax.plot([x + 0.17], [y + 0.15], marker=tick if ok else "x", markersize=15 if ok else 12,
                     markeredgewidth=3.5, color="#3b7d4a" if ok else "#b4412f", fillstyle="none", zorder=7)
     toy_axes(ax)
     save(fig, f"toy_{stage}")

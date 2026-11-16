@@ -81,7 +81,7 @@ def classes():
         textbox(slide, left - Inches(0.5), Inches(1.55), pic_w + Inches(1.0), Inches(0.6), [(label, 26, True)], center=True, color=color)
         picture = slide.shapes.add_picture(str(FIGURES / f"{photo}.jpg"), left, Inches(2.2), pic_w, pic_h)
         picture.name = f"fixed_{photo}"
-    textbox(slide, Inches(0.5), H - Inches(0.55), W - Inches(1.0), Inches(0.35), [(CREDIT, 10, False)], center=True)
+    slide.notes_slide.notes_text_frame.text = CREDIT
 
 
 def play_along():
@@ -145,16 +145,11 @@ def main():
     a, b = facts["flip_p"]
     figure("Two Words Flip It", "flip",
            [("Swap \"the enemy\" for \"my ex\": ", False), (f"{a}% to {b}% Taylor", True)])
-    figure("Fooling It", "traps", [("Small edits fool it; Taylor on enemies reads as Sun Tzu", False)])
-    bullets("Anything Modern Looks Like Taylor", [
-        (0, [("\"The library closes at midnight.\" scores ", False), (f"{facts['library_p']}% Taylor", True)]),
-        (0, [("It only knows a 1910 book and a 2017 pop star", False)]),
-    ])
     bullets("Where This Shows Up In Reporting", [
-        (0, [("Classify: ", True), ("tag thousands of documents or comments", False)]),
-        (0, [("Search: ", True), ("find documents that mean the same thing", False)]),
-        (0, [("Cluster: ", True), ("find themes in thousands of comments nobody labeled", False)]),
-        (0, [("Generate: ", True), ("draft, summarize, translate", False)]),
+        (0, [("Classify: ", True), ("tag documents", False)]),
+        (0, [("Search: ", True), ("find similar stories", False)]),
+        (0, [("Cluster: ", True), ("find themes", False)]),
+        (0, [("Generate: ", True), ("draft and summarize", False)]),
     ])
 
     for slide in deck.slides:

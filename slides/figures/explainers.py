@@ -1,13 +1,9 @@
 import math
 import subprocess
-from pathlib import Path
-
-import pandas as pd
 
 from diagram import FROST, INK, OUT, SLATE, flow, head, sketchy, text
 
 SPAM, REAL = "#BE616A", "#4f8584"
-DATA = Path(__file__).resolve().parents[2] / "data"
 
 
 def n(k):
@@ -90,9 +86,13 @@ def guess_cell(y, total, right=None, sure=None):
 PERFECT = [1, 1, -1, -1]
 
 
+def bands(*rows, width=1330):
+    return [f"<rect x='8' y='{y - 46}' width='{width}' height='92' fill='{FROST}' data-fill='solid'/>" for y in rows]
+
+
 def weights_slide():
     terms = " + ".join(f"({fmt(w)} &#215; {n(k + 1)})" for k, w in enumerate(PERFECT))
-    parts = [text(680, 40, f"score = {terms}", 34, 700, INK, "middle"), header(130),
+    parts = bands(215, 420) + [text(680, 40, f"score = {terms}", 34, 700, INK, "middle"), header(130),
              row_label(215, "Weights", "the model"), weight_cells(215, PERFECT)]
     for y, name, values in [(320, "Email A", [1, 1, 0, 0]), (420, "Email B", [0, 0, 1, 1])]:
         cell, total = score_cell(y, values, PERFECT)
@@ -105,7 +105,7 @@ def nudge():
     after = [w + v for w, v in zip(before, email)]
     old_cell, old = score_cell(320, email, before)
     new_cell, new = score_cell(520, email, after)
-    parts = [header(130, score=False), text(SCORE_X, 130, "score", 24, 700, SLATE, "middle"),
+    parts = bands(215, 420, width=1360) + [header(130, score=False), text(SCORE_X, 130, "score", 24, 700, SLATE, "middle"),
              text(GUESS_X, 130, "guess", 24, 700, SLATE, "middle"),
              row_label(215, "The email", "labeled Spam"), value_cells(215, email),
              row_label(320, "Weights before"), weight_cells(320, before), old_cell, guess_cell(320, old, right=False),
@@ -157,26 +157,23 @@ def weight_row(cx, y, weights, caption):
 def training_loop():
     parts = [text(110, 120, "Labeled emails", 28, 700, INK, "middle")]
     for k, (tag, color) in enumerate([("Spam", SPAM), ("Not spam", REAL), ("Spam", SPAM)]):
-        parts.append(envelope(60, 200 + k * 110, tag, color))
-    guess, check, nudge_at = (640, 130), (850, 470), (430, 470)
-    parts += [flow(290, 310, 452, 130), head(446, 130),
-              arrow(760, 195, 860, 395), arrow(680, 470, 605, 470), arrow(420, 395, 520, 195),
+        parts.append(envelope(60, 190 + k * 100, tag, color))
+    guess, check, nudge_at = (640, 130), (900, 510), (380, 510)
+    parts += [flow(290, 290, 452, 130), head(446, 130),
+              arrow(760, 195, 885, 445), arrow(730, 510, 555, 510), arrow(400, 445, 520, 195),
               node(*guess, "1  Guess", "score it with the weights"),
               node(*check, "2  Check", "was the guess right?"),
               node(*nudge_at, "3  Nudge", "if wrong, tweak weights"),
-              text(640, 600, "repeat for every email, many times", 26, 400, SLATE, "middle")]
-    parts += [text(1215, 120, "Weights", 28, 700, INK, "middle"),
-              weight_row(1215, 230, [0.2, -0.3, 0.1, 0.4], "at the start: random"),
-              arrow(1215, 290, 1215, 380),
-              weight_row(1215, 470, PERFECT, "after training")]
-    return svg(1400, 640, parts, top=55)
+              weight_row(640, 345, [0.2, -0.3, 0.1, 0.4], "weights: random"),
+              weight_row(640, 690, PERFECT, "after many rounds")]
+    return svg(1100, 740, parts, top=55)
 
 
 def inference():
     email = [0.9, 0.8, 0.1, 0.2]
     cell, total = score_cell(320, email, PERFECT)
     sure = round(100 / (1 + math.exp(-total)))
-    parts = [header(130), row_label(215, "Weights", "frozen now"), weight_cells(215, PERFECT),
+    parts = bands(215) + [header(130), row_label(215, "Weights", "frozen now"), weight_cells(215, PERFECT),
              row_label(320, "A new email"), value_cells(320, email), cell, guess_cell(320, total, sure=sure)]
     return svg(1360, 420, parts, top=90)
 
@@ -207,7 +204,7 @@ def bubble(cx, cy):
             + "".join(f"<line x1='{cx - 28}' y1='{cy - 16 + 14 * i}' x2='{cx + [28, 18][i]}' y2='{cy - 16 + 14 * i}' stroke='{SLATE}' stroke-width='4'/>" for i in range(2)))
 
 
-def sources(total, picked):
+def sources(picked):
     rows = [(110, album, "reputation (2017)", "every song on her revenge album"),
             (280, notes, "3 feud songs", "Bad Blood, Mean, Vigilante Shit"),
             (450, bubble, "19 interview quotes", "each checked against the article")]
@@ -215,15 +212,10 @@ def sources(total, picked):
     for y, icon, title, sub in rows:
         parts += [card(20, y, icon, title, sub), flow(615, y, 760, 280)]
     parts += [head(760, 280),
-              f"<rect x='795' y='190' width='300' height='180' rx='18' fill='{MINT}' stroke='{INK}' stroke-width='3'/>",
-              text(945, 270, f"{total} lines", 40, 700, INK, "middle"),
-              text(945, 310, "two lyric lines each,", 22, 400, SLATE, "middle"),
-              text(945, 338, "repeats removed", 22, 400, SLATE, "middle"),
-              flow(1100, 280, 1165, 280), head(1165, 280),
-              f"<rect x='1200' y='190' width='240' height='180' rx='18' fill='{PINK}' stroke='{SPAM}' stroke-width='4'/>",
-              text(1320, 285, str(picked), 64, 700, SPAM, "middle"),
-              text(1320, 330, "picked at random", 22, 400, SLATE, "middle")]
-    return svg(1460, 540, parts, top=30)
+              f"<rect x='800' y='180' width='280' height='200' fill='{PINK}' stroke='{SPAM}' stroke-width='4'/>",
+              text(940, 285, str(picked), 72, 700, SPAM, "middle"),
+              text(940, 330, "lines, picked at random", 24, 400, SLATE, "middle")]
+    return svg(1100, 540, parts, top=30)
 
 
 def svg(w, h, parts, top=0):
@@ -244,4 +236,4 @@ if __name__ == "__main__":
     export("training_loop", training_loop())
     export("inference", inference())
     export("nudge", nudge())
-    export("sources", sources(len(pd.read_csv(DATA / "taylor.csv")), 300))
+    export("sources", sources(300))
