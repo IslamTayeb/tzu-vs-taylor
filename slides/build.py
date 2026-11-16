@@ -101,26 +101,38 @@ def main():
 
     hand_font()
     statement("How Machines Read", "Embeddings and classification")
-    figure("What's A Vector?", "vector_point", [("A vector is just a list of numbers. Each number adds a direction", False)])
+    figure("Today, In 4 Steps", "roadmap_0")
+
+    figure("Step 1: Words To Numbers", "roadmap_1")
+    vector = [("A vector is just a list of numbers. Each number adds a direction", False)]
+    for stage in range(5):
+        figure("What's A Vector?", f"vector_{stage}", vector)
     figure("Anything Becomes A Vector", "diagram_1")
+    figure("Close Numbers, Close Meaning", "sentence_map",
+           [("Each sentence becomes a vector. Similar meanings land close", False)])
     for stage in (2, 3, 4, 5):
         figure("Then We Use The Vectors", f"diagram_{stage}")
     figure("Today: Classification", "diagram_6")
-    figure("Close Numbers, Close Meaning", "sentence_map",
-           [("Each sentence becomes a vector. Similar meanings land close", False)])
 
+    figure("Step 2: Teach A Model", "roadmap_2")
+    figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
+    figure("Sorting Means Drawing A Line", "toy_2", [("The model's job: find a line between the two groups", False)])
+    figure("Hide Some For The Test", "toy_split", [("Before training, hide some emails. They are the exam", False)])
+    figure("What's A Model?", "model_box", [("A function: numbers in, a score out", False)])
     figure("The Model Is A Function", "weights",
            [("Say high n₁, n₂ mean spam and high n₃, n₄ mean not spam", False)])
     figure("Training: Guess, Check, Nudge", "training_loop")
     figure("One Nudge, Up Close", "nudge")
-    figure("Every Email Becomes A Dot", "toy_1", [("Each email's vector, squashed down to 2 numbers so we can draw it", False)])
-    figure("Hide Some For The Test", "toy_split", [("Hide some emails before training. They are the exam", False)])
-    for k, note in enumerate(["After 4 emails", "After 16 emails", "After all 90: the line is where the score is exactly 0"], 1):
+    for k, note in enumerate(["After 4 emails", "After 16 emails", "After all 90: the line is where the score is 0"], 1):
         figure("Training Draws A Line", f"toy_train_{k}", [(note, False)])
+
+    figure("Step 3: Test It", "roadmap_3")
     figure("Then It Guesses", "inference", [("Same function, new email. A bigger score means a surer guess", False)])
     figure("New Emails Land On A Side", "toy_3", [("Far from the line: sure. Near the line: a coin flip", False)])
     figure("Then We Grade It", "toy_4", [("Test it on the 10 hidden emails: ", False), ("9 of 10 right", True)])
+    figure("So Far", "recap")
 
+    figure("Step 4: You Vs. The Model", "roadmap_4")
     classes()
     figure("What It Learned From", "data_rows",
            [(f"{facts['n_each']} lines each: ", True), ("The Art of War vs. Taylor's lyrics and interviews", False)])
@@ -145,12 +157,6 @@ def main():
     a, b = facts["flip_p"]
     figure("Two Words Flip It", "flip",
            [("Swap \"the enemy\" for \"my ex\": ", False), (f"{a}% to {b}% Taylor", True)])
-    bullets("Where This Shows Up In Reporting", [
-        (0, [("Classify: ", True), ("tag documents", False)]),
-        (0, [("Search: ", True), ("find similar stories", False)]),
-        (0, [("Cluster: ", True), ("find themes", False)]),
-        (0, [("Generate: ", True), ("draft and summarize", False)]),
-    ])
 
     for slide in deck.slides:
         for shape in slide.shapes:

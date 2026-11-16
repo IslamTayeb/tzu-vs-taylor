@@ -42,9 +42,9 @@ def hand_drawn():
 ROUGHEN = TOOLS / "rough" / "roughen.mjs"
 
 
-def save(fig, name):
+def save(fig, name, tight=True):
     raw = OUT / f"{name}_raw.svg"
-    with plt.rc_context({"svg.fonttype": "none"}):
+    with plt.rc_context({"svg.fonttype": "none", "savefig.bbox": "tight" if tight else "standard"}):
         fig.savefig(raw, transparent=True)
     plt.close(fig)
     rough = subprocess.run(["node", str(ROUGHEN)], input=raw.read_text(), capture_output=True, text=True, check=True).stdout
@@ -132,7 +132,8 @@ def dot_maps(lines, vectors, model):
         ax.grid(False)
         ax.set_xlabel("Squashed Number 1", fontsize=19)
         ax.set_ylabel("Squashed Number 2", fontsize=19)
-        save(fig, name)
+        fig.subplots_adjust(left=0.06, right=0.99, bottom=0.08, top=0.99)
+        save(fig, name, tight=False)
 
 
 def top_words(model, lines, n=8):
@@ -178,9 +179,11 @@ def table(name, spec):
     path.unlink()
 
 
-def vector_point():
-    fig = plt.figure(figsize=(17, 5.4))
-    grid = fig.add_gridspec(1, 4, width_ratios=[1, 1, 1.35, 1], wspace=0.22)
+def vector_point(stage):
+    fig = plt.figure(figsize=(17, 5.6))
+    grid = fig.add_gridspec(1, 4, width_ratios=[1, 1, 1.35, 1], wspace=0.22, left=0.02, right=0.98, bottom=0.1, top=0.82)
+    if stage == 0:
+        return finish_vectors(fig, grid, stage)
 
     ax = fig.add_subplot(grid[0])
     ax.plot([0, 5], [0, 0], color=INK, lw=2.5, zorder=2)
@@ -191,6 +194,8 @@ def vector_point():
         ax.text(t, -0.45, str(t), ha="center", fontsize=18)
     ax.set_xlim(-0.3, 5.3); ax.set_ylim(-1.6, 1.6)
     ax.axis("off")
+    if stage < 2:
+        return finish_vectors(fig, grid, stage)
 
     ax = fig.add_subplot(grid[1])
     ax.plot([3, 3], [0, 2], "--", color=SLATE, lw=2, zorder=2)
@@ -200,6 +205,8 @@ def vector_point():
     ax.set_xlim(0, 5); ax.set_ylim(0, 3.5)
     ax.set_xticks(range(6)); ax.set_yticks(range(4))
     ax.tick_params(labelsize=18)
+    if stage < 3:
+        return finish_vectors(fig, grid, stage)
 
     ax = fig.add_subplot(grid[2], projection="3d")
     ax.computed_zorder = False
@@ -216,17 +223,23 @@ def vector_point():
     for axis in (ax.xaxis, ax.yaxis, ax.zaxis):
         axis.set_pane_color((0, 0, 0, 0))
     ax.set_box_aspect(None, zoom=1.12)
+    if stage < 4:
+        return finish_vectors(fig, grid, stage)
 
     ax = fig.add_subplot(grid[3])
     ax.text(0.5, 0.55, "[3, 2, 4, 1, ...]", ha="center", va="center", fontsize=28, fontweight="bold")
     ax.text(0.5, 0.33, "Same idea,\nwe just can't draw it", ha="center", va="top", fontsize=22, color=SLATE)
     ax.set_xlim(0, 1); ax.set_ylim(0, 1)
     ax.axis("off")
+    finish_vectors(fig, grid, stage)
 
-    for k, title in enumerate(["1D: one number", "2D: two numbers", "3D: three numbers", "4D and up"]):
+
+def finish_vectors(fig, grid, stage):
+    titles = ["1D: one number", "2D: two numbers", "3D: three numbers", "4D and up"]
+    for k, title in enumerate(titles[:stage]):
         left = grid[k].get_position(fig)
         fig.text((left.x0 + left.x1) / 2, 0.93, title, ha="center", fontsize=26, fontweight="bold")
-    save(fig, "vector_point")
+    save(fig, f"vector_{stage}", tight=False)
 
 
 def sentence_map():
@@ -263,13 +276,14 @@ def fit_toy(xy, labels):
 
 
 def equation(model):
-    wx, wy = model.coef_[0]
+    wx, wy = (round(w) for w in model.coef_[0])
     sign = "+" if wy >= 0 else "\u2212"
-    first = f"{wx:.1f}".replace("-", "\u2212")
-    return f"score = {first} \u00d7 $n_1$ {sign} {abs(wy):.1f} \u00d7 $n_2$"
+    first = f"{wx}".replace("-", "\u2212")
+    return f"score = {first} \u00d7 $n_1$ {sign} {abs(wy)} \u00d7 $n_2$"
 
 
 def toy_axes(ax):
+    ax.figure.subplots_adjust(left=0.05, right=0.99, bottom=0.08, top=0.99)
     ax.set_xlim(-3, 3); ax.set_ylim(-2.4, 2.8)
     ax.set_xticks([]); ax.set_yticks([])
     ax.grid(False)
@@ -299,7 +313,7 @@ def toy_training(seen, name):
     ax.text(2.85, -2.3, "below 0: not spam", ha="right", color=TEAL, **style)
     toy_axes(ax)
     ax.set_ylim(-2.4, 3.75)
-    save(fig, name)
+    save(fig, name, tight=False)
 
 
 def toy(stage):
@@ -307,7 +321,7 @@ def toy(stage):
     flat = fit_toy(xy, labels)
     colors = TOY
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 6.4))
     fade = 0.25 if stage == 4 else 0.9
     for k, name in [(1, "Spam"), (0, "Not spam")]:
         pts = xy[labels == k]
@@ -339,7 +353,8 @@ def toy(stage):
             ax.plot([x + 0.17], [y + 0.15], marker=tick if ok else "x", markersize=15 if ok else 12,
                     markeredgewidth=3.5, color="#3b7d4a" if ok else "#b4412f", fillstyle="none", zorder=7)
     toy_axes(ax)
-    save(fig, f"toy_{stage}")
+    ax.set_ylim(-2.4, 3.75)
+    save(fig, f"toy_{stage}", tight=False)
 
 
 def data_rows(n_lines):
@@ -369,9 +384,10 @@ def main():
     split_bar(len(lines) - n_test, n_test)
     dot_maps(lines, vectors, model)
     top_words(model, lines)
-    vector_point()
+    for stage in range(5):
+        vector_point(stage)
     sentence_map()
-    for stage in (1, 3, 4):
+    for stage in (1, 2, 3, 4):
         toy(stage)
     split_bar(90, 10, "toy_split")
     for k, seen in enumerate([4, 16, 90], 1):

@@ -92,12 +92,11 @@ def bands(*rows, width=1330):
 
 def weights_slide():
     terms = " + ".join(f"({fmt(w)} &#215; {n(k + 1)})" for k, w in enumerate(PERFECT))
-    parts = bands(215, 420) + [text(680, 40, f"score = {terms}", 34, 700, INK, "middle"), header(130),
+    parts = bands(215) + [text(680, 40, f"score = {terms}", 34, 700, INK, "middle"), header(130),
              row_label(215, "Weights", "the model"), weight_cells(215, PERFECT)]
-    for y, name, values in [(320, "Email A", [1, 1, 0, 0]), (420, "Email B", [0, 0, 1, 1])]:
-        cell, total = score_cell(y, values, PERFECT)
-        parts += [row_label(y, name), value_cells(y, values), cell, guess_cell(y, total)]
-    return svg(1360, 470, parts)
+    cell, total = score_cell(320, [1, 1, 0, 0], PERFECT)
+    parts += [row_label(320, "An email"), value_cells(320, [1, 1, 0, 0]), cell, guess_cell(320, total)]
+    return svg(1360, 380, parts)
 
 
 def nudge():
@@ -218,6 +217,66 @@ def sources(picked):
     return svg(1100, 540, parts, top=30)
 
 
+STEPS = [("Words to numbers", "turn text into vectors"), ("Teach a model", "show it labeled examples"),
+         ("Test it", "on data it never saw"), ("You vs. the model", "play along")]
+
+
+def step_card(x, y, k, title, sub, on, dim):
+    fill, stroke = (PINK, SPAM) if on else (FROST, INK)
+    group = (f"<rect x='{x}' y='{y}' width='345' height='170' fill='{fill}' stroke='{stroke}' stroke-width='{5 if on else 3}'/>"
+             f"<circle cx='{x + 42}' cy='{y + 45}' r='24' fill='white' stroke='{INK}' stroke-width='3'/>"
+             + text(x + 42, y + 55, str(k), 28, 700, INK, "middle")
+             + text(x + 80, y + 56, title, 27, 700, INK) + text(x + 24, y + 125, sub, 24, 400, SLATE))
+    return f"<g opacity='0.35'>{group}</g>" if dim else group
+
+
+def roadmap(current):
+    parts = []
+    for k, (title, sub) in enumerate(STEPS):
+        x = 20 + k * 395
+        parts.append(step_card(x, 40, k + 1, title, sub, k + 1 == current, current and k + 1 != current))
+        if k < 3:
+            parts += [arrow(x + 352, 125, x + 388, 125)]
+    return svg(1590, 250, parts)
+
+
+def recap():
+    cards = [("Words become dots", "an embedding is a vector"), ("A model is a line", "weights are its knobs"),
+             ("Training nudges it", "guess, check, nudge"), ("A hidden test grades it", "on emails it never saw")]
+    parts = []
+    for k, (title, sub) in enumerate(cards):
+        x, y = 20 + (k % 2) * 620, 30 + (k // 2) * 200
+        parts += [f"<rect x='{x}' y='{y}' width='580' height='160' fill='{FROST}' stroke='{INK}' stroke-width='3'/>",
+                  text(x + 30, y + 70, title, 36, 700, INK), text(x + 30, y + 118, sub, 28, 400, SLATE)]
+    return svg(1240, 420, parts)
+
+
+def slider(cx, top, bottom, w, label):
+    y = top + (bottom - top) * (1 - w) / 2
+    return (f"<line x1='{cx}' y1='{top}' x2='{cx}' y2='{bottom}' stroke='{SLATE}' stroke-width='5'/>"
+            f"<rect x='{cx - 22}' y='{y - 12}' width='44' height='24' fill='{SPAM if w > 0 else REAL}' stroke='{INK}' stroke-width='3'/>"
+            + text(cx, bottom + 40, label, 26, 700, SLATE, "middle"))
+
+
+def model_box():
+    parts = [text(110, 90, "an email's", 26, 400, SLATE, "middle"), text(110, 122, "vector", 26, 400, SLATE, "middle")]
+    style = f"stroke='{INK}' stroke-width='4' fill='none'"
+    parts += [f"<path d='M78,150 h-12 v240 h12' {style}/>", f"<path d='M142,150 h12 v240 h-12' {style}/>"]
+    parts += [text(110, 200 + 55 * i, "&#8226;", 40, 700, INK, "middle") for i in range(4)]
+    parts += [flow(175, 270, 245, 270), head(245, 270),
+              f"<rect x='285' y='120' width='460' height='300' fill='{FROST}' stroke='{INK}' stroke-width='4'/>",
+              text(515, 168, "the model", 34, 700, INK, "middle")]
+    parts += [slider(345 + 113 * i, 205, 345, w, f"<tspan font-style='italic'>w</tspan><tspan baseline-shift='sub' font-size='70%'>{i + 1}</tspan>") for i, w in enumerate([0.6, 0.9, -0.5, -0.8])]
+    parts += [text(515, 470, "weights = knobs. Training turns them.", 26, 400, SLATE, "middle"),
+              flow(750, 270, 815, 270), head(815, 270),
+              f"<rect x='850' y='215' width='170' height='110' fill='white' stroke='{INK}' stroke-width='3'/>",
+              text(935, 282, "score", 34, 700, INK, "middle"),
+              flow(1025, 270, 1080, 190), head(1080, 190), flow(1025, 270, 1080, 350), head(1080, 350),
+              pill(1190, 190, "Spam", SPAM), pill(1190, 350, "Not spam", REAL),
+              text(1190, 245, "above 0", 22, 400, SLATE, "middle"), text(1190, 405, "below 0", 22, 400, SLATE, "middle")]
+    return svg(1320, 500, parts, top=50)
+
+
 def svg(w, h, parts, top=0):
     return f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 {top} {w} {h - top}' width='{w}' height='{h - top}'>{''.join(parts)}</svg>"
 
@@ -237,3 +296,7 @@ if __name__ == "__main__":
     export("inference", inference())
     export("nudge", nudge())
     export("sources", sources(300))
+    export("model_box", model_box())
+    export("recap", recap())
+    for k in range(5):
+        export(f"roadmap_{k}", roadmap(k))
