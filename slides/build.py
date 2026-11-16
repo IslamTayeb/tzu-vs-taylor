@@ -101,7 +101,7 @@ def main():
 
     hand_font()
     statement("How Machines Read", "Embeddings and classification")
-    figure("Today, In 4 Steps", "roadmap_0")
+    figure("Today, In 3 Steps", "roadmap_0")
 
     figure("Step 1: Words To Numbers", "roadmap_1")
     vector = [("A vector is just a list of numbers. Each number adds a direction", False)]
@@ -132,7 +132,6 @@ def main():
     figure("Then We Grade It", "toy_4", [("Test it on the 10 hidden emails: ", False), ("9 of 10 right", True)])
     figure("So Far", "recap")
 
-    figure("Step 4: You Vs. The Model", "roadmap_4")
     classes()
     figure("What It Learned From", "data_rows",
            [(f"{facts['n_each']} lines each: ", True), ("The Art of War vs. Taylor's lyrics and interviews", False)])

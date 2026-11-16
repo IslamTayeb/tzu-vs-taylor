@@ -218,7 +218,7 @@ def sources(picked):
 
 
 STEPS = [("Words to numbers", "turn text into vectors"), ("Teach a model", "show it labeled examples"),
-         ("Test it", "on data it never saw"), ("You vs. the model", "play along")]
+         ("Test it", "on data it never saw")]
 
 
 def step_card(x, y, k, title, sub, on, dim):
@@ -235,9 +235,9 @@ def roadmap(current):
     for k, (title, sub) in enumerate(STEPS):
         x = 20 + k * 395
         parts.append(step_card(x, 40, k + 1, title, sub, k + 1 == current, current and k + 1 != current))
-        if k < 3:
+        if k < len(STEPS) - 1:
             parts += [arrow(x + 352, 125, x + 388, 125)]
-    return svg(1590, 250, parts)
+    return svg(1195, 250, parts)
 
 
 def recap():
@@ -298,5 +298,5 @@ if __name__ == "__main__":
     export("sources", sources(300))
     export("model_box", model_box())
     export("recap", recap())
-    for k in range(5):
+    for k in range(4):
         export(f"roadmap_{k}", roadmap(k))
